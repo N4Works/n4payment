@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Cadastro de usuário</title>
+    </head>
+    <body ng-app="n4_payment" ng-controller="RootController as rootCtrl">
+        <header></header>
+        <section ng-view=""></section>
+        <footer></footer>
+
+        <!-- build:js_vendor ./scripts/vendor.js -->
+        <script type="text/javascript" src="../node_modules/angular/angular.js"></script>
+        <script type="text/javascript" src="../node_modules/angular-route/angular-route.js"></script>
+        <script type="text/javascript" src="../node_modules/angular-resource/angular-resource.js"></script>
+        <!-- endbuild -->
+        <!-- build:js_n4_payment ./scripts/n4_payment.js -->
+        <script type="text/javascript" src="scripts/app.js"></script>
+        <script type="text/javascript" src="scripts/controllers/root_controller.js"></script>
+        <script type="text/javascript" src="scripts/controllers/main_controller.js"></script>
+        <script type="text/javascript" src="scripts/resources/user_resource.js"></script>
+        <script type="text/javascript" src="scripts/models/user_model.js"></script>
+        <!-- endbuild -->
+    </body>
+</html>

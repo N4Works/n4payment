@@ -1,0 +1,48 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "isolatedModules": false,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "declaration": false,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "noLib": false,
+        "preserveConstEnums": true,
+        "suppressImplicitAnyIndexErrors": true
+    },
+    "filesGlob": [
+        "**/*.ts",
+        "**/*.tsx",
+        "!node_modules/**"
+    ],
+    "files": [
+        "app.ts",
+        "models/pagseguro_model.ts",
+        "models/user_model.ts",
+        "public/scripts/app.ts",
+        "public/scripts/controllers/main_controller.ts",
+        "public/scripts/controllers/root_controller.ts",
+        "public/scripts/models/user_model.ts",
+        "public/scripts/resources/user_resource.ts",
+        "routes/pagseguro_route.ts",
+        "routes/user_route.ts",
+        "services/user_service.ts",
+        "typings/angularjs/angular-resource.d.ts",
+        "typings/angularjs/angular-route.d.ts",
+        "typings/angularjs/angular.d.ts",
+        "typings/bluebird/bluebird.d.ts",
+        "typings/body-parser/body-parser.d.ts",
+        "typings/express/express.d.ts",
+        "typings/jquery/jquery.d.ts",
+        "typings/mime/mime.d.ts",
+        "typings/mongoose/mongoose.d.ts",
+        "typings/node/node.d.ts",
+        "typings/serve-static/serve-static.d.ts",
+        "typings/tsd.d.ts"
+    ],
+    "exclude": []
+}

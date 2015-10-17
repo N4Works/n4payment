@@ -1,0 +1,34 @@
+{
+  "name": "n4payment",
+  "version": "1.0.0",
+  "description": "Just a simple module to create payments on PagSeguro",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha test/**/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/N4Works/n4payment.git"
+  },
+  "keywords": [
+    "payment",
+    "pagseguro",
+    "pay"
+  ],
+  "author": "tiago@n4works.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/N4Works/n4payment/issues"
+  },
+  "homepage": "https://github.com/N4Works/n4payment#readme",
+  "dependencies": {
+    "angular": "^1.4.7",
+    "angular-resource": "^1.4.7",
+    "angular-route": "^1.4.7",
+    "bluebird": "^2.10.2",
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
+    "mongoose": "^4.1.11",
+    "pagseguro": "^0.1.0"
+  }
+}

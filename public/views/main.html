@@ -1,0 +1,45 @@
+<div>
+    <form name="user_register">
+        <input type="email" name="email" placeholder="User email" maxlength="60" ng-model="controller.user.email">
+        <input type="password" name="password" placeholder="User password" ng-model="controller.user.password">
+        <input type="text" name="token" placeholder="Payment token" maxlength="32" ng-model="controller.user.token">
+        <select name="payment"  ng-model="controller.user.payment">
+            <option value="sandbox">Just for test</option>
+            <option value="payment">Payment</option>
+            <option value="subscription">Subscription</option>
+        </select>
+        <button name="save" ng-click="controller.save()">Save</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Token
+                </th>
+                <th>
+                    Payment
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="user in controller.users">
+                <td ng-bind="user.email">
+                </td>
+                <td ng-bind="user.token">
+                </td>
+                <td ng-bind="user.payment">
+                </td>
+                <td>
+                    <button ng-click="controller.edit(user)">Edit</button>
+                    <button ng-click="controller.delete(user)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
