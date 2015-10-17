@@ -1,7 +1,7 @@
 "use strict";
-var mongoose = require("mongoose");
+import * as mongoose from "mongoose";
 ;
-exports.Address = mongoose.model("Address", new mongoose.Schema({
+export var Address = mongoose.model("Address", new mongoose.Schema({
     street: { type: "string", maxLength: 80 },
     number: { type: "string", maxLength: 20 },
     postalCode: { type: "string", match: /\^d{8}$/ },
@@ -12,17 +12,17 @@ exports.Address = mongoose.model("Address", new mongoose.Schema({
     district: { type: "string", maxLength: 60 }
 }));
 ;
-exports.Phone = mongoose.model("Phone", new mongoose.Schema({
+export var Phone = mongoose.model("Phone", new mongoose.Schema({
     areaCode: { type: "string", match: /^\d{2}$/ },
     number: { type: "string", match: /^\d{7,9}$/ }
 }));
 ;
-exports.Document = mongoose.model("Document", new mongoose.Schema({
+export var Document = mongoose.model("Document", new mongoose.Schema({
     type: { type: "string", enum: ["CPF"] },
     value: { type: "string", match: /^\d{11}$/ }
 }));
 ;
-exports.Sender = mongoose.model("Sender", new mongoose.Schema({
+export var Sender = mongoose.model("Sender", new mongoose.Schema({
     name: { type: "string", maxLength: 50 },
     email: { type: "string", lowercase: true, maxLength: 60 },
     phone: { type: mongoose.Schema.Types.ObjectId, ref: "Phone" },
@@ -31,7 +31,7 @@ exports.Sender = mongoose.model("Sender", new mongoose.Schema({
     address: { type: mongoose.Schema.Types.ObjectId, ref: "Address" }
 }));
 ;
-exports.Item = mongoose.model("Item", new mongoose.Schema({
+export var Item = mongoose.model("Item", new mongoose.Schema({
     id: { type: "string", required: true, maxLength: 100 },
     description: { type: "string", required: true, maxLength: 100 },
     amount: { type: "number", required: true, min: 0, max: 9999999 },
@@ -39,28 +39,24 @@ exports.Item = mongoose.model("Item", new mongoose.Schema({
     shippingCost: { type: "number", min: 0, max: 9999999 },
     weight: "number"
 }));
+export var EnumShipping;
 (function (EnumShipping) {
     EnumShipping[EnumShipping["pac"] = 1] = "pac";
     EnumShipping[EnumShipping["sedex"] = 2] = "sedex";
     EnumShipping[EnumShipping["nao_especificado"] = 3] = "nao_especificado";
-})(exports.EnumShipping || (exports.EnumShipping = {}));
-var EnumShipping = exports.EnumShipping;
+})(EnumShipping || (EnumShipping = {}));
 ;
 ;
-exports.Shipping = mongoose.model("Shipping", new mongoose.Schema({
+export var Shipping = mongoose.model("Shipping", new mongoose.Schema({
     type: { type: "number", enum: [1, 2, 3], default: 3 },
     cost: { type: "number", min: 0, max: 9999999 }
 }));
-var EnumCurrency = (function () {
-    function EnumCurrency() {
-    }
-    EnumCurrency.real = "BRL";
-    return EnumCurrency;
-})();
-exports.EnumCurrency = EnumCurrency;
+export class EnumCurrency {
+}
+EnumCurrency.real = "BRL";
 ;
 ;
-exports.Checkout = mongoose.model("Checkout", new mongoose.Schema({
+export var Checkout = mongoose.model("Checkout", new mongoose.Schema({
     receiver: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     currency: { type: "string", enum: ["BRL"], required: true },
     items: { type: mongoose.Schema.Types.ObjectId, ref: "Item" },

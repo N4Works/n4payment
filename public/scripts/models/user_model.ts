@@ -1,7 +1,7 @@
 "use strict";
 
 class UserModel {
-    _id: any;
+    _id: string;
     email: string;
     password: string;
     token: string;

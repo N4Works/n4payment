@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
-        "target": "es5",
-        "module": "commonjs",
+        "target": "es6",
         "moduleResolution": "node",
         "isolatedModules": false,
         "jsx": "react",
@@ -30,6 +29,7 @@
         "public/scripts/resources/user_resource.ts",
         "routes/pagseguro_route.ts",
         "routes/user_route.ts",
+        "services/pagseguro_builder.ts",
         "services/user_service.ts",
         "typings/angularjs/angular-resource.d.ts",
         "typings/angularjs/angular-route.d.ts",
