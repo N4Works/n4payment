@@ -9,3 +9,5 @@
 /// <reference path="bluebird/bluebird.d.ts" />
 /// <reference path="angularjs/angular-route.d.ts" />
 /// <reference path="angularjs/angular-resource.d.ts" />
+/// <reference path="form-data/form-data.d.ts" />
+/// <reference path="request/request.d.ts" />

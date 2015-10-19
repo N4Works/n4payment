@@ -68,13 +68,35 @@ export var Router = (server: express.Router) => {
                             .andCost(10)
                             .buildAndReturn()
                         .send()
-                        .then(xml => next(xml))
+                        .then(response => next(response))
                         .catch(error => next(error));
                 })
                 .catch(error => next(error));
         })
         .post(bodyParser.json({}),
         (request: express.Request, response: express.Response) => {
+        });
+
+    router
+        .route("/notification")
+        .get(bodyParser.json({}),
+        (request: express.Request, response: express.Response, next: Function) => {
+            console.log("#########################################################");
+            console.log(request.query);
+            console.log(request.body);
+            console.log("#########################################################");
+            next();
+        });
+
+    router
+        .route("/redirect")
+        .get(bodyParser.json({}),
+        (request: express.Request, response: express.Response, next: Function) => {
+            console.log("**********************************************************");
+            console.log(request.query);
+            console.log(request.body);
+            console.log("**********************************************************");
+            next();
         });
 
     router
