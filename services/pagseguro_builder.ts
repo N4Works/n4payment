@@ -1,31 +1,14 @@
 "use strict";
 
-import * as userModel from "../models/user_model";
-import * as pagseguroModel from "../models/pagseguro_model";
+import {IUser} from "../models/user_model";
+import {ISender} from "../models/pagseguro_model";
+import {ICheckout} from "../models/pagseguro_model";
+import {Checkout} from "../models/pagseguro_model";
+import {IParentSenderBuilder} from "./sender_builder";
+import {ISenderBuilder} from "./sender_builder";
+import {SenderBuilder} from "./sender_builder";
+var jsontoxml = require("jsontoxml");
 
-class SenderBuilder<T> {
-    constructor(private builder: T, private sender: pagseguroModel.ISender) {
-    }
-
-    withPhone(phone: pagseguroModel.IPhone):SenderBuilder<T> {
-        this.sender.phone = phone;
-        return this;
-    }
-
-    withAddress(address: pagseguroModel.IAddress):SenderBuilder<T> {
-        this.sender.address = address;
-        return this;
-    }
-
-    withDocument(document: pagseguroModel.IDocument):SenderBuilder<T> {
-        this.sender.documents.push(document);
-        return this;
-    }
-
-    return():T {
-        return this.builder;
-    }
-}
 
 /**
  * Enumerador para o ambiente/tipo de requisição que será realizada no PagSeguro.
@@ -43,31 +26,32 @@ enum EnumPayment {
     subscription
 }
 
-class PaymentBuilder {
-    checkout: pagseguroModel.ICheckout;
-    constructor(private pagSeguroBuilder: PagSeguroBuilder, private user:userModel.IUser) {
-        this.checkout = new pagseguroModel.Checkout();
+export interface IPaymentBuilder {
+    to(sender?:ISender):ISenderBuilder;
+    send():Promise<string>;
+}
+
+class PaymentBuilder implements IPaymentBuilder {
+    checkout: ICheckout;
+    constructor(private pagSeguroBuilder: PagSeguroBuilder, private user:IUser) {
+        this.checkout = new Checkout();
         this.checkout.receiver = user;
     }
 
-    to(sender: pagseguroModel.ISender) {
-        this.checkout.sender = sender;
-        return new SenderBuilder<PaymentBuilder>(this, sender);
+    to(sender?:ISender):ISenderBuilder {
+        if (!!sender) {
+            this.checkout.sender = sender;
+        }
+        return new SenderBuilder(this);
     }
 
-    return():PagSeguroBuilder {
-        return this.pagSeguroBuilder;
-    }
-
-    send():Promise<void> {
-        return new Promise<void>((resolve: Function, reject: Function) => {
-            return;
-        });
+    send():Promise<string> {
+        return this.pagSeguroBuilder.send<ICheckout>(this.checkout);
     }
 }
 
 class SubscriptionBuilder {
-    constructor(private pagSeguroBuilder: PagSeguroBuilder, private user: userModel.IUser) {
+    constructor(private pagSeguroBuilder: PagSeguroBuilder, private user: IUser) {
     }
 
     return():PagSeguroBuilder {
@@ -76,21 +60,33 @@ class SubscriptionBuilder {
 }
 
 export class PagSeguroBuilder {
-    payment:EnumPayment;
-    url:string = EnumURLPagSeguro.development;
+    private url:string = EnumURLPagSeguro.development;
     constructor() {
         this.url = process.env.NODE_ENV === "production" ? EnumURLPagSeguro.production : EnumURLPagSeguro.development;
     }
 
-    static createPaymentFor(user:userModel.IUser):PaymentBuilder {
-        let builder: PagSeguroBuilder = new PagSeguroBuilder();
-        builder.payment = EnumPayment.payment;
+    static createPaymentFor(user:IUser):PaymentBuilder {
+        var builder: PagSeguroBuilder = new PagSeguroBuilder();
         return new PaymentBuilder(builder, user);
     }
 
-    static createSubscriptionFor(user:userModel.IUser):SubscriptionBuilder {
-        let builder: PagSeguroBuilder = new PagSeguroBuilder();
-        builder.payment = EnumPayment.subscription;
+    static createSubscriptionFor(user:IUser):SubscriptionBuilder {
+        var builder: PagSeguroBuilder = new PagSeguroBuilder();
         return new SubscriptionBuilder(builder, user);
+    }
+
+    send<T>(checkout:T):Promise<string> {
+        var self = this;
+        return new Promise<string>((resolve: Function, reject: Function) => {
+            var options = {
+                xmlHeader: {
+                    standalone: true
+                },
+                prettyPrint: true
+            };
+
+            var xml = jsontoxml(checkout, options);
+            resolve(xml);
+        });
     }
 }

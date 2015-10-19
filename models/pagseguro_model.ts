@@ -8,17 +8,16 @@ Informações do comprador
 ================================================================================*/
 
 /**
- * Interface para o endereço referente ao frete ou comprador.
- *
- * street: Logradouro do endereço.
+ * @description Interface para o endereço referente ao frete ou comprador.
+ * @param street string: Logradouro do endereço.
  *         Até 80 carácteres.
- * number: Número do endereço.
+ * @param number: Número do endereço.
  *         Até 20 carácteres.
- * postalCode: Código postal do endereço.
+ * @param postalCode: Código postal do endereço.
  *             8 carácteres.
- * city: Cidade do endereço.
+ * @param city: Cidade do endereço.
  *       De 2 à 60 carácteres.
- * state: Estado do endereço.
+ * @param state: Estado do endereço.
  *        Até dois carácteres.
  *        Uppercase.
  * country: País do endereço.
