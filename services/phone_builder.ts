@@ -1,7 +1,7 @@
 "use strict";
 
-import {IPhone} from "../models/pagseguro_model";
-import {Phone} from "../models/pagseguro_model";
+import {IPhone} from "../models/phone_model";
+import {Phone} from "../models/phone_model";
 import {ISenderBuilder} from "./sender_builder";
 
 export interface IPhoneBuilder {

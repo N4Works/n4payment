@@ -1,8 +1,8 @@
 "use strict";
 
-import {IAddress} from "../models/pagseguro_model";
-import {Address} from "../models/pagseguro_model";
-import {ISenderBuilder} from "./sender_builder";
+import {IAddress} from "../models/address_model";
+import {Address} from "../models/address_model";
+import {IShippingBuilder} from "./shipping_builder";
 
 export interface IAddressBuilder {
     atStreet(street:string):IAddressBuilder;
@@ -14,13 +14,13 @@ export interface IAddressBuilder {
     inCountry(city:string):IAddressBuilder;
     withComplement(complement:string):IAddressBuilder;
     build():IAddress;
-    buildAndReturn():ISenderBuilder;
-    return():ISenderBuilder;
+    buildAndReturn():IShippingBuilder;
+    return():IShippingBuilder;
 }
 
 export class AddressBuilder implements IAddressBuilder {
     private address: IAddress;
-    constructor(private senderBuilder: ISenderBuilder) {
+    constructor(private builder: IShippingBuilder) {
         this.address = new Address();
     }
 
@@ -68,12 +68,12 @@ export class AddressBuilder implements IAddressBuilder {
         return this.address;
     }
 
-    buildAndReturn():ISenderBuilder {
-        this.senderBuilder.withAddress(this.address);
-        return this.senderBuilder;
+    buildAndReturn():IShippingBuilder {
+        this.builder.withAddress(this.address);
+        return this.builder;
     }
 
-    return():ISenderBuilder {
-        return this.senderBuilder;
+    return():IShippingBuilder {
+        return this.builder;
     }
 }

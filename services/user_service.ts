@@ -3,7 +3,6 @@
 import {IUser} from "../models/user_model";
 import {MUser} from "../models/user_model";
 import {User as TUser} from "../models/user_model";
-import * as bluebird from "bluebird";
 
 export interface IUserService {
     find(filtro: any): Promise<Array<IUser>>;

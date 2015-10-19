@@ -1,14 +1,11 @@
 "use strict";
 
-import {ISender} from "../models/pagseguro_model";
-import {Sender} from "../models/pagseguro_model";
-import {IPhone} from "../models/pagseguro_model";
+import {ISender} from "../models/sender_model";
+import {Sender} from "../models/sender_model";
+import {IPhone} from "../models/phone_model";
 import {IPhoneBuilder} from "./phone_builder";
 import {PhoneBuilder} from "./phone_builder";
-import {IAddress} from "../models/pagseguro_model";
-import {IAddressBuilder} from "./address_builder";
-import {AddressBuilder} from "./address_builder";
-import {IDocument} from "../models/pagseguro_model";
+import {IDocument} from "../models/document_model";
 import {IDocumentBuilder} from "./document_builder";
 import {DocumentBuilder} from "./document_builder";
 import {IPaymentBuilder} from "./pagseguro_builder";
@@ -21,8 +18,8 @@ export interface ISenderBuilder {
     withName(name:string):ISenderBuilder;
     withEmail(email:string):ISenderBuilder;
     withPhone(phone?:IPhone):IPhoneBuilder;
-    withAddress(address?:IAddress):IAddressBuilder;
     withDocument(document?:IDocument):IDocumentBuilder;
+    bornIn(bornDate:Date):ISenderBuilder;
     build():ISender;
     buildAndReturn():IPaymentBuilder;
     return():IPaymentBuilder;
@@ -51,18 +48,16 @@ export class SenderBuilder {
         return new PhoneBuilder(this);
     }
 
-    withAddress(address?: IAddress):IAddressBuilder {
-        if (address) {
-            this.sender.address = address;
-        }
-        return new AddressBuilder(this);
-    }
-
     withDocument(document?: IDocument):IDocumentBuilder {
         if (!!document) {
             this.sender.documents.push(document);
         }
         return new DocumentBuilder(this);
+    }
+
+    bornIn(bornDate:Date):ISenderBuilder {
+        this.sender.bornDate = bornDate;
+        return this;
     }
 
     build():ISender {

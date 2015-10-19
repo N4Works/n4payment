@@ -1,7 +1,7 @@
 "use strict";
 
-import {IDocument} from "../models/pagseguro_model";
-import {Document} from "../models/pagseguro_model";
+import {IDocument} from "../models/document_model";
+import {Document} from "../models/document_model";
 import {ISenderBuilder} from "./sender_builder";
 
 export interface IDocumentBuilder {
