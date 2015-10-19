@@ -3,7 +3,7 @@ var checkout_model_1 = require("../models/checkout_model");
 var sender_builder_1 = require("./sender_builder");
 var item_builder_1 = require("./item_builder");
 var shipping_builder_1 = require("./shipping_builder");
-var RequestAPI = require("request");
+var request = require("request");
 var jsontoxml = require("jsontoxml");
 var EnumURLPagSeguro = (function () {
     function EnumURLPagSeguro() {
@@ -165,7 +165,7 @@ var PagSeguroBuilder = (function () {
                 uri: self.url + "?email={self.checkout.user.email}&token={self.checkout.user.token}",
                 body: xml
             };
-            RequestAPI.request(requestOptions, function (error, response, body) {
+            request(requestOptions, function (error, response, body) {
                 console.log(error);
                 console.log(response);
                 resolve(body);

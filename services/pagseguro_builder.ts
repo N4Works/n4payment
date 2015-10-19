@@ -15,7 +15,7 @@ import {ItemBuilder} from "./item_builder";
 import {IShipping} from "../models/shipping_model";
 import {IShippingBuilder} from "./shipping_builder";
 import {ShippingBuilder} from "./shipping_builder";
-import * as RequestAPI from "request";
+import * as request from "request";
 var jsontoxml = require("jsontoxml");
 
 
@@ -205,12 +205,12 @@ export class PagSeguroBuilder {
                 }
             }, options);
 
-            var requestOptions: RequestAPI.Options = {
+            var requestOptions: request.Options = {
                 uri: self.url + `?email={self.checkout.user.email}&token={self.checkout.user.token}`,
                 body: xml
             };
 
-            RequestAPI.request(requestOptions, (error:any, response: any, body: any) => {
+            request(requestOptions, (error:any, response: any, body: any) => {
                 console.log(error);
                 console.log(response);
                 resolve(body);
