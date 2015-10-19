@@ -5,6 +5,7 @@ import * as bodyParser from "body-parser";
 import {IUserService} from "../services/user_service";
 import {UserService} from "../services/user_service";
 import {EnumShipping} from "../models/shipping_model";
+import {ICheckoutResponse} from "../models/checkout_model";
 import {IUser} from "../models/user_model";
 import {PagSeguroBuilder as Builder} from "../services/pagseguro_builder";
 
@@ -68,7 +69,9 @@ export var Router = (server: express.Router) => {
                             .andCost(10)
                             .buildAndReturn()
                         .send()
-                        .then(response => next(response))
+                        .then((checkoutResponse:ICheckoutResponse) => {
+                            return response.redirect(`https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code=${checkoutResponse.code}`);
+                        })
                         .catch(error => next(error));
                 })
                 .catch(error => next(error));
@@ -79,6 +82,14 @@ export var Router = (server: express.Router) => {
 
     router
         .route("/notification")
+        .post(bodyParser.json({}),
+        (request: express.Request, response: express.Response, next: Function) => {
+            console.log("#########################################################");
+            console.log(request.query);
+            console.log(request.body);
+            console.log("#########################################################");
+            next();
+        })
         .get(bodyParser.json({}),
         (request: express.Request, response: express.Response, next: Function) => {
             console.log("#########################################################");
@@ -90,6 +101,14 @@ export var Router = (server: express.Router) => {
 
     router
         .route("/redirect")
+        .post(bodyParser.json({}),
+        (request: express.Request, response: express.Response, next: Function) => {
+            console.log("**********************************************************");
+            console.log(request.query);
+            console.log(request.body);
+            console.log("**********************************************************");
+            next();
+        })
         .get(bodyParser.json({}),
         (request: express.Request, response: express.Response, next: Function) => {
             console.log("**********************************************************");

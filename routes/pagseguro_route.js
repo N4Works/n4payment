@@ -63,7 +63,9 @@ exports.Router = function (server) {
                 .andCost(10)
                 .buildAndReturn()
                 .send()
-                .then(function (response) { return next(response); })
+                .then(function (checkoutResponse) {
+                return response.redirect("https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code=" + checkoutResponse.code);
+            })
                 .catch(function (error) { return next(error); });
         })
             .catch(function (error) { return next(error); });
@@ -72,6 +74,13 @@ exports.Router = function (server) {
     });
     router
         .route("/notification")
+        .post(bodyParser.json({}), function (request, response, next) {
+        console.log("#########################################################");
+        console.log(request.query);
+        console.log(request.body);
+        console.log("#########################################################");
+        next();
+    })
         .get(bodyParser.json({}), function (request, response, next) {
         console.log("#########################################################");
         console.log(request.query);
@@ -81,6 +90,13 @@ exports.Router = function (server) {
     });
     router
         .route("/redirect")
+        .post(bodyParser.json({}), function (request, response, next) {
+        console.log("**********************************************************");
+        console.log(request.query);
+        console.log(request.body);
+        console.log("**********************************************************");
+        next();
+    })
         .get(bodyParser.json({}), function (request, response, next) {
         console.log("**********************************************************");
         console.log(request.query);

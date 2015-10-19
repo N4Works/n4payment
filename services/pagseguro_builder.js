@@ -5,6 +5,7 @@ var item_builder_1 = require("./item_builder");
 var shipping_builder_1 = require("./shipping_builder");
 var request = require("request");
 var jsontoxml = require("jsontoxml");
+var xml2json = require("xml2json");
 var EnumURLPagSeguro = (function () {
     function EnumURLPagSeguro() {
     }
@@ -169,10 +170,11 @@ var PagSeguroBuilder = (function () {
                 body: xml
             };
             request(requestOptions, function (error, response, body) {
-                console.log(error);
-                console.log(response);
-                resolve(body);
-                return;
+                if (!!error) {
+                    return reject(error);
+                }
+                var checkout = JSON.parse(xml2json.toJson(body)).checkout;
+                return resolve(checkout);
             });
         });
     };

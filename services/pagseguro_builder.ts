@@ -17,6 +17,7 @@ import {IShippingBuilder} from "./shipping_builder";
 import {ShippingBuilder} from "./shipping_builder";
 import * as request from "request";
 var jsontoxml = require("jsontoxml");
+var xml2json = require("xml2json");
 
 
 /**
@@ -46,7 +47,7 @@ export interface IPaymentBuilder {
     withNotificationURL(notificationURL: string): IPaymentBuilder;
     withMaxUses(maxUses: number): IPaymentBuilder;
     withMaxAge(maxAge: number): IPaymentBuilder;
-    send(): Promise<string>;
+    send(): Promise<ICheckoutResponse>;
 }
 
 class PaymentBuilder implements IPaymentBuilder {
@@ -112,7 +113,7 @@ class PaymentBuilder implements IPaymentBuilder {
         return this;
     }
 
-    send(): Promise<string> {
+    send(): Promise<ICheckoutResponse> {
         return this.pagSeguroBuilder.send(this.checkout);
     }
 }
@@ -215,10 +216,11 @@ export class PagSeguroBuilder {
             };
 
             request(requestOptions, (error: any, response: any, body: any) => {
-                console.log(error);
-                console.log(response);
-                resolve(body);
-                return;
+                if (!!error) {
+                    return reject(error);
+                }
+                var checkout:ICheckoutResponse = JSON.parse(xml2json.toJson(body)).checkout;
+                return resolve(checkout);
             });
         });
     }
