@@ -128,17 +128,17 @@ class SubscriptionBuilder {
 
 export class PagSeguroBuilder {
     private url: string = EnumURLPagSeguro.development;
-    constructor(private user: IUser) {
+    constructor() {
         this.url = process.env.NODE_ENV === "production" ? EnumURLPagSeguro.production : EnumURLPagSeguro.development;
     }
 
     static createPaymentFor(user: IUser): PaymentBuilder {
-        var builder: PagSeguroBuilder = new PagSeguroBuilder(user);
+        var builder: PagSeguroBuilder = new PagSeguroBuilder();
         return new PaymentBuilder(builder, user);
     }
 
     static createSubscriptionFor(user: IUser): SubscriptionBuilder {
-        var builder: PagSeguroBuilder = new PagSeguroBuilder(user);
+        var builder: PagSeguroBuilder = new PagSeguroBuilder();
         return new SubscriptionBuilder(builder, user);
     }
 
@@ -206,11 +206,15 @@ export class PagSeguroBuilder {
             }, options);
 
             var requestOptions: request.Options = {
-                uri: self.url + `?email={self.checkout.user.email}&token={self.checkout.user.token}`,
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/xml; charset=UTF-8"
+                },
+                uri: self.url + `?email=${checkout.receiver.email}&token=${checkout.receiver.token}`,
                 body: xml
             };
 
-            request(requestOptions, (error:any, response: any, body: any) => {
+            request(requestOptions, (error: any, response: any, body: any) => {
                 console.log(error);
                 console.log(response);
                 resolve(body);

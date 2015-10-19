@@ -86,17 +86,16 @@ var SubscriptionBuilder = (function () {
     return SubscriptionBuilder;
 })();
 var PagSeguroBuilder = (function () {
-    function PagSeguroBuilder(user) {
-        this.user = user;
+    function PagSeguroBuilder() {
         this.url = EnumURLPagSeguro.development;
         this.url = process.env.NODE_ENV === "production" ? EnumURLPagSeguro.production : EnumURLPagSeguro.development;
     }
     PagSeguroBuilder.createPaymentFor = function (user) {
-        var builder = new PagSeguroBuilder(user);
+        var builder = new PagSeguroBuilder();
         return new PaymentBuilder(builder, user);
     };
     PagSeguroBuilder.createSubscriptionFor = function (user) {
-        var builder = new PagSeguroBuilder(user);
+        var builder = new PagSeguroBuilder();
         return new SubscriptionBuilder(builder, user);
     };
     PagSeguroBuilder.prototype.send = function (checkout) {
@@ -162,7 +161,11 @@ var PagSeguroBuilder = (function () {
                 }
             }, options);
             var requestOptions = {
-                uri: self.url + "?email={self.checkout.user.email}&token={self.checkout.user.token}",
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/xml; charset=UTF-8"
+                },
+                uri: self.url + ("?email=" + checkout.receiver.email + "&token=" + checkout.receiver.token),
                 body: xml
             };
             request(requestOptions, function (error, response, body) {

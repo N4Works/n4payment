@@ -10,7 +10,7 @@ exports.Router = function (server) {
         .route("/")
         .get(bodyParser.json({}), function (request, response, next) {
         var service = new user_service_1.UserService();
-        service.find({ name: "atelie@elenaqueiroz.com.br" })
+        service.find(null)
             .then(function (users) {
             pagseguro_builder_1.PagSeguroBuilder.createPaymentFor(users[0])
                 .inCurrency("BRL")
@@ -20,7 +20,7 @@ exports.Router = function (server) {
                 .withRedirectURL("http://162.243.133.24/api/pagseguro/redirect")
                 .withNotificationURL("http://162.243.133.24/api/pagseguro/notification")
                 .to()
-                .withName("Teste")
+                .withName("Tiago de Carvalho Resende")
                 .withEmail("c68643050873498480057@sandbox.pagseguro.com.br")
                 .bornIn(new Date(1987, 6, 20))
                 .withPhone()

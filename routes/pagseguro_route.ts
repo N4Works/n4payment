@@ -15,7 +15,7 @@ export var Router = (server: express.Router) => {
         .get(bodyParser.json({}),
         (request: express.Request, response: express.Response, next: Function) => {
             var service:IUserService = new UserService();
-            service.find({name: "atelie@elenaqueiroz.com.br"})
+            service.find(null)
                 .then((users:Array<IUser>) => {
                     Builder.createPaymentFor(users[0])
                         .inCurrency("BRL")
@@ -25,7 +25,7 @@ export var Router = (server: express.Router) => {
                         .withRedirectURL("http://162.243.133.24/api/pagseguro/redirect")
                         .withNotificationURL("http://162.243.133.24/api/pagseguro/notification")
                         .to()
-                            .withName("Teste")
+                            .withName("Tiago de Carvalho Resende")
                             .withEmail("c68643050873498480057@sandbox.pagseguro.com.br")
                             .bornIn(new Date(1987,6,20))
                             .withPhone()
