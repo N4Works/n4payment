@@ -24,7 +24,7 @@ export var Router = (server: express.Router) => {
                         .withMaxUses(999)
                         .withMaxAge(999999999)
                         .withRedirectURL("http://localhost:3000/api/pagseguro/redirect")
-                        .withNotificationURL("http://localhost:3000/api/pagseguro/notification")
+                        .withNotificationURL("http://162.243.133.24/api/pagseguro/notification")
                         .to()
                             .withName("Tiago de Carvalho Resende")
                             .withEmail("c68643050873498480057@sandbox.pagseguro.com.br")
