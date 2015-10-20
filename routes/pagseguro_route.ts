@@ -87,7 +87,7 @@ export var Router = (server: express.Router) => {
         .route("/notification")
         .post(cors({
             origin: "*"
-        }), bodyParser.text(), xmlparser(), bodyParser.json({}),
+        }), bodyParser.urlencoded({extended:true}), xmlparser(),
         (request: express.Request, response: express.Response, next: Function) => {
             console.log("#########################################################");
             console.log(request.query);

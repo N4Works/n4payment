@@ -79,7 +79,7 @@ exports.Router = function (server) {
         .route("/notification")
         .post(cors({
         origin: "*"
-    }), bodyParser.text(), xmlparser(), bodyParser.json({}), function (request, response, next) {
+    }), bodyParser.urlencoded({ extended: true }), xmlparser(), function (request, response, next) {
         console.log("#########################################################");
         console.log(request.query);
         console.log(request.params);
