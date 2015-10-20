@@ -87,10 +87,12 @@ export var Router = (server: express.Router) => {
         .route("/notification")
         .post(cors({
             origin: "*"
-        }), xmlparser(),
+        }), bodyParser.text(), xmlparser(), bodyParser.json({}),
         (request: express.Request, response: express.Response, next: Function) => {
             console.log("#########################################################");
-            console.log(request);
+            console.log(request.query);
+            console.log(request.params);
+            console.log(request.body);
             console.log("#########################################################");
             response.status(200).end();
         });
