@@ -86,10 +86,9 @@ export var Router = (server: express.Router) => {
         .post(bodyParser.text(),
         (request: express.Request, response: express.Response, next: Function) => {
             console.log("#########################################################");
-            console.log(request.query);
-            console.log(request.body);
+            console.log(request);
             console.log("#########################################################");
-            next();
+            response.status(200).end();
         });
 
     router

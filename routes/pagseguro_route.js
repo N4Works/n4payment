@@ -77,10 +77,9 @@ exports.Router = function (server) {
         .route("/notification")
         .post(bodyParser.text(), function (request, response, next) {
         console.log("#########################################################");
-        console.log(request.query);
-        console.log(request.body);
+        console.log(request);
         console.log("#########################################################");
-        next();
+        response.status(200).end();
     });
     router
         .route("/redirect")
