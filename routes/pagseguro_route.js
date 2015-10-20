@@ -81,7 +81,7 @@ exports.Router = function (server) {
         origin: "*"
     }), xmlparser(), function (request, response, next) {
         console.log("#########################################################");
-        console.log(request.body);
+        console.log(request);
         console.log("#########################################################");
         response.status(200).end();
     });

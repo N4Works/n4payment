@@ -90,7 +90,7 @@ export var Router = (server: express.Router) => {
         }), xmlparser(),
         (request: express.Request, response: express.Response, next: Function) => {
             console.log("#########################################################");
-            console.log(request.body);
+            console.log(request);
             console.log("#########################################################");
             response.status(200).end();
         });
