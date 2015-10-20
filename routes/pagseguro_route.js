@@ -75,7 +75,7 @@ exports.Router = function (server) {
     });
     router
         .route("/notification")
-        .post(bodyParser.json({}), function (request, response, next) {
+        .post(bodyParser.text(), function (request, response, next) {
         console.log("#########################################################");
         console.log(request.query);
         console.log(request.body);

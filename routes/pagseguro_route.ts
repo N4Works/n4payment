@@ -83,7 +83,7 @@ export var Router = (server: express.Router) => {
 
     router
         .route("/notification")
-        .post(bodyParser.json({}),
+        .post(bodyParser.text(),
         (request: express.Request, response: express.Response, next: Function) => {
             console.log("#########################################################");
             console.log(request.query);
