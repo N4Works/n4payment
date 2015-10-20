@@ -78,13 +78,9 @@ exports.Router = function (server) {
     router
         .route("/notification")
         .post(cors({
-        origin: "*"
+        origin: "pagseguro.uol.com.br"
     }), bodyParser.urlencoded({ extended: true }), xmlparser(), function (request, response, next) {
-        console.log("#########################################################");
-        console.log(request.query);
-        console.log(request.params);
         console.log(request.body);
-        console.log("#########################################################");
         response.status(200).end();
     });
     router
