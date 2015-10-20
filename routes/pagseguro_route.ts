@@ -8,6 +8,7 @@ import {EnumShipping} from "../models/shipping_model";
 import {ICheckoutResponse} from "../models/checkout_model";
 import {IUser} from "../models/user_model";
 import {PagSeguroBuilder as Builder} from "../services/pagseguro_builder";
+import * as cors from "cors";
 var xmlparser = require("express-xml-bodyparser");
 
 export var Router = (server: express.Router) => {
@@ -84,7 +85,9 @@ export var Router = (server: express.Router) => {
 
     router
         .route("/notification")
-        .post(xmlparser(),
+        .post(cors({
+            origin: "*"
+        }), xmlparser(),
         (request: express.Request, response: express.Response, next: Function) => {
             console.log("#########################################################");
             console.log(request.body);

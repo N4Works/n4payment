@@ -6,16 +6,16 @@
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "express/express.d.ts": {
-      "commit": "af5b8275d1f2b92738b93fddabc461fc20c553a1"
+      "commit": "68548c2daab053869f323d475419c693478bbb73"
     },
     "node/node.d.ts": {
-      "commit": "af5b8275d1f2b92738b93fddabc461fc20c553a1"
+      "commit": "68548c2daab053869f323d475419c693478bbb73"
     },
     "serve-static/serve-static.d.ts": {
-      "commit": "af5b8275d1f2b92738b93fddabc461fc20c553a1"
+      "commit": "68548c2daab053869f323d475419c693478bbb73"
     },
     "mime/mime.d.ts": {
-      "commit": "af5b8275d1f2b92738b93fddabc461fc20c553a1"
+      "commit": "68548c2daab053869f323d475419c693478bbb73"
     },
     "body-parser/body-parser.d.ts": {
       "commit": "af5b8275d1f2b92738b93fddabc461fc20c553a1"
@@ -43,6 +43,9 @@
     },
     "form-data/form-data.d.ts": {
       "commit": "af5b8275d1f2b92738b93fddabc461fc20c553a1"
+    },
+    "cors/cors.d.ts": {
+      "commit": "68548c2daab053869f323d475419c693478bbb73"
     }
   }
 }

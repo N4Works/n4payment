@@ -4,6 +4,7 @@ var bodyParser = require("body-parser");
 var user_service_1 = require("../services/user_service");
 var shipping_model_1 = require("../models/shipping_model");
 var pagseguro_builder_1 = require("../services/pagseguro_builder");
+var cors = require("cors");
 var xmlparser = require("express-xml-bodyparser");
 exports.Router = function (server) {
     var router = express.Router(server);
@@ -76,7 +77,9 @@ exports.Router = function (server) {
     });
     router
         .route("/notification")
-        .post(xmlparser(), function (request, response, next) {
+        .post(cors({
+        origin: "*"
+    }), xmlparser(), function (request, response, next) {
         console.log("#########################################################");
         console.log(request.body);
         console.log("#########################################################");
