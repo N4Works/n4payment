@@ -23,14 +23,14 @@ export var Router = (server: express.Router) => {
                         .withReference("reference123")
                         .withMaxUses(999)
                         .withMaxAge(999999999)
-                        .withRedirectURL("http://162.243.133.24/api/pagseguro/redirect")
-                        .withNotificationURL("http://162.243.133.24/api/pagseguro/notification")
+                        .withRedirectURL("http://localhost:3000/api/pagseguro/redirect")
+                        .withNotificationURL("http://localhost:3000/api/pagseguro/notification")
                         .to()
                             .withName("Tiago de Carvalho Resende")
                             .withEmail("c68643050873498480057@sandbox.pagseguro.com.br")
                             .bornIn(new Date(1987,6,20))
                             .withPhone()
-                                .withAreaCode(21)
+                                .withAreaCode("21")
                                 .withNumber("985255667")
                                 .buildAndReturn()
                             .withDocument()
@@ -69,8 +69,8 @@ export var Router = (server: express.Router) => {
                             .andCost(10)
                             .buildAndReturn()
                         .send()
-                        .then((checkoutResponse:ICheckoutResponse) => {
-                            return response.redirect(`https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code=${checkoutResponse.code}`);
+                        .then((redirectURL:string) => {
+                            return response.redirect(redirectURL);
                         })
                         .catch(error => next(error));
                 })
@@ -78,6 +78,7 @@ export var Router = (server: express.Router) => {
         })
         .post(bodyParser.json({}),
         (request: express.Request, response: express.Response) => {
+            response.end();
         });
 
     router
@@ -89,47 +90,27 @@ export var Router = (server: express.Router) => {
             console.log(request.body);
             console.log("#########################################################");
             next();
-        })
-        .get(bodyParser.json({}),
-        (request: express.Request, response: express.Response, next: Function) => {
-            console.log("#########################################################");
-            console.log(request.query);
-            console.log(request.body);
-            console.log("#########################################################");
-            next();
         });
 
     router
         .route("/redirect")
-        .post(bodyParser.json({}),
-        (request: express.Request, response: express.Response, next: Function) => {
-            console.log("**********************************************************");
-            console.log(request.query);
-            console.log(request.body);
-            console.log("**********************************************************");
-            next();
-        })
         .get(bodyParser.json({}),
         (request: express.Request, response: express.Response, next: Function) => {
-            console.log("**********************************************************");
-            console.log(request.query);
-            console.log(request.body);
-            console.log("**********************************************************");
-            next();
+            response.json(request.query);
         });
 
     router
         .route("/:id")
         .get(bodyParser.json({}),
         (request: express.Request, response: express.Response) => {
-
+            response.end();
         })
         .put(bodyParser.json({}),
         (request: express.Request, response: express.Response) => {
-
+            response.end();
         })
         .delete((request: express.Request, response: express.Response) => {
-
+            response.end();
         });
 
     return router;

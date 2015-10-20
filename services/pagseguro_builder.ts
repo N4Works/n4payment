@@ -15,8 +15,9 @@ import {ItemBuilder} from "./item_builder";
 import {IShipping} from "../models/shipping_model";
 import {IShippingBuilder} from "./shipping_builder";
 import {ShippingBuilder} from "./shipping_builder";
+import {ICheckoutService} from "./checkout_service";
+import {CheckoutService} from "./checkout_service";
 import * as request from "request";
-var jsontoxml = require("jsontoxml");
 var xml2json = require("xml2json");
 
 
@@ -47,7 +48,7 @@ export interface IPaymentBuilder {
     withNotificationURL(notificationURL: string): IPaymentBuilder;
     withMaxUses(maxUses: number): IPaymentBuilder;
     withMaxAge(maxAge: number): IPaymentBuilder;
-    send(): Promise<ICheckoutResponse>;
+    send(): Promise<string>;
 }
 
 class PaymentBuilder implements IPaymentBuilder {
@@ -113,7 +114,7 @@ class PaymentBuilder implements IPaymentBuilder {
         return this;
     }
 
-    send(): Promise<ICheckoutResponse> {
+    send(): Promise<string> {
         return this.pagSeguroBuilder.send(this.checkout);
     }
 }
@@ -128,7 +129,7 @@ class SubscriptionBuilder {
 }
 
 export class PagSeguroBuilder {
-    private url: string = EnumURLPagSeguro.development;
+    private url: string;
     constructor() {
         this.url = process.env.NODE_ENV === "production" ? EnumURLPagSeguro.production : EnumURLPagSeguro.development;
     }
@@ -146,81 +147,30 @@ export class PagSeguroBuilder {
     send(checkout: ICheckout): Promise<string> {
         var self = this;
         return new Promise<string>((resolve: Function, reject: Function) => {
-            var options = {
-                xmlHeader: {
-                    standalone: true
-                },
-                prettyPrint: true
-            };
-            var xml = jsontoxml({
-                checkout: {
-                    currency: checkout.currency,
-                    reference: checkout.reference,
-                    redirectURL: checkout.redirectURL,
-                    notificationURL: checkout.notificationURL,
-                    maxUses: checkout.maxUses,
-                    maxAge: checkout.maxAge,
-                    sender: {
-                        name: checkout.sender.name,
-                        email: checkout.sender.email,
-                        bornDate: checkout.sender.bornDate.toISOString().replace(/^(\d{4})-(\d{2})-(\d{2}).*$/, "$3/$2/$1"),
-                        phone: {
-                            areaCode: checkout.sender.phone.areaCode,
-                            number: checkout.sender.phone.number
+            var checkoutService: ICheckoutService = new CheckoutService();
+            checkoutService.insert(checkout)
+                .then((c: ICheckout) => {
+                    return checkoutService.getXML(c);
+                })
+                .then((xml: string) => {
+                    console.log(xml);
+                    
+                    var requestOptions: request.Options = {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/xml; charset=UTF-8"
                         },
-                        documents: checkout.sender.documents.map((d: IDocument) => {
-                            return {
-                                document: {
-                                    type: d.type,
-                                    value: d.value
-                                }
-                            };
-                        })
-                    },
-                    items: checkout.items.map((i: IItem) => {
-                        return {
-                            item: {
-                                id: i.id,
-                                description: i.description,
-                                amount: i.amount.toFixed(2),
-                                quantity: i.quantity.toFixed(0),
-                                shippingCost: i.shippingCost.toFixed(2),
-                                weight: i.weight.toFixed(0)
-                            }
-                        };
-                    }),
-                    shipping: {
-                        type: checkout.shipping.type,
-                        cost: checkout.shipping.cost.toFixed(2),
-                        address: {
-                            street: checkout.shipping.address.street,
-                            number: checkout.shipping.address.number,
-                            postalCode: checkout.shipping.address.postalCode,
-                            city: checkout.shipping.address.city,
-                            state: checkout.shipping.address.state,
-                            country: checkout.shipping.address.country,
-                            complement: checkout.shipping.address.complement,
-                            district: checkout.shipping.address.district
+                        uri: self.url + `?email=${checkout.receiver.email}&token=${checkout.receiver.token}`,
+                        body: xml
+                    };
+
+                    request(requestOptions, (error: any, response: any, body: any) => {
+                        if (!!error) {
+                            return reject(error);
                         }
-                    }
-                }
-            }, options);
-
-            var requestOptions: request.Options = {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/xml; charset=UTF-8"
-                },
-                uri: self.url + `?email=${checkout.receiver.email}&token=${checkout.receiver.token}`,
-                body: xml
-            };
-
-            request(requestOptions, (error: any, response: any, body: any) => {
-                if (!!error) {
-                    return reject(error);
-                }
-                var checkout:ICheckoutResponse = JSON.parse(xml2json.toJson(body)).checkout;
-                return resolve(checkout);
+                        var checkout: ICheckoutResponse = JSON.parse(xml2json.toJson(body)).checkout;
+                        return resolve(self.url.replace(/ws\./gi, "") + `/payment.html?code=${checkout.code}`);
+                    });
             });
         });
     }

@@ -4,6 +4,7 @@ import * as mongoose from "mongoose";
 import {IDocument} from "./document_model";
 import {DocumentSchema} from "./document_model";
 import {IPhone} from "./phone_model";
+import {PhoneSchema} from "./phone_model";
 
 /**
  * @interface
@@ -46,7 +47,9 @@ export var Sender:MSender = mongoose.model<ISender>("Sender",
     new mongoose.Schema({
         name: { type: "string", maxLength: 50 },
         email: { type: "string", lowercase: true, maxLength: 60 },
-        phone: { type: mongoose.Schema.Types.ObjectId, ref: "Phone" },
-        documents: [DocumentSchema],
+        phone: PhoneSchema,
+        documents: [
+            DocumentSchema
+        ],
         bornDate: { type: "Date" }
     }));

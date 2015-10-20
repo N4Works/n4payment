@@ -3,6 +3,7 @@
 import * as express from "express";
 import * as mongoose from "mongoose";
 import {Router as UserRouter} from "./routes/user_route";
+import {Router as SenderRouter} from "./routes/sender_route";
 import {Router as PagSeguroRouter} from "./routes/pagseguro_route";
 
 mongoose.connect("mongodb://localhost/n4-payment", function (error) {
@@ -13,6 +14,7 @@ mongoose.connect("mongodb://localhost/n4-payment", function (error) {
 
 var application: express.Application = express();
 application.use("/api/users", UserRouter(application));
+application.use("/api/senders", SenderRouter(application));
 application.use("/api/pagseguro", PagSeguroRouter(application));
 
 application.use("/", express.static("./public"));

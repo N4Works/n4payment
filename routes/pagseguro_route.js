@@ -17,14 +17,14 @@ exports.Router = function (server) {
                 .withReference("reference123")
                 .withMaxUses(999)
                 .withMaxAge(999999999)
-                .withRedirectURL("http://162.243.133.24/api/pagseguro/redirect")
-                .withNotificationURL("http://162.243.133.24/api/pagseguro/notification")
+                .withRedirectURL("http://localhost:3000/api/pagseguro/redirect")
+                .withNotificationURL("http://localhost:3000/api/pagseguro/notification")
                 .to()
                 .withName("Tiago de Carvalho Resende")
                 .withEmail("c68643050873498480057@sandbox.pagseguro.com.br")
                 .bornIn(new Date(1987, 6, 20))
                 .withPhone()
-                .withAreaCode(21)
+                .withAreaCode("21")
                 .withNumber("985255667")
                 .buildAndReturn()
                 .withDocument()
@@ -63,14 +63,15 @@ exports.Router = function (server) {
                 .andCost(10)
                 .buildAndReturn()
                 .send()
-                .then(function (checkoutResponse) {
-                return response.redirect("https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code=" + checkoutResponse.code);
+                .then(function (redirectURL) {
+                return response.redirect(redirectURL);
             })
                 .catch(function (error) { return next(error); });
         })
             .catch(function (error) { return next(error); });
     })
         .post(bodyParser.json({}), function (request, response) {
+        response.end();
     });
     router
         .route("/notification")
@@ -80,37 +81,22 @@ exports.Router = function (server) {
         console.log(request.body);
         console.log("#########################################################");
         next();
-    })
-        .get(bodyParser.json({}), function (request, response, next) {
-        console.log("#########################################################");
-        console.log(request.query);
-        console.log(request.body);
-        console.log("#########################################################");
-        next();
     });
     router
         .route("/redirect")
-        .post(bodyParser.json({}), function (request, response, next) {
-        console.log("**********************************************************");
-        console.log(request.query);
-        console.log(request.body);
-        console.log("**********************************************************");
-        next();
-    })
         .get(bodyParser.json({}), function (request, response, next) {
-        console.log("**********************************************************");
-        console.log(request.query);
-        console.log(request.body);
-        console.log("**********************************************************");
-        next();
+        response.json(request.query);
     });
     router
         .route("/:id")
         .get(bodyParser.json({}), function (request, response) {
+        response.end();
     })
         .put(bodyParser.json({}), function (request, response) {
+        response.end();
     })
         .delete(function (request, response) {
+        response.end();
     });
     return router;
 };

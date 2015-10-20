@@ -1,0 +1,64 @@
+<div>
+    <form name="user_register">
+        <input type="text" name="name" placeholder="Name" maxLength="50" ng-model="controller.sender.name">
+        <input type="email" name="email" placeholder="Email" maxLength="60" ng-model="controller.sender.email">
+        <input type="text" name="areaCode" placeholder="Area code" maxLength="2" ng-model="controller.sender.phone.areaCode">
+        <input type="phone" name="phoneNumber" placeholder="Phone number" maxLength="20" ng-model="controller.sender.phone.number">
+        <input type="Date" name="bornDate" placeholder="Birthday" ng-model="controller.sender.bornDate">
+        <h4>Documents</h4>
+        <ul>
+            <li ng-repeat="document in controller.sender.documents">
+                <label for="value">CPF</label>
+                <input type="text" name="value" value="" placeholder="CPF" maxlength="11" ng-model="document.value">
+            </li>
+        </ul>
+        <button name="save" ng-click="controller.save()">Save</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Area code
+                </th>
+                <th>
+                    Phone number
+                </th>
+                <th>
+                    Bithday
+                </th>
+                <th>
+                    Documents
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="sender in controller.senders">
+                <td ng-bind="sender.name">
+                </td>
+                <td ng-bind="sender.email">
+                </td>
+                <td ng-bind="sender.phone.areaCode">
+                </td>
+                <td ng-bind="sender.phone.number">
+                </td>
+                <td ng-bind="sender.bornDate | date:'dd/MM/yyyy'">
+                </td>
+                <td ng-bind="sender.documents.length">
+                </td>
+                <td>
+                    <button ng-click="controller.edit(sender)">Edit</button>
+                    <button ng-click="controller.delete(sender)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

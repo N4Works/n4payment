@@ -9,9 +9,19 @@ angular.module("n4_payment", [
     ($routeProvider: ng.route.IRouteProvider) => {
         $routeProvider
             .when("/", {
-            templateUrl: "views/main.html",
-            controller: "MainController",
-            controllerAs: "controller"
-        });
+                templateUrl: "views/main.html",
+                controller: "MainController",
+                controllerAs: "controller"
+            })
+            .when("/users", {
+                templateUrl: "views/users.html",
+                controller: "UsersController",
+                controllerAs: "controller"
+            })
+            .when("/senders", {
+                templateUrl: "views/senders.html",
+                controller: "SendersController",
+                controllerAs: "controller"
+            });
     }
 ]);

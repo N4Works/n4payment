@@ -3,8 +3,8 @@ var checkout_model_1 = require("../models/checkout_model");
 var sender_builder_1 = require("./sender_builder");
 var item_builder_1 = require("./item_builder");
 var shipping_builder_1 = require("./shipping_builder");
+var checkout_service_1 = require("./checkout_service");
 var request = require("request");
-var jsontoxml = require("jsontoxml");
 var xml2json = require("xml2json");
 var EnumURLPagSeguro = (function () {
     function EnumURLPagSeguro() {
@@ -88,7 +88,6 @@ var SubscriptionBuilder = (function () {
 })();
 var PagSeguroBuilder = (function () {
     function PagSeguroBuilder() {
-        this.url = EnumURLPagSeguro.development;
         this.url = process.env.NODE_ENV === "production" ? EnumURLPagSeguro.production : EnumURLPagSeguro.development;
     }
     PagSeguroBuilder.createPaymentFor = function (user) {
@@ -102,79 +101,28 @@ var PagSeguroBuilder = (function () {
     PagSeguroBuilder.prototype.send = function (checkout) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            var options = {
-                xmlHeader: {
-                    standalone: true
-                },
-                prettyPrint: true
-            };
-            var xml = jsontoxml({
-                checkout: {
-                    currency: checkout.currency,
-                    reference: checkout.reference,
-                    redirectURL: checkout.redirectURL,
-                    notificationURL: checkout.notificationURL,
-                    maxUses: checkout.maxUses,
-                    maxAge: checkout.maxAge,
-                    sender: {
-                        name: checkout.sender.name,
-                        email: checkout.sender.email,
-                        bornDate: checkout.sender.bornDate.toISOString().replace(/^(\d{4})-(\d{2})-(\d{2}).*$/, "$3/$2/$1"),
-                        phone: {
-                            areaCode: checkout.sender.phone.areaCode,
-                            number: checkout.sender.phone.number
-                        },
-                        documents: checkout.sender.documents.map(function (d) {
-                            return {
-                                document: {
-                                    type: d.type,
-                                    value: d.value
-                                }
-                            };
-                        })
+            var checkoutService = new checkout_service_1.CheckoutService();
+            checkoutService.insert(checkout)
+                .then(function (c) {
+                return checkoutService.getXML(c);
+            })
+                .then(function (xml) {
+                console.log(xml);
+                var requestOptions = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/xml; charset=UTF-8"
                     },
-                    items: checkout.items.map(function (i) {
-                        return {
-                            item: {
-                                id: i.id,
-                                description: i.description,
-                                amount: i.amount.toFixed(2),
-                                quantity: i.quantity.toFixed(0),
-                                shippingCost: i.shippingCost.toFixed(2),
-                                weight: i.weight.toFixed(0)
-                            }
-                        };
-                    }),
-                    shipping: {
-                        type: checkout.shipping.type,
-                        cost: checkout.shipping.cost.toFixed(2),
-                        address: {
-                            street: checkout.shipping.address.street,
-                            number: checkout.shipping.address.number,
-                            postalCode: checkout.shipping.address.postalCode,
-                            city: checkout.shipping.address.city,
-                            state: checkout.shipping.address.state,
-                            country: checkout.shipping.address.country,
-                            complement: checkout.shipping.address.complement,
-                            district: checkout.shipping.address.district
-                        }
+                    uri: self.url + ("?email=" + checkout.receiver.email + "&token=" + checkout.receiver.token),
+                    body: xml
+                };
+                request(requestOptions, function (error, response, body) {
+                    if (!!error) {
+                        return reject(error);
                     }
-                }
-            }, options);
-            var requestOptions = {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/xml; charset=UTF-8"
-                },
-                uri: self.url + ("?email=" + checkout.receiver.email + "&token=" + checkout.receiver.token),
-                body: xml
-            };
-            request(requestOptions, function (error, response, body) {
-                if (!!error) {
-                    return reject(error);
-                }
-                var checkout = JSON.parse(xml2json.toJson(body)).checkout;
-                return resolve(checkout);
+                    var checkout = JSON.parse(xml2json.toJson(body)).checkout;
+                    return resolve(self.url.replace(/ws\./gi, "") + ("/payment.html?code=" + checkout.code));
+                });
             });
         });
     };

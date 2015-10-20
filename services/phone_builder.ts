@@ -5,7 +5,7 @@ import {Phone} from "../models/phone_model";
 import {ISenderBuilder} from "./sender_builder";
 
 export interface IPhoneBuilder {
-    withAreaCode(areaCode:number):IPhoneBuilder;
+    withAreaCode(areaCode:string):IPhoneBuilder;
     withNumber(number:string):IPhoneBuilder;
     build():IPhone;
     buildAndReturn():ISenderBuilder;
@@ -18,7 +18,7 @@ export class PhoneBuilder implements IPhoneBuilder {
         this.phone = new Phone();
     }
 
-    withAreaCode(areaCode: number):IPhoneBuilder {
+    withAreaCode(areaCode: string):IPhoneBuilder {
         this.phone.areaCode = areaCode;
         return this;
     }
