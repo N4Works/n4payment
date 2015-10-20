@@ -8,6 +8,7 @@ import {EnumShipping} from "../models/shipping_model";
 import {ICheckoutResponse} from "../models/checkout_model";
 import {IUser} from "../models/user_model";
 import {PagSeguroBuilder as Builder} from "../services/pagseguro_builder";
+var xmlparser = require("express-xml-bodyparser");
 
 export var Router = (server: express.Router) => {
     var router: express.Router = express.Router(server);
@@ -83,10 +84,10 @@ export var Router = (server: express.Router) => {
 
     router
         .route("/notification")
-        .post(bodyParser.text(),
+        .post(xmlparser(),
         (request: express.Request, response: express.Response, next: Function) => {
             console.log("#########################################################");
-            console.log(request);
+            console.log(request.body);
             console.log("#########################################################");
             response.status(200).end();
         });

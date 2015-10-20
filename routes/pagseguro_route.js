@@ -4,6 +4,7 @@ var bodyParser = require("body-parser");
 var user_service_1 = require("../services/user_service");
 var shipping_model_1 = require("../models/shipping_model");
 var pagseguro_builder_1 = require("../services/pagseguro_builder");
+var xmlparser = require("express-xml-bodyparser");
 exports.Router = function (server) {
     var router = express.Router(server);
     router
@@ -75,9 +76,9 @@ exports.Router = function (server) {
     });
     router
         .route("/notification")
-        .post(bodyParser.text(), function (request, response, next) {
+        .post(xmlparser(), function (request, response, next) {
         console.log("#########################################################");
-        console.log(request);
+        console.log(request.body);
         console.log("#########################################################");
         response.status(200).end();
     });
