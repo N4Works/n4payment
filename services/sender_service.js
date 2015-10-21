@@ -1,7 +1,8 @@
 "use strict";
 var sender_model_1 = require("../models/sender_model");
 var SenderService = (function () {
-    function SenderService() {
+    function SenderService(user) {
+        this.user = user;
     }
     SenderService.prototype.find = function (filtro) {
         var self = this;
@@ -10,6 +11,11 @@ var SenderService = (function () {
                 return (!!error) ? reject(error) : resolve(senders);
             });
         });
+    };
+    SenderService.prototype.findByEmail = function (email) {
+        return this.find({
+            email: email
+        }).then(function (senders) { return senders.length > 0 ? senders[0] : null; });
     };
     SenderService.prototype.findById = function (id) {
         var self = this;

@@ -29,8 +29,8 @@ var AddressBuilder = (function () {
         this.address.state = state;
         return this;
     };
-    AddressBuilder.prototype.inCountry = function (city) {
-        this.address.city = city;
+    AddressBuilder.prototype.inCountry = function (country) {
+        this.address.country = country;
         return this;
     };
     AddressBuilder.prototype.withComplement = function (complement) {

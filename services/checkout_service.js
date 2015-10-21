@@ -1,16 +1,16 @@
 "use strict";
 var checkout_model_1 = require("../models/checkout_model");
+var sender_model_1 = require("../models/sender_model");
+var sender_service_1 = require("./sender_service");
 var jsontoxml = require("jsontoxml");
 var CheckoutService = (function () {
-    function CheckoutService(Checkout) {
-        if (Checkout === void 0) { Checkout = checkout_model_1.Checkout; }
-        this.Checkout = Checkout;
+    function CheckoutService(user) {
+        this.senderService = new sender_service_1.SenderService(user);
     }
-    ;
     CheckoutService.prototype.find = function (filtro) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            return self.Checkout.find(filtro, function (error, checkouts) {
+            return checkout_model_1.Checkout.find(filtro, function (error, checkouts) {
                 return (!!error) ? reject(error) : resolve(checkouts);
             });
         });
@@ -18,7 +18,7 @@ var CheckoutService = (function () {
     CheckoutService.prototype.findById = function (id) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            return self.Checkout.findById(id, function (error, checkout) {
+            return checkout_model_1.Checkout.findById(id, function (error, checkout) {
                 return (!!error) ? reject(error) : resolve(checkout);
             });
         });
@@ -26,20 +26,24 @@ var CheckoutService = (function () {
     CheckoutService.prototype.insert = function (checkoutData) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            var checkout = new self.Checkout(checkoutData);
-            checkout.save(function (error) { return !!error ? reject(error) : resolve(checkout); });
+            var checkout = new checkout_model_1.Checkout(checkoutData);
+            self.senderService.findByEmail(checkout.sender.email)
+                .then(function (sender) {
+                checkout.sender = sender || new sender_model_1.Sender(sender);
+                checkout.save(function (error) { return !!error ? reject(error) : resolve(checkout); });
+            });
         });
     };
     CheckoutService.prototype.update = function (id, checkoutData) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            self.Checkout.findByIdAndUpdate(id, checkoutData, function (error, checkout) { return !!error ? reject(error) : resolve(checkout); });
+            checkout_model_1.Checkout.findByIdAndUpdate(id, checkoutData, function (error, checkout) { return !!error ? reject(error) : resolve(checkout); });
         });
     };
     CheckoutService.prototype.delete = function (id) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            return self.Checkout.findByIdAndRemove(id, function (error, checkout) { return !!error ? reject(error) : resolve(checkout); });
+            return checkout_model_1.Checkout.findByIdAndRemove(id, function (error, checkout) { return !!error ? reject(error) : resolve(checkout); });
         });
     };
     CheckoutService.prototype.getXML = function (checkout) {

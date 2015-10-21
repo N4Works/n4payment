@@ -4,15 +4,9 @@ var sender_builder_1 = require("./sender_builder");
 var item_builder_1 = require("./item_builder");
 var shipping_builder_1 = require("./shipping_builder");
 var checkout_service_1 = require("./checkout_service");
+var urlpagseguro_enum_1 = require("../models/urlpagseguro_enum");
 var request = require("request");
 var xml2json = require("xml2json");
-var EnumURLPagSeguro = (function () {
-    function EnumURLPagSeguro() {
-    }
-    EnumURLPagSeguro.development = "https://ws.sandbox.pagseguro.uol.com.br/v2/checkout";
-    EnumURLPagSeguro.production = "https://ws.pagseguro.uol.com.br/v2/checkout";
-    return EnumURLPagSeguro;
-})();
 var EnumPayment;
 (function (EnumPayment) {
     EnumPayment[EnumPayment["payment"] = 0] = "payment";
@@ -88,7 +82,6 @@ var SubscriptionBuilder = (function () {
 })();
 var PagSeguroBuilder = (function () {
     function PagSeguroBuilder() {
-        this.url = process.env.NODE_ENV === "production" ? EnumURLPagSeguro.production : EnumURLPagSeguro.development;
     }
     PagSeguroBuilder.createPaymentFor = function (user) {
         var builder = new PagSeguroBuilder();
@@ -99,7 +92,6 @@ var PagSeguroBuilder = (function () {
         return new SubscriptionBuilder(builder, user);
     };
     PagSeguroBuilder.prototype.send = function (checkout) {
-        var self = this;
         return new Promise(function (resolve, reject) {
             var checkoutService = new checkout_service_1.CheckoutService();
             checkoutService.insert(checkout)
@@ -107,13 +99,13 @@ var PagSeguroBuilder = (function () {
                 return checkoutService.getXML(c);
             })
                 .then(function (xml) {
-                console.log(xml);
+                var urlCheckout = process.env.NODE_ENV === "production" ? urlpagseguro_enum_1.EnumURLPagSeguro.checkout_production : urlpagseguro_enum_1.EnumURLPagSeguro.checkout_development;
                 var requestOptions = {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/xml; charset=UTF-8"
                     },
-                    uri: self.url + ("?email=" + checkout.receiver.email + "&token=" + checkout.receiver.token),
+                    uri: urlCheckout + "?email=" + checkout.receiver.email + "&token=" + checkout.receiver.token,
                     body: xml
                 };
                 request(requestOptions, function (error, response, body) {
@@ -121,9 +113,11 @@ var PagSeguroBuilder = (function () {
                         return reject(error);
                     }
                     var checkout = JSON.parse(xml2json.toJson(body)).checkout;
-                    return resolve(self.url.replace(/ws\./gi, "") + ("/payment.html?code=" + checkout.code));
+                    var urlPayment = process.env.NODE_ENV === "production" ? urlpagseguro_enum_1.EnumURLPagSeguro.payment_production : urlpagseguro_enum_1.EnumURLPagSeguro.payment_development;
+                    return resolve(urlPayment + "?code=" + checkout.code);
                 });
-            });
+            })
+                .catch(function (error) { return reject(error); });
         });
     };
     return PagSeguroBuilder;

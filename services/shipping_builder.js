@@ -24,6 +24,7 @@ var ShippingBuilder = (function () {
         return this.shipping;
     };
     ShippingBuilder.prototype.buildAndReturn = function () {
+        this.shipping.save();
         this.builder.withShipping(this.shipping);
         return this.builder;
     };

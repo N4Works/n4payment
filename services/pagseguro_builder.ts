@@ -17,20 +17,9 @@ import {IShippingBuilder} from "./shipping_builder";
 import {ShippingBuilder} from "./shipping_builder";
 import {ICheckoutService} from "./checkout_service";
 import {CheckoutService} from "./checkout_service";
+import {EnumURLPagSeguro} from "../models/urlpagseguro_enum";
 import * as request from "request";
 var xml2json = require("xml2json");
-
-
-/**
- * Enumerador para o ambiente/tipo de requisição que será realizada no PagSeguro.
- *
- * production: URL de produção.
- * development: URL para desenvolvimento, teste.
- */
-class EnumURLPagSeguro {
-    static development: string = "https://ws.sandbox.pagseguro.uol.com.br/v2/checkout";
-    static production: string = "https://ws.pagseguro.uol.com.br/v2/checkout";
-}
 
 enum EnumPayment {
     payment,
@@ -129,11 +118,6 @@ class SubscriptionBuilder {
 }
 
 export class PagSeguroBuilder {
-    private url: string;
-    constructor() {
-        this.url = process.env.NODE_ENV === "production" ? EnumURLPagSeguro.production : EnumURLPagSeguro.development;
-    }
-
     static createPaymentFor(user: IUser): PaymentBuilder {
         var builder: PagSeguroBuilder = new PagSeguroBuilder();
         return new PaymentBuilder(builder, user);
@@ -145,33 +129,32 @@ export class PagSeguroBuilder {
     }
 
     send(checkout: ICheckout): Promise<string> {
-        var self = this;
         return new Promise<string>((resolve: Function, reject: Function) => {
             var checkoutService: ICheckoutService = new CheckoutService();
             checkoutService.insert(checkout)
                 .then((c: ICheckout) => {
-                    return checkoutService.getXML(c);
-                })
+                return checkoutService.getXML(c);
+            })
                 .then((xml: string) => {
-                    console.log(xml);
-                    
-                    var requestOptions: request.Options = {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/xml; charset=UTF-8"
-                        },
-                        uri: self.url + `?email=${checkout.receiver.email}&token=${checkout.receiver.token}`,
-                        body: xml
-                    };
-
-                    request(requestOptions, (error: any, response: any, body: any) => {
-                        if (!!error) {
-                            return reject(error);
-                        }
-                        var checkout: ICheckoutResponse = JSON.parse(xml2json.toJson(body)).checkout;
-                        return resolve(self.url.replace(/ws\./gi, "") + `/payment.html?code=${checkout.code}`);
-                    });
-            });
+                var urlCheckout = process.env.NODE_ENV === "production" ? EnumURLPagSeguro.checkout_production : EnumURLPagSeguro.checkout_development;
+                var requestOptions: request.Options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/xml; charset=UTF-8"
+                    },
+                    uri: `${urlCheckout}?email=${checkout.receiver.email}&token=${checkout.receiver.token}`,
+                    body: xml
+                };
+                request(requestOptions, (error: any, response: any, body: any) => {
+                    if (!!error) {
+                        return reject(error);
+                    }
+                    var checkout: ICheckoutResponse = JSON.parse(xml2json.toJson(body)).checkout;
+                    var urlPayment = process.env.NODE_ENV === "production" ? EnumURLPagSeguro.payment_production : EnumURLPagSeguro.payment_development;
+                    return resolve(`${urlPayment}?code=${checkout.code}`);
+                });
+            })
+                .catch((error: any) => reject(error));
         });
     }
 }

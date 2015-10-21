@@ -2,6 +2,7 @@
 
 import * as mongoose from "mongoose";
 import {IAddress} from "./address_model";
+import {AddressSchema} from "./address_model";
 
 /**
  * @enum
@@ -34,6 +35,12 @@ export interface IShipping extends mongoose.Document {
  */
 export type MShipping = mongoose.Model<IShipping>;
 
+export var ShippingSchema = {
+    type: { type: "number", enum: [1,2,3], default: 3 },
+    cost: { type: "number", min: [0, "A valor de frete deve ser maior que zero."], max: [9999999, "O valor de frete deve ser menor que 9.999.999,00"] },
+    address: AddressSchema
+};
+
 /**
  * @class
  * @property {EnumShipping} type Tipo do frete.
@@ -44,8 +51,4 @@ export type MShipping = mongoose.Model<IShipping>;
  * @description Dados do frete da compra.
  */
 export var Shipping:MShipping = mongoose.model<IShipping>("Shipping",
-    new mongoose.Schema({
-        type: { type: "number", enum: [1,2,3], default: 3 },
-        cost: { type: "number", min: 0, max: 9999999 },
-        address: { type: mongoose.Schema.Types.ObjectId, ref: "Address" }
-    }));
+    new mongoose.Schema(ShippingSchema));

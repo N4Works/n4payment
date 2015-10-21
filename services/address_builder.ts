@@ -54,8 +54,8 @@ export class AddressBuilder implements IAddressBuilder {
         return this;
     }
 
-    inCountry(city:string):IAddressBuilder {
-        this.address.city = city;
+    inCountry(country:string):IAddressBuilder {
+        this.address.country = country;
         return this;
     }
 

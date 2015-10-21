@@ -23,10 +23,10 @@ export type MDocument = mongoose.Model<IDocument>;
 /**
  * @description Definição do esquema para o Mongoose.
  */
-export var DocumentSchema: mongoose.Schema = new mongoose.Schema({
+export var DocumentSchema = {
     type: { type: "string", enum: [ "CPF" ] },
     value: { type: "string", match: /^\d{11}$/ }
-});
+};
 
 /**
  * @class
@@ -37,4 +37,4 @@ export var DocumentSchema: mongoose.Schema = new mongoose.Schema({
  * @description Documento do comprador.
  */
 export var Document:MDocument = mongoose.model<IDocument>("Document",
-    DocumentSchema);
+    new mongoose.Schema(DocumentSchema));

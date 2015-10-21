@@ -45,6 +45,7 @@ export class ShippingBuilder implements IShippingBuilder {
     }
 
     buildAndReturn():IPaymentBuilder {
+        this.shipping.save();
         this.builder.withShipping(this.shipping);
         return this.builder;
     }

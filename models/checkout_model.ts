@@ -4,6 +4,7 @@ import * as mongoose from "mongoose";
 import {ISender} from "./sender_model";
 import {IItem} from "./item_model";
 import {ItemSchema} from "./item_model";
+import {ShippingSchema} from "./shipping_model";
 import {IShipping} from "./shipping_model";
 import {IUser} from "./user_model";
 
@@ -102,10 +103,12 @@ export type MCheckout = mongoose.Model<ICheckout>;
 export var Checkout:mongoose.Model<ICheckout> = mongoose.model<ICheckout>("Checkout", new mongoose.Schema({
     receiver: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     currency: { type: "string", enum: [ "BRL" ], required: true },
-    items: [ItemSchema],
+    items: [
+        ItemSchema
+    ],
     reference: { type: "string", maxLength: 200 },
     sender: { type: mongoose.Schema.Types.ObjectId, ref: "Sender" },
-    shipping:{ type: mongoose.Schema.Types.ObjectId, ref: "Shipping" },
+    shipping: { type: mongoose.Schema.Types.ObjectId, ref: "Shipping" },
     extraAmount: { type: "number", min: -9999999, max: 9999999 },
     redirectURL: { type: "string", maxLength: 255 },
     notificationURL: { type: "string", maxLength: 255 },

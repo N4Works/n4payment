@@ -1,22 +1,33 @@
 "use strict";
 
+import {IUser} from "../models/user_model";
 import {ISender} from "../models/sender_model";
 import {Sender} from "../models/sender_model";
 
 export interface ISenderService {
     find(filtro: any): Promise<Array<ISender>>;
     findById(id: string): Promise<ISender>;
+    findByEmail(email: string): Promise<ISender>;
     insert(senderData: any): Promise<ISender>;
     update(id: string, senderData: any): Promise<ISender>;
     delete(id: string): Promise<ISender>;
 }
 
 export class SenderService implements ISenderService {
+    constructor(private user:IUser) {
+    }
+
     find(filtro: any) {
         var self = this;
         return new Promise<Array<ISender>>((resolve: Function, reject: Function) =>
             Sender.find(filtro, (error: any, senders: Array<ISender>) =>
                 (!!error) ? reject(error) : resolve(senders)));
+    }
+
+    findByEmail(email: string):Promise<ISender> {
+        return this.find({
+            email: email
+        }).then((senders: Array<ISender>) => senders.length > 0 ? senders[0] : null);
     }
 
     findById(id: string) {

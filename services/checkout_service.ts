@@ -1,10 +1,14 @@
 "use strict";
 
+import {IUser} from "../models/user_model";
 import {ICheckout} from "../models/checkout_model";
 import {IDocument} from "../models/document_model";
 import {IItem} from "../models/item_model";
-import {MCheckout} from "../models/checkout_model";
-import {Checkout as TCheckout} from "../models/checkout_model";
+import {Checkout} from "../models/checkout_model";
+import {ISender} from "../models/sender_model";
+import {Sender} from "../models/sender_model";
+import {ISenderService} from "./sender_service";
+import {SenderService} from "./sender_service";
 var jsontoxml = require("jsontoxml");
 
 export interface ICheckoutService {
@@ -17,42 +21,48 @@ export interface ICheckoutService {
 }
 
 export class CheckoutService implements ICheckoutService {
-    constructor(private Checkout: MCheckout = TCheckout) {
-    };
+    senderService: ISenderService;
+    constructor(user: IUser) {
+        this.senderService = new SenderService(user);
+    }
 
     find(filtro: any) {
         var self = this;
         return new Promise<Array<ICheckout>>((resolve: Function, reject: Function) =>
-            self.Checkout.find(filtro, (error: any, checkouts: Array<ICheckout>) =>
+            Checkout.find(filtro, (error: any, checkouts: Array<ICheckout>) =>
                 (!!error) ? reject(error) : resolve(checkouts)));
     }
 
     findById(id: string) {
         var self = this;
         return new Promise<ICheckout>((resolve: Function, reject: Function) =>
-            self.Checkout.findById(id, (error: any, checkout: ICheckout) =>
+            Checkout.findById(id, (error: any, checkout: ICheckout) =>
                 (!!error) ? reject(error) : resolve(checkout)));
     }
 
     insert(checkoutData: any) {
         var self = this;
         return new Promise<ICheckout>((resolve: Function, reject: Function) => {
-            var checkout: ICheckout = new self.Checkout(checkoutData);
-            checkout.save(error => !!error ? reject(error) : resolve(checkout));
+            var checkout: ICheckout = new Checkout(checkoutData);
+            self.senderService.findByEmail(checkout.sender.email)
+            .then((sender: ISender) => {
+                checkout.sender = sender || new Sender(sender);
+                checkout.save(error => !!error ? reject(error) : resolve(checkout));
+            });
         });
     }
 
     update(id: string, checkoutData: any) {
         var self = this;
         return new Promise<ICheckout>((resolve: Function, reject: Function) => {
-            self.Checkout.findByIdAndUpdate(id, checkoutData, (error: any, checkout: ICheckout) => !!error ? reject(error) : resolve(checkout));
+            Checkout.findByIdAndUpdate(id, checkoutData, (error: any, checkout: ICheckout) => !!error ? reject(error) : resolve(checkout));
         });
     }
 
     delete(id: string) {
         var self = this;
         return new Promise<ICheckout>((resolve: Function, reject: Function) =>
-            self.Checkout.findByIdAndRemove(id, (error: any, checkout: ICheckout) => !!error ? reject(error) : resolve(checkout)));
+            Checkout.findByIdAndRemove(id, (error: any, checkout: ICheckout) => !!error ? reject(error) : resolve(checkout)));
     }
 
     getXML(checkout: ICheckout): Promise<string> {
