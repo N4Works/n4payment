@@ -81,19 +81,21 @@ var SubscriptionBuilder = (function () {
     return SubscriptionBuilder;
 })();
 var PagSeguroBuilder = (function () {
-    function PagSeguroBuilder() {
+    function PagSeguroBuilder(user) {
+        this.user = user;
     }
     PagSeguroBuilder.createPaymentFor = function (user) {
-        var builder = new PagSeguroBuilder();
+        var builder = new PagSeguroBuilder(user);
         return new PaymentBuilder(builder, user);
     };
     PagSeguroBuilder.createSubscriptionFor = function (user) {
-        var builder = new PagSeguroBuilder();
+        var builder = new PagSeguroBuilder(user);
         return new SubscriptionBuilder(builder, user);
     };
     PagSeguroBuilder.prototype.send = function (checkout) {
+        var self = this;
         return new Promise(function (resolve, reject) {
-            var checkoutService = new checkout_service_1.CheckoutService();
+            var checkoutService = new checkout_service_1.CheckoutService(self.user);
             checkoutService.insert(checkout)
                 .then(function (c) {
                 return checkoutService.getXML(c);

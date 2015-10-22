@@ -118,19 +118,23 @@ class SubscriptionBuilder {
 }
 
 export class PagSeguroBuilder {
+    constructor(private user: IUser) {
+    }
+
     static createPaymentFor(user: IUser): PaymentBuilder {
-        var builder: PagSeguroBuilder = new PagSeguroBuilder();
+        var builder: PagSeguroBuilder = new PagSeguroBuilder(user);
         return new PaymentBuilder(builder, user);
     }
 
     static createSubscriptionFor(user: IUser): SubscriptionBuilder {
-        var builder: PagSeguroBuilder = new PagSeguroBuilder();
+        var builder: PagSeguroBuilder = new PagSeguroBuilder(user);
         return new SubscriptionBuilder(builder, user);
     }
 
     send(checkout: ICheckout): Promise<string> {
+        var self = this;
         return new Promise<string>((resolve: Function, reject: Function) => {
-            var checkoutService: ICheckoutService = new CheckoutService();
+            var checkoutService: ICheckoutService = new CheckoutService(self.user);
             checkoutService.insert(checkout)
                 .then((c: ICheckout) => {
                 return checkoutService.getXML(c);

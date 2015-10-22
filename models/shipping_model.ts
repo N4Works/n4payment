@@ -26,7 +26,7 @@ export enum EnumShipping {
  */
 export interface IShipping extends mongoose.Document {
     type: EnumShipping;
-    cost: Number;
+    cost: number;
     address: IAddress;
 };
 

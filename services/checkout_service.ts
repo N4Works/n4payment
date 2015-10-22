@@ -22,21 +22,27 @@ export interface ICheckoutService {
 
 export class CheckoutService implements ICheckoutService {
     senderService: ISenderService;
-    constructor(user: IUser) {
+    constructor(user?: IUser) {
         this.senderService = new SenderService(user);
     }
 
     find(filtro: any) {
         var self = this;
         return new Promise<Array<ICheckout>>((resolve: Function, reject: Function) =>
-            Checkout.find(filtro, (error: any, checkouts: Array<ICheckout>) =>
+            Checkout.find(filtro)
+                .populate("receiver")
+                .populate("sender")
+                .exec((error: any, checkouts: Array<ICheckout>) =>
                 (!!error) ? reject(error) : resolve(checkouts)));
     }
 
     findById(id: string) {
         var self = this;
         return new Promise<ICheckout>((resolve: Function, reject: Function) =>
-            Checkout.findById(id, (error: any, checkout: ICheckout) =>
+            Checkout.findById(id)
+            .populate("receiver")
+            .populate("sender")
+            .exec((error: any, checkout: ICheckout) =>
                 (!!error) ? reject(error) : resolve(checkout)));
     }
 
@@ -46,7 +52,8 @@ export class CheckoutService implements ICheckoutService {
             var checkout: ICheckout = new Checkout(checkoutData);
             self.senderService.findByEmail(checkout.sender.email)
             .then((sender: ISender) => {
-                checkout.sender = sender || new Sender(sender);
+                checkout.sender = sender || checkout.sender;
+                checkout.sender.save();
                 checkout.save(error => !!error ? reject(error) : resolve(checkout));
             });
         });

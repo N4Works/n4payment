@@ -14,7 +14,7 @@ export interface ISenderService {
 }
 
 export class SenderService implements ISenderService {
-    constructor(private user:IUser) {
+    constructor(private user?:IUser) {
     }
 
     find(filtro: any) {

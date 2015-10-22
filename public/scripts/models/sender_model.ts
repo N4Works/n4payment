@@ -9,7 +9,7 @@ class SenderModel {
     bornDate: Date;
     constructor(senderData?:any) {
         if (!!senderData) {
-            senderData.bornDate = !!senderData ? new Date(senderData.bornDate) : null;
+            senderData.bornDate = !!senderData.bornDate ? new Date(senderData.bornDate) : null;
             angular.extend(this, senderData);
         }
         this.phone = new PhoneModel(this.phone);

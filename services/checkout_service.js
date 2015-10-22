@@ -1,6 +1,5 @@
 "use strict";
 var checkout_model_1 = require("../models/checkout_model");
-var sender_model_1 = require("../models/sender_model");
 var sender_service_1 = require("./sender_service");
 var jsontoxml = require("jsontoxml");
 var CheckoutService = (function () {
@@ -10,7 +9,10 @@ var CheckoutService = (function () {
     CheckoutService.prototype.find = function (filtro) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            return checkout_model_1.Checkout.find(filtro, function (error, checkouts) {
+            return checkout_model_1.Checkout.find(filtro)
+                .populate("receiver")
+                .populate("sender")
+                .exec(function (error, checkouts) {
                 return (!!error) ? reject(error) : resolve(checkouts);
             });
         });
@@ -18,7 +20,10 @@ var CheckoutService = (function () {
     CheckoutService.prototype.findById = function (id) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            return checkout_model_1.Checkout.findById(id, function (error, checkout) {
+            return checkout_model_1.Checkout.findById(id)
+                .populate("receiver")
+                .populate("sender")
+                .exec(function (error, checkout) {
                 return (!!error) ? reject(error) : resolve(checkout);
             });
         });
@@ -29,7 +34,8 @@ var CheckoutService = (function () {
             var checkout = new checkout_model_1.Checkout(checkoutData);
             self.senderService.findByEmail(checkout.sender.email)
                 .then(function (sender) {
-                checkout.sender = sender || new sender_model_1.Sender(sender);
+                checkout.sender = sender || checkout.sender;
+                checkout.sender.save();
                 checkout.save(function (error) { return !!error ? reject(error) : resolve(checkout); });
             });
         });

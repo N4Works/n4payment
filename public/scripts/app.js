@@ -21,6 +21,11 @@ angular.module("n4_payment", [
             templateUrl: "views/senders.html",
             controller: "SendersController",
             controllerAs: "controller"
+        })
+            .when("/checkouts", {
+            templateUrl: "views/checkouts.html",
+            controller: "CheckoutsController",
+            controllerAs: "controller"
         });
     }
 ]);
