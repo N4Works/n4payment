@@ -31,6 +31,16 @@ export interface ISender extends mongoose.Document {
  */
 export type MSender = mongoose.Model<ISender>;
 
+export var SenderSchema = {
+    name: { type: "string", maxLength: [50, "O nome do comprador deve ter no máximo 50 carácteres"] },
+    email: { type: "string", lowercase: true, maxLength: [60, "O e-mail do comprador deve ter no máximo 60 carácteres."] },
+    phone: PhoneSchema,
+    documents: [
+        DocumentSchema
+    ],
+    bornDate: { type: "Date" }
+};
+
 /**
  * @class
  * @property {string} name Nome do comprador.
@@ -44,12 +54,4 @@ export type MSender = mongoose.Model<ISender>;
  * @description Comprador.
  */
 export var Sender:MSender = mongoose.model<ISender>("Sender",
-    new mongoose.Schema({
-        name: { type: "string", maxLength: 50 },
-        email: { type: "string", lowercase: true, maxLength: 60 },
-        phone: PhoneSchema,
-        documents: [
-            DocumentSchema
-        ],
-        bornDate: { type: "Date" }
-    }));
+    new mongoose.Schema(SenderSchema));

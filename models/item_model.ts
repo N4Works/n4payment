@@ -39,14 +39,14 @@ export type MItem = mongoose.Model<IItem>;
 /**
  * @description Definição do esquema para o Mongoose.
  */
-export var ItemSchema:mongoose.Schema = new mongoose.Schema({
+export var ItemSchema = {
     id: { type: "string", required: true, maxLength: 100 },
     description: { type: "string", required: true, maxLength: 100 },
     amount: { type: "number", required: true, min: 0, max: 9999999 },
     quantity: { type: "number", required: true, min: 1, max: 999 },
     shippingCost: { type: "number", min: 0, max: 9999999 },
     weight: "number"
-});
+};
 
 /**
  * @class
@@ -69,4 +69,4 @@ export var ItemSchema:mongoose.Schema = new mongoose.Schema({
  * @description Item da compra.
  */
 export var Item:MItem = mongoose.model<IItem>("Item",
-    ItemSchema);
+    new mongoose.Schema(ItemSchema));

@@ -106,14 +106,24 @@ export var Router = (server: express.Router) => {
         });
 
     router
-        .route("/transaction/:id")
+        .route("/transactions/")
+        .get(bodyParser.json({}),
+        (request: express.Request, response: express.Response, next: Function) => {
+            var transactionService:ITransactionService = new TransactionService();
+            transactionService.find(null)
+                .then((transactions: Array<ITransaction>) => response.status(200).json(transactions))
+                .catch((error:any) => next(error));
+        });
+
+    router
+        .route("/transactions/:id")
         .get(bodyParser.json({}),
         (request: express.Request, response: express.Response, next: Function) => {
             var service:IUserService = new UserService();
             service.find(null)
                 .then((users:Array<IUser>) => {
                     var transactionService:ITransactionService = new TransactionService(users[0]);
-                    transactionService.findById(request.params.id)
+                    transactionService.findByCodeAndInsert(request.params.id)
                         .then((transaction: ITransaction) => response.status(200).json(transaction))
                         .catch((error:any) => next(error));
             });

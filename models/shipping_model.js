@@ -11,7 +11,7 @@ var EnumShipping = exports.EnumShipping;
 ;
 exports.ShippingSchema = {
     type: { type: "number", enum: [1, 2, 3], default: 3 },
-    cost: { type: "number", min: [0, "A valor de frete deve ser maior que zero."], max: [9999999, "O valor de frete deve ser menor que 9.999.999,00"] },
+    cost: { type: "number", min: [0.00, "A valor de frete deve ser maior que zero."], max: [9999999.00, "O valor de frete deve ser menor que 9.999.999,00"] },
     address: address_model_1.AddressSchema
 };
 exports.Shipping = mongoose.model("Shipping", new mongoose.Schema(exports.ShippingSchema));

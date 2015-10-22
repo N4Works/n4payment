@@ -92,13 +92,21 @@ exports.Router = function (server) {
             .catch(function (e) { return next(e); });
     });
     router
-        .route("/transaction/:id")
+        .route("/transactions/")
+        .get(bodyParser.json({}), function (request, response, next) {
+        var transactionService = new transaction_service_1.TransactionService();
+        transactionService.find(null)
+            .then(function (transactions) { return response.status(200).json(transactions); })
+            .catch(function (error) { return next(error); });
+    });
+    router
+        .route("/transactions/:id")
         .get(bodyParser.json({}), function (request, response, next) {
         var service = new user_service_1.UserService();
         service.find(null)
             .then(function (users) {
             var transactionService = new transaction_service_1.TransactionService(users[0]);
-            transactionService.findById(request.params.id)
+            transactionService.findByCodeAndInsert(request.params.id)
                 .then(function (transaction) { return response.status(200).json(transaction); })
                 .catch(function (error) { return next(error); });
         });

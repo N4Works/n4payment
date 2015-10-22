@@ -11,6 +11,7 @@ import {ItemSchema} from "./item_model";
 import {ShippingSchema} from "./shipping_model";
 import {IShipping} from "./shipping_model";
 import {ISender} from "./sender_model";
+import {SenderSchema} from "./sender_model";
 
 /**
  * @enum
@@ -159,10 +160,10 @@ export type MTransaction = mongoose.Model<ITransaction>;
  */
 export var TransactionSchema: mongoose.Schema = new mongoose.Schema({
     date: { type: "Date" },
-    code: { type: "string", match: /^\d{36}$/ },
-    reference: { type: "string", maxLength: 200 },
-    type: { type: "number" },
-    status: { type: "number" },
+    code: { type: "string" },
+    reference: { type: "string", maxLength: [200, "O código para referência interna deve ter até 200 carácteres."] },
+    type: { type: "number", enum: [1, 11] },
+    status: { type: "number", enum: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
     cancellationSource: { type: "string", enum: ["INTERNAL", "EXTERNAL"] },
     lastEventDate: { type: "Date" },
     paymentMethod: PaymentMethodSchema,
@@ -175,13 +176,13 @@ export var TransactionSchema: mongoose.Schema = new mongoose.Schema({
     creditorFees: CreditorFeesSchema,
     installmentFeeAmount: { type: "number" },
     operationalFeeAmount: { type: "number" },
-    intermediationRateAmount: { type: "number" },
-    intermediationFeeAmount: { type: "number" },
+    //intermediationRateAmount: { type: "number" },
+    //intermediationFeeAmount: { type: "number" },
     itemCount: { type: "number" },
     items: [
         ItemSchema
     ],
-    sender: { type: mongoose.Schema.Types.ObjectId, ref: "Sender" },
+    sender: SenderSchema,
     shipping: ShippingSchema,
 });
 

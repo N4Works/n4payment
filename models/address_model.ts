@@ -42,7 +42,7 @@ export type MAddress = mongoose.Model<IAddress>;
 export var AddressSchema = {
     street: { type: "string", maxLength: [80, "A rua do endereço deve ter no máximo 80 carácteres."] },
     number: { type: "string", maxLength: [20, "O número do endereço deve ter no máximo 20 carácteres."] },
-    postalCode: { type: "string", match: [/\^d{8}$/, "O código postal deve ser composto por 8 digitos."]  },
+    postalCode: { type: "string", match: [/^\d{8}$/, "O código postal deve ser composto por 8 digitos."]  },
     city: { type: "string", minLength: [2, "A cidade deve ter no mínimo 2 carácteres."], maxLength: [60, "A cidade deve ter no máximo 60 carácteres"] },
     state: { type: "string", match: [/^[A-Z]{2}$/, "O estado deve ser composto por duas letras maiusculas."] },
     country: { type: "string", default: "BRA", match: [/^BRA$/, "Somente é aceito \"BRA\" como país."] },

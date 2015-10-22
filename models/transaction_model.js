@@ -4,6 +4,7 @@ var paymentmethod_model_1 = require("./paymentmethod_model");
 var creditorfees_model_1 = require("./creditorfees_model");
 var item_model_1 = require("./item_model");
 var shipping_model_1 = require("./shipping_model");
+var sender_model_1 = require("./sender_model");
 (function (EnumTransactionType) {
     EnumTransactionType[EnumTransactionType["payment"] = 1] = "payment";
     EnumTransactionType[EnumTransactionType["subscription"] = 11] = "subscription";
@@ -33,10 +34,10 @@ exports.EnumTransactionCancellationSource = EnumTransactionCancellationSource;
 ;
 exports.TransactionSchema = new mongoose.Schema({
     date: { type: "Date" },
-    code: { type: "string", match: /^\d{36}$/ },
-    reference: { type: "string", maxLength: 200 },
-    type: { type: "number" },
-    status: { type: "number" },
+    code: { type: "string" },
+    reference: { type: "string", maxLength: [200, "O código para referência interna deve ter até 200 carácteres."] },
+    type: { type: "number", enum: [1, 11] },
+    status: { type: "number", enum: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
     cancellationSource: { type: "string", enum: ["INTERNAL", "EXTERNAL"] },
     lastEventDate: { type: "Date" },
     paymentMethod: paymentmethod_model_1.PaymentMethodSchema,
@@ -49,13 +50,11 @@ exports.TransactionSchema = new mongoose.Schema({
     creditorFees: creditorfees_model_1.CreditorFeesSchema,
     installmentFeeAmount: { type: "number" },
     operationalFeeAmount: { type: "number" },
-    intermediationRateAmount: { type: "number" },
-    intermediationFeeAmount: { type: "number" },
     itemCount: { type: "number" },
     items: [
         item_model_1.ItemSchema
     ],
-    sender: { type: mongoose.Schema.Types.ObjectId, ref: "Sender" },
+    sender: sender_model_1.SenderSchema,
     shipping: shipping_model_1.ShippingSchema,
 });
 exports.Transaction = mongoose.model("Transaction", exports.TransactionSchema);
