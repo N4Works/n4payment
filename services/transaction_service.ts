@@ -34,12 +34,12 @@ export class TransactionService implements ITransactionService {
     findById(id: string) {
         var self = this;
         return new Promise<ITransaction>((resolve: Function, reject: Function) => {
-            Transaction.findById(id, (error: any, transaction:ITransaction) => {
+            Transaction.find({code:id}, (error: any, transactions:Array<ITransaction>) => {
                 if (!!error) {
                     return reject(error);
                 }
-                if (!!transaction) {
-                    return resolve(transaction);
+                if (!!transactions.length) {
+                    return resolve(transactions[0]);
                 }
                 var urlTransaction = process.env.NODE_ENV === "production" ? EnumURLPagSeguro.transaction_production : EnumURLPagSeguro.transaction_development;
                 var requestOptions: request.Options = {

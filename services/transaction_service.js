@@ -20,12 +20,12 @@ var TransactionService = (function () {
     TransactionService.prototype.findById = function (id) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            transaction_model_1.Transaction.findById(id, function (error, transaction) {
+            transaction_model_1.Transaction.find({ code: id }, function (error, transactions) {
                 if (!!error) {
                     return reject(error);
                 }
-                if (!!transaction) {
-                    return resolve(transaction);
+                if (!!transactions.length) {
+                    return resolve(transactions[0]);
                 }
                 var urlTransaction = process.env.NODE_ENV === "production" ? urlpagseguro_enum_1.EnumURLPagSeguro.transaction_production : urlpagseguro_enum_1.EnumURLPagSeguro.transaction_development;
                 var requestOptions = {
