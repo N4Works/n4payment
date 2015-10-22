@@ -54,7 +54,6 @@
         "routes/checkout_route.ts",
         "routes/pagseguro_route.ts",
         "routes/sender_route.ts",
-        "routes/transaction_route.ts",
         "routes/user_route.ts",
         "services/address_builder.ts",
         "services/checkout_service.ts",

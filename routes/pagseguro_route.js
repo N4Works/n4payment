@@ -2,7 +2,6 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var user_service_1 = require("../services/user_service");
-var notification_service_1 = require("../services/notification_service");
 var transaction_service_1 = require("../services/transaction_service");
 var shipping_model_1 = require("../models/shipping_model");
 var pagseguro_builder_1 = require("../services/pagseguro_builder");
@@ -14,8 +13,8 @@ var createTest = function (user) {
         .withReference("reference123")
         .withMaxUses(999)
         .withMaxAge(999999999)
-        .withRedirectURL("http://localhost:3000/api/pagseguro/redirect")
-        .withNotificationURL("https://162.243.133.24/api/pagseguro/notification")
+        .withRedirectURL("https://162.243.133.24/api/pagseguro/redirect")
+        .withNotificationURL("https://162.243.133.24/api/pagseguro/notifications")
         .to()
         .withName("Tiago de Carvalho Resende")
         .withEmail("c68643050873498480057@sandbox.pagseguro.com.br")
@@ -81,15 +80,15 @@ exports.Router = function (server) {
         response.end();
     });
     router
-        .route("/notification")
+        .route("/notifications")
         .post(cors({
         origin: "pagseguro.uol.com.br"
     }), bodyParser.urlencoded({ extended: true }), xmlparser(), function (request, response, next) {
-        var notificationService = new notification_service_1.NotificationService();
-        var notificationData = request.body;
-        notificationService.insert(notificationData)
-            .then(function () { return response.status(201).end(); })
-            .catch(function (e) { return next(e); });
+        var notification = request.body;
+        var transactionService = new transaction_service_1.TransactionService();
+        transactionService.findByCodeAndInsert(notification.notificationCode)
+            .then(function (transaction) { return response.status(200).json(transaction); })
+            .catch(function (error) { return next(error); });
     });
     router
         .route("/transactions/")
@@ -102,14 +101,10 @@ exports.Router = function (server) {
     router
         .route("/transactions/:id")
         .get(bodyParser.json({}), function (request, response, next) {
-        var service = new user_service_1.UserService();
-        service.find(null)
-            .then(function (users) {
-            var transactionService = new transaction_service_1.TransactionService(users[0]);
-            transactionService.findByCodeAndInsert(request.params.id)
-                .then(function (transaction) { return response.status(200).json(transaction); })
-                .catch(function (error) { return next(error); });
-        });
+        var transactionService = new transaction_service_1.TransactionService();
+        transactionService.findByCodeAndInsert(request.params.id)
+            .then(function (transaction) { return response.status(200).json(transaction); })
+            .catch(function (error) { return next(error); });
     });
     return router;
 };

@@ -4,6 +4,7 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import {IUserService} from "../services/user_service";
 import {UserService} from "../services/user_service";
+import {INotification} from "../models/notification_model";
 import {INotificationService} from "../services/notification_service";
 import {NotificationService} from "../services/notification_service";
 import {ITransaction} from "../models/transaction_model";
@@ -22,8 +23,8 @@ var createTest = (user:IUser) => {
         .withReference("reference123")
         .withMaxUses(999)
         .withMaxAge(999999999)
-        .withRedirectURL("http://localhost:3000/api/pagseguro/redirect")
-        .withNotificationURL("https://162.243.133.24/api/pagseguro/notification")
+        .withRedirectURL("https://162.243.133.24/api/pagseguro/redirect")
+        .withNotificationURL("https://162.243.133.24/api/pagseguro/notifications")
         .to()
             .withName("Tiago de Carvalho Resende")
             .withEmail("c68643050873498480057@sandbox.pagseguro.com.br")
@@ -93,16 +94,16 @@ export var Router = (server: express.Router) => {
         });
 
     router
-        .route("/notification")
+        .route("/notifications")
         .post(cors({
             origin: "pagseguro.uol.com.br"
         }), bodyParser.urlencoded({extended:true}), xmlparser(),
         (request: express.Request, response: express.Response, next: Function) => {
-            var notificationService:INotificationService = new NotificationService();
-            var notificationData = request.body;
-            notificationService.insert(notificationData)
-                .then(() => response.status(201).end())
-                .catch((e:any) => next(e));
+            var notification:INotification = request.body;
+            var transactionService:ITransactionService = new TransactionService();
+            transactionService.findByCodeAndInsert(notification.notificationCode)
+                    .then((transaction: ITransaction) => response.status(200).json(transaction))
+                    .catch((error:any) => next(error));
         });
 
     router
@@ -119,14 +120,10 @@ export var Router = (server: express.Router) => {
         .route("/transactions/:id")
         .get(bodyParser.json({}),
         (request: express.Request, response: express.Response, next: Function) => {
-            var service:IUserService = new UserService();
-            service.find(null)
-                .then((users:Array<IUser>) => {
-                    var transactionService:ITransactionService = new TransactionService(users[0]);
-                    transactionService.findByCodeAndInsert(request.params.id)
-                        .then((transaction: ITransaction) => response.status(200).json(transaction))
-                        .catch((error:any) => next(error));
-            });
+            var transactionService:ITransactionService = new TransactionService();
+            transactionService.findByCodeAndInsert(request.params.id)
+                    .then((transaction: ITransaction) => response.status(200).json(transaction))
+                    .catch((error:any) => next(error));
         });
 
     return router;
