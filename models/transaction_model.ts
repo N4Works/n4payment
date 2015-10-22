@@ -114,10 +114,6 @@ export class EnumTransactionCancellationSource {
  *                                         Formato: Decimal, com duas casas decimais separadas por ponto ("."). Por exemplo, 1234.56.
  * @property {number} operationalFeeAmount Valor da taxa de operação dessa transação.
  *                                         Formato: Decimal, com duas casas decimais separadas por ponto ("."). Por exemplo, 1234.56.
- * @property {number} intermediationRateAmount Valor da tarifa de intermediação dessa transação.
- *                                             Formato: Decimal, com duas casas decimais separadas por ponto ("."). Por exemplo, 1234.56.
- * @property {number} intermediationFeeAmount Valor da tarifa de intermediação dessa transação.
- *                                            Formato: Decimal, com duas casas decimais separadas por ponto ("."). Por exemplo, 1234.56.
  * @property {number} itemCount Quantidade de itens da transação.
  * @property {Array<IItem>} items Lista de itens.
  * @property {ISender} sender Dados do comprador da transação.
@@ -176,8 +172,6 @@ export var TransactionSchema: mongoose.Schema = new mongoose.Schema({
     creditorFees: CreditorFeesSchema,
     installmentFeeAmount: { type: "number" },
     operationalFeeAmount: { type: "number" },
-    //intermediationRateAmount: { type: "number" },
-    //intermediationFeeAmount: { type: "number" },
     itemCount: { type: "number" },
     items: [
         ItemSchema
@@ -225,10 +219,6 @@ export var TransactionSchema: mongoose.Schema = new mongoose.Schema({
  *                                         Formato: Decimal, com duas casas decimais separadas por ponto ("."). Por exemplo, 1234.56.
  * @property {number} operationalFeeAmount Valor da taxa de operação dessa transação.
  *                                         Formato: Decimal, com duas casas decimais separadas por ponto ("."). Por exemplo, 1234.56.
- * @property {number} intermediationRateAmount Valor da tarifa de intermediação dessa transação.
- *                                             Formato: Decimal, com duas casas decimais separadas por ponto ("."). Por exemplo, 1234.56.
- * @property {number} intermediationFeeAmount Valor da tarifa de intermediação dessa transação.
- *                                            Formato: Decimal, com duas casas decimais separadas por ponto ("."). Por exemplo, 1234.56.
  * @property {number} itemCount Quantidade de itens da transação.
  * @property {Array<IItem>} items Lista de itens.
  * @property {ISender} sender Dados do comprador da transação.
