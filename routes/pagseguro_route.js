@@ -85,9 +85,13 @@ exports.Router = function (server) {
         origin: "pagseguro.uol.com.br"
     }), bodyParser.urlencoded({ extended: true }), xmlparser(), function (request, response, next) {
         var notification = request.body;
-        var transactionService = new transaction_service_1.TransactionService();
-        transactionService.findByCodeAndInsert(notification.notificationCode)
-            .then(function (transaction) { return response.status(200).json(transaction); })
+        var service = new user_service_1.UserService();
+        service.find(null)
+            .then(function (users) {
+            var transactionService = new transaction_service_1.TransactionService(users[0]);
+            return transactionService.findByCodeAndInsert(notification.notificationCode)
+                .then(function (transaction) { return response.status(200).json(transaction); });
+        })
             .catch(function (error) { return next(error); });
     });
     router

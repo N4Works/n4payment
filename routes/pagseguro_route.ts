@@ -100,10 +100,14 @@ export var Router = (server: express.Router) => {
         }), bodyParser.urlencoded({extended:true}), xmlparser(),
         (request: express.Request, response: express.Response, next: Function) => {
             var notification:INotification = request.body;
-            var transactionService:ITransactionService = new TransactionService();
-            transactionService.findByCodeAndInsert(notification.notificationCode)
-                    .then((transaction: ITransaction) => response.status(200).json(transaction))
-                    .catch((error:any) => next(error));
+            var service:IUserService = new UserService();
+            service.find(null)
+                .then((users:Array<IUser>) => {
+                    var transactionService:ITransactionService = new TransactionService(users[0]);
+                    return transactionService.findByCodeAndInsert(notification.notificationCode)
+                            .then((transaction: ITransaction) => response.status(200).json(transaction));
+                })
+                .catch(error => next(error));
         });
 
     router
