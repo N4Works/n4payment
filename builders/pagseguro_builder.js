@@ -3,7 +3,7 @@ var checkout_model_1 = require("../models/checkout_model");
 var sender_builder_1 = require("./sender_builder");
 var item_builder_1 = require("./item_builder");
 var shipping_builder_1 = require("./shipping_builder");
-var checkout_service_1 = require("./checkout_service");
+var checkout_service_1 = require("../services/checkout_service");
 var urlpagseguro_enum_1 = require("../models/urlpagseguro_enum");
 var request = require("request");
 var xml2json = require("xml2json");
@@ -95,7 +95,7 @@ var PagSeguroBuilder = (function () {
     PagSeguroBuilder.prototype.send = function (checkout) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            var checkoutService = new checkout_service_1.CheckoutService(self.user);
+            var checkoutService = new checkout_service_1.CheckoutService();
             checkoutService.insert(checkout)
                 .then(function (c) {
                 return checkoutService.getXML(c);

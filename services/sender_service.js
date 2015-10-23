@@ -1,8 +1,7 @@
 "use strict";
 var sender_model_1 = require("../models/sender_model");
 var SenderService = (function () {
-    function SenderService(user) {
-        this.user = user;
+    function SenderService() {
     }
     SenderService.prototype.find = function (filtro) {
         var self = this;

@@ -9,8 +9,8 @@ import {IDocument} from "../models/document_model";
 import {IDocumentBuilder} from "./document_builder";
 import {DocumentBuilder} from "./document_builder";
 import {IPaymentBuilder} from "./pagseguro_builder";
-import {ISenderService} from "./sender_service";
-import {SenderService} from "./sender_service";
+import {ISenderService} from "../services/sender_service";
+import {SenderService} from "../services/sender_service";
 
 export interface IParentSenderBuilder {
     to(sender?:ISender):ISenderBuilder;

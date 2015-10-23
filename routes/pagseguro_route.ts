@@ -5,8 +5,6 @@ import * as bodyParser from "body-parser";
 import {IUserService} from "../services/user_service";
 import {UserService} from "../services/user_service";
 import {INotification} from "../models/notification_model";
-import {INotificationService} from "../services/notification_service";
-import {NotificationService} from "../services/notification_service";
 import {ITransaction} from "../models/transaction_model";
 import {ITransactionService} from "../services/transaction_service";
 import {TransactionService} from "../services/transaction_service";

@@ -15,8 +15,8 @@ import {ItemBuilder} from "./item_builder";
 import {IShipping} from "../models/shipping_model";
 import {IShippingBuilder} from "./shipping_builder";
 import {ShippingBuilder} from "./shipping_builder";
-import {ICheckoutService} from "./checkout_service";
-import {CheckoutService} from "./checkout_service";
+import {ICheckoutService} from "../services/checkout_service";
+import {CheckoutService} from "../services/checkout_service";
 import {EnumURLPagSeguro} from "../models/urlpagseguro_enum";
 import * as request from "request";
 var xml2json = require("xml2json");
@@ -134,7 +134,7 @@ export class PagSeguroBuilder {
     send(checkout: ICheckout): Promise<string> {
         var self = this;
         return new Promise<string>((resolve: Function, reject: Function) => {
-            var checkoutService: ICheckoutService = new CheckoutService(self.user);
+            var checkoutService: ICheckoutService = new CheckoutService();
             checkoutService.insert(checkout)
                 .then((c: ICheckout) => {
                 return checkoutService.getXML(c);
