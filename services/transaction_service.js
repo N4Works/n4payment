@@ -15,7 +15,13 @@ var TransactionService = (function () {
             });
         });
     };
-    TransactionService.prototype.findByCodeAndInsert = function (code) {
+    TransactionService.prototype.findByCode = function (code) {
+        return new Promise(function (resolve, reject) {
+            transaction_model_1.Transaction.findOne({ code: code }, function (error, t) { return !!error ? reject(error) : resolve(t); });
+        });
+    };
+    TransactionService.prototype.findByCodeAndSave = function (code) {
+        var _this = this;
         var self = this;
         return new Promise(function (resolve, reject) {
             var urlTransaction = process.env.NODE_ENV === "production" ? urlpagseguro_enum_1.EnumURLPagSeguro.transaction_production : urlpagseguro_enum_1.EnumURLPagSeguro.transaction_development;
@@ -30,12 +36,69 @@ var TransactionService = (function () {
                 if (!!error) {
                     return reject(error);
                 }
-                var data = JSON.parse(xml2json.toJson(body)).transaction;
+                var data = xml2json.toJson(body, { object: true });
+                var errors = _this.getErrors(data);
+                if (!!errors) {
+                    return reject(errors);
+                }
+                data = data.transaction;
                 data.items = data.items.item;
-                var transaction = new transaction_model_1.Transaction(data);
-                transaction.save(function (error) { return error ? reject(error) : resolve(transaction); });
+                self.findByCode(data.code)
+                    .then(function (t) {
+                    if (!!t) {
+                        return transaction_model_1.Transaction.update({
+                            code: t.code
+                        }, data, function (error) { return error ? reject(error) : resolve(); });
+                    }
+                    new transaction_model_1.Transaction(data).save(function (error) { return error ? reject(error) : resolve(); });
+                })
+                    .catch(function (error) { return reject(error); });
             });
         });
+    };
+    TransactionService.prototype.findByNotificationCodeAndSave = function (notificationCode) {
+        var _this = this;
+        var self = this;
+        return new Promise(function (resolve, reject) {
+            var urlTransaction = process.env.NODE_ENV === "production" ? urlpagseguro_enum_1.EnumURLPagSeguro.transaction_notification_production : urlpagseguro_enum_1.EnumURLPagSeguro.transaction_notification_development;
+            var requestOptions = {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/xml; charset=UTF-8"
+                },
+                uri: urlTransaction + "/" + notificationCode + "?email=" + self.user.email + "&token=" + self.user.token
+            };
+            request(requestOptions, function (error, response, body) {
+                if (!!error) {
+                    return reject(error);
+                }
+                var data = xml2json.toJson(body, { object: true });
+                var errors = _this.getErrors(data);
+                if (!!errors) {
+                    return reject(errors);
+                }
+                data = data.transaction;
+                data.items = data.items.item;
+                self.findByCode(data.code)
+                    .then(function (t) {
+                    if (!!t) {
+                        return transaction_model_1.Transaction.update({
+                            code: t.code
+                        }, data, function (error) { return error ? reject(error) : resolve(); });
+                    }
+                    new transaction_model_1.Transaction(data).save(function (error) { return error ? reject(error) : resolve(); });
+                }).catch(function (error) { return reject(error); });
+            });
+        });
+    };
+    TransactionService.prototype.getErrors = function (data) {
+        var errors = new Array();
+        if (!!data.errors) {
+            errors.push("Foram encontrados os seguintes problemas na requisição:");
+            data.errors = data.errors.error instanceof Array ? data.errors.error : [data.errors.error];
+            errors = errors.concat(data.errors.map(function (e) { return ("  - " + e.code + " -> " + e.message + ";"); }));
+        }
+        return errors.join("\n");
     };
     return TransactionService;
 })();

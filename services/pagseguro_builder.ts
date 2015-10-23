@@ -153,7 +153,14 @@ export class PagSeguroBuilder {
                     if (!!error) {
                         return reject(error);
                     }
-                    var checkout: ICheckoutResponse = JSON.parse(xml2json.toJson(body)).checkout;
+                    var data: any = xml2json.toJson(body, {object:true});
+                    if (!!data.errors) {
+                        data.errors = data.errors.error instanceof Array ? data.errors.error : [data.errors.error];
+                        var mensagem = "Foram encontrados os seguintes problemas na requisição:\n";
+                        mensagem += data.errors.map(e => `  - ${e.code} -> ${e.message};`).join("\n");
+                        return reject(mensagem);
+                    }
+                    var checkout:ICheckoutResponse = data.checkout;
                     var urlPayment = process.env.NODE_ENV === "production" ? EnumURLPagSeguro.payment_production : EnumURLPagSeguro.payment_development;
                     return resolve(`${urlPayment}?code=${checkout.code}`);
                 });

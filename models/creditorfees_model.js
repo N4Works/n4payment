@@ -2,6 +2,8 @@
 var mongoose = require("mongoose");
 ;
 exports.CreditorFeesSchema = {
+    installmentFeeAmount: { type: "number" },
+    operationalFeeAmount: { type: "number" },
     intermediationRateAmount: { type: "number" },
     intermediationFeeAmount: { type: "number" }
 };

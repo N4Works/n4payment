@@ -114,7 +114,14 @@ var PagSeguroBuilder = (function () {
                     if (!!error) {
                         return reject(error);
                     }
-                    var checkout = JSON.parse(xml2json.toJson(body)).checkout;
+                    var data = xml2json.toJson(body, { object: true });
+                    if (!!data.errors) {
+                        data.errors = data.errors.error instanceof Array ? data.errors.error : [data.errors.error];
+                        var mensagem = "Foram encontrados os seguintes problemas na requisição:\n";
+                        mensagem += data.errors.map(function (e) { return ("  - " + e.code + " -> " + e.message + ";"); }).join("\n");
+                        return reject(mensagem);
+                    }
+                    var checkout = data.checkout;
                     var urlPayment = process.env.NODE_ENV === "production" ? urlpagseguro_enum_1.EnumURLPagSeguro.payment_production : urlpagseguro_enum_1.EnumURLPagSeguro.payment_development;
                     return resolve(urlPayment + "?code=" + checkout.code);
                 });

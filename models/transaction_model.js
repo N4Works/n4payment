@@ -48,8 +48,6 @@ exports.TransactionSchema = new mongoose.Schema({
     extraAmount: { type: "number" },
     installmentCount: { type: "number" },
     creditorFees: creditorfees_model_1.CreditorFeesSchema,
-    installmentFeeAmount: { type: "number" },
-    operationalFeeAmount: { type: "number" },
     itemCount: { type: "number" },
     items: [
         item_model_1.ItemSchema

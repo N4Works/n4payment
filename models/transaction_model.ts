@@ -110,10 +110,6 @@ export class EnumTransactionCancellationSource {
  *                                Formato: Decimal, com duas casas decimais separadas por ponto ("."). Por exemplo, 1234.56.
  * @property {number} installmentCount Número de parcelas que o comprador escolheu no pagamento com cartão de crédito.
  * @property {ICreditorFees} creditorFees Custos cobrados pelo intermediador da transação.
- * @property {number} installmentFeeAmount Valor da taxa de parcelamento dessa transação.
- *                                         Formato: Decimal, com duas casas decimais separadas por ponto ("."). Por exemplo, 1234.56.
- * @property {number} operationalFeeAmount Valor da taxa de operação dessa transação.
- *                                         Formato: Decimal, com duas casas decimais separadas por ponto ("."). Por exemplo, 1234.56.
  * @property {number} itemCount Quantidade de itens da transação.
  * @property {Array<IItem>} items Lista de itens.
  * @property {ISender} sender Dados do comprador da transação.
@@ -136,10 +132,6 @@ export interface ITransaction extends mongoose.Document {
     extraAmount: number;
     installmentCount: number;
     creditorFees: ICreditorFees;
-    installmentFeeAmount: number;
-    operationalFeeAmount: number;
-    intermediationRateAmount: number;
-    intermediationFeeAmount: number;
     itemCount: number;
     items: Array<IItem>;
     sender: ISender;
@@ -170,8 +162,6 @@ export var TransactionSchema: mongoose.Schema = new mongoose.Schema({
     extraAmount: { type:"number" },
     installmentCount: { type:"number" },
     creditorFees: CreditorFeesSchema,
-    installmentFeeAmount: { type: "number" },
-    operationalFeeAmount: { type: "number" },
     itemCount: { type: "number" },
     items: [
         ItemSchema
@@ -215,10 +205,6 @@ export var TransactionSchema: mongoose.Schema = new mongoose.Schema({
  *                                Formato: Decimal, com duas casas decimais separadas por ponto ("."). Por exemplo, 1234.56.
  * @property {number} installmentCount Número de parcelas que o comprador escolheu no pagamento com cartão de crédito.
  * @property {ICreditorFees} creditorFees Custos cobrados pelo intermediador da transação.
- * @property {number} installmentFeeAmount Valor da taxa de parcelamento dessa transação.
- *                                         Formato: Decimal, com duas casas decimais separadas por ponto ("."). Por exemplo, 1234.56.
- * @property {number} operationalFeeAmount Valor da taxa de operação dessa transação.
- *                                         Formato: Decimal, com duas casas decimais separadas por ponto ("."). Por exemplo, 1234.56.
  * @property {number} itemCount Quantidade de itens da transação.
  * @property {Array<IItem>} items Lista de itens.
  * @property {ISender} sender Dados do comprador da transação.

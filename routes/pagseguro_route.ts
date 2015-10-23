@@ -17,7 +17,7 @@ import {PagSeguroBuilder as Builder} from "../services/pagseguro_builder";
 import * as cors from "cors";
 var xmlparser = require("express-xml-bodyparser");
 
-var createTest = (user:IUser) => {
+var createTest = (user: IUser) => {
     return Builder.createPaymentFor(user)
         .inCurrency("BRL")
         .withReference("reference123")
@@ -26,48 +26,48 @@ var createTest = (user:IUser) => {
         .withRedirectURL("https://162.243.133.24/api/pagseguro/redirect")
         .withNotificationURL("https://162.243.133.24/api/pagseguro/notifications")
         .to()
-            .withName("Tiago de Carvalho Resende")
-            .withEmail("c68643050873498480057@sandbox.pagseguro.com.br")
-            .bornIn(new Date(1987,6,20))
-            .withPhone()
-                .withAreaCode("21")
-                .withNumber("985255667")
-                .buildAndReturn()
-            .withDocument()
-                .ofType("CPF")
-                .andValue("12561031799")
-                .buildAndReturn()
-            .buildAndReturn()
+        .withName("Tiago de Carvalho Resende")
+        .withEmail("c68643050873498480057@sandbox.pagseguro.com.br")
+        .bornIn(new Date(1987, 6, 20))
+        .withPhone()
+        .withAreaCode("21")
+        .withNumber("985255667")
+        .buildAndReturn()
+        .withDocument()
+        .ofType("CPF")
+        .andValue("12561031799")
+        .buildAndReturn()
+        .buildAndReturn()
         .withItem()
-            .withId("123456")
-            .withDescription("Teste")
-            .withAmount(100)
-            .withQuantity(1)
-            .withShippingCostOf(10)
-            .withWeight(1)
-            .buildAndReturn()
+        .withId("123456")
+        .withDescription("Teste")
+        .withAmount(100)
+        .withQuantity(1)
+        .withShippingCostOf(10)
+        .withWeight(1)
+        .buildAndReturn()
         .withItem()
-            .withId("abc123")
-            .withDescription("Teste2")
-            .withAmount(150)
-            .withQuantity(1)
-            .withShippingCostOf(30)
-            .withWeight(2)
-            .buildAndReturn()
+        .withId("abc123")
+        .withDescription("Teste2")
+        .withAmount(150)
+        .withQuantity(1)
+        .withShippingCostOf(30)
+        .withWeight(2)
+        .buildAndReturn()
         .withShipping()
-            .ofType(EnumShipping.sedex)
-            .withAddress()
-                .atStreet("Rua Amandio Caetano Pinto")
-                .atNumber("143")
-                .withPostalCode("25975720")
-                .inDistrict("Tijuca")
-                .inCity("Teresópolis")
-                .inState("RJ")
-                .inCountry("BRA")
-                .withComplement("Apto 104")
-                .buildAndReturn()
-            .andCost(10)
-            .buildAndReturn()
+        .ofType(EnumShipping.sedex)
+        .withAddress()
+        .atStreet("Rua Amandio Caetano Pinto")
+        .atNumber("143")
+        .withPostalCode("25975720")
+        .inDistrict("Tijuca")
+        .inCity("Teresópolis")
+        .inState("RJ")
+        .inCountry("BRA")
+        .withComplement("Apto 104")
+        .buildAndReturn()
+        .andCost(10)
+        .buildAndReturn()
         .send();
 };
 
@@ -77,15 +77,15 @@ export var Router = (server: express.Router) => {
         .route("/test")
         .get(bodyParser.json({}),
         (request: express.Request, response: express.Response, next: Function) => {
-            var service:IUserService = new UserService();
+            var service: IUserService = new UserService();
             service.find(null)
-                .then((users:Array<IUser>) => {
-                    createTest(users[0])
-                        .then((redirectURL:string) => {
-                            return response.redirect(redirectURL);
-                        })
-                        .catch(error => next(error));
+                .then((users: Array<IUser>) => {
+                createTest(users[0])
+                    .then((redirectURL: string) => {
+                    return response.redirect(redirectURL);
                 })
+                    .catch(error => next(error));
+            })
                 .catch(error => next(error));
         })
         .post(bodyParser.json({}),
@@ -96,17 +96,17 @@ export var Router = (server: express.Router) => {
     router
         .route("/notifications")
         .post(cors({
-            origin: "pagseguro.uol.com.br"
-        }), bodyParser.urlencoded({extended:true}), xmlparser(),
+        origin: "pagseguro.uol.com.br"
+    }), bodyParser.urlencoded({ extended: true }), xmlparser(),
         (request: express.Request, response: express.Response, next: Function) => {
-            var notification:INotification = request.body;
-            var service:IUserService = new UserService();
+            var notification: INotification = request.body;
+            var service: IUserService = new UserService();
             service.find(null)
-                .then((users:Array<IUser>) => {
-                    var transactionService:ITransactionService = new TransactionService(users[0]);
-                    return transactionService.findByCodeAndInsert(notification.notificationCode)
-                            .then((transaction: ITransaction) => response.status(200).json(transaction));
-                })
+                .then((users: Array<IUser>) => {
+                var transactionService: ITransactionService = new TransactionService(users[0]);
+                return transactionService.findByCodeAndInsert(notification.notificationCode)
+                    .then(() => response.status(200).end());
+            })
                 .catch(error => next(error));
         });
 
@@ -114,20 +114,29 @@ export var Router = (server: express.Router) => {
         .route("/transactions/")
         .get(bodyParser.json({}),
         (request: express.Request, response: express.Response, next: Function) => {
-            var transactionService:ITransactionService = new TransactionService();
-            transactionService.find(null)
-                .then((transactions: Array<ITransaction>) => response.status(200).json(transactions))
-                .catch((error:any) => next(error));
+            var service: IUserService = new UserService();
+            service.find(null)
+                .then((users: Array<IUser>) => {
+                var transactionService: ITransactionService = new TransactionService(users[0]);
+                return transactionService.find(null)
+                    .then((transactions: Array<ITransaction>) => response.status(200).json(transactions))
+                    .catch((error: any) => next(error));
+            })
+                .catch(error => next(error));
         });
 
     router
         .route("/transactions/:id")
         .get(bodyParser.json({}),
         (request: express.Request, response: express.Response, next: Function) => {
-            var transactionService:ITransactionService = new TransactionService();
-            transactionService.findByCodeAndInsert(request.params.id)
-                    .then((transaction: ITransaction) => response.status(200).json(transaction))
-                    .catch((error:any) => next(error));
+            var service: IUserService = new UserService();
+            service.find(null)
+                .then((users: Array<IUser>) => {
+                var transactionService: ITransactionService = new TransactionService(users[0]);
+                return transactionService.findByCodeAndInsert(request.params.id)
+                    .then(() => response.status(200).end());
+            })
+                .catch(error => next(error));
         });
 
     return router;
