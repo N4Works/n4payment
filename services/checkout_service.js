@@ -3,13 +3,13 @@ var checkout_model_1 = require("../models/checkout_model");
 var sender_service_1 = require("./sender_service");
 var jsontoxml = require("jsontoxml");
 var CheckoutService = (function () {
-    function CheckoutService(user) {
-        this.senderService = new sender_service_1.SenderService(user);
+    function CheckoutService() {
+        this.senderService = new sender_service_1.SenderService();
     }
-    CheckoutService.prototype.find = function (filtro) {
+    CheckoutService.prototype.find = function (filter) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            return checkout_model_1.Checkout.find(filtro)
+            return checkout_model_1.Checkout.find(filter)
                 .populate("receiver")
                 .populate("sender")
                 .exec(function (error, checkouts) {
@@ -49,7 +49,10 @@ var CheckoutService = (function () {
     CheckoutService.prototype.delete = function (id) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            return checkout_model_1.Checkout.findByIdAndRemove(id, function (error, checkout) { return !!error ? reject(error) : resolve(checkout); });
+            return checkout_model_1.Checkout.findByIdAndRemove(id)
+                .populate("receiver")
+                .populate("sender")
+                .exec(function (error, checkout) { return !!error ? reject(error) : resolve(checkout); });
         });
     };
     CheckoutService.prototype.getXML = function (checkout) {

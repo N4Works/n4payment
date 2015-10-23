@@ -104,7 +104,21 @@ export var Router = (server: express.Router) => {
             service.find(null)
                 .then((users: Array<IUser>) => {
                 var transactionService: ITransactionService = new TransactionService(users[0]);
-                return transactionService.findByCodeAndInsert(notification.notificationCode)
+                return transactionService.findByNotificationCodeAndSave(notification.notificationCode)
+                    .then(() => response.status(200).end());
+            })
+                .catch(error => next(error));
+        });
+
+    router
+        .route("/notifications/:id")
+        .get(bodyParser.json({}),
+        (request: express.Request, response: express.Response, next: Function) => {
+            var service: IUserService = new UserService();
+            service.find(null)
+                .then((users: Array<IUser>) => {
+                var transactionService: ITransactionService = new TransactionService(users[0]);
+                return transactionService.findByNotificationCodeAndSave(request.params.id)
                     .then(() => response.status(200).end());
             })
                 .catch(error => next(error));
@@ -133,7 +147,7 @@ export var Router = (server: express.Router) => {
             service.find(null)
                 .then((users: Array<IUser>) => {
                 var transactionService: ITransactionService = new TransactionService(users[0]);
-                return transactionService.findByCodeAndInsert(request.params.id)
+                return transactionService.findByCodeAndSave(request.params.id)
                     .then(() => response.status(200).end());
             })
                 .catch(error => next(error));

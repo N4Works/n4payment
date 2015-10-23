@@ -89,7 +89,19 @@ exports.Router = function (server) {
         service.find(null)
             .then(function (users) {
             var transactionService = new transaction_service_1.TransactionService(users[0]);
-            return transactionService.findByCodeAndInsert(notification.notificationCode)
+            return transactionService.findByNotificationCodeAndSave(notification.notificationCode)
+                .then(function () { return response.status(200).end(); });
+        })
+            .catch(function (error) { return next(error); });
+    });
+    router
+        .route("/notifications/:id")
+        .get(bodyParser.json({}), function (request, response, next) {
+        var service = new user_service_1.UserService();
+        service.find(null)
+            .then(function (users) {
+            var transactionService = new transaction_service_1.TransactionService(users[0]);
+            return transactionService.findByNotificationCodeAndSave(request.params.id)
                 .then(function () { return response.status(200).end(); });
         })
             .catch(function (error) { return next(error); });
@@ -114,7 +126,7 @@ exports.Router = function (server) {
         service.find(null)
             .then(function (users) {
             var transactionService = new transaction_service_1.TransactionService(users[0]);
-            return transactionService.findByCodeAndInsert(request.params.id)
+            return transactionService.findByCodeAndSave(request.params.id)
                 .then(function () { return response.status(200).end(); });
         })
             .catch(function (error) { return next(error); });

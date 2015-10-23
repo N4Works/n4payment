@@ -1,6 +1,5 @@
 "use strict";
 
-import {IUser} from "../models/user_model";
 import {ICheckout} from "../models/checkout_model";
 import {IDocument} from "../models/document_model";
 import {IItem} from "../models/item_model";
@@ -11,32 +10,93 @@ import {ISenderService} from "./sender_service";
 import {SenderService} from "./sender_service";
 var jsontoxml = require("jsontoxml");
 
+/**
+ * @interface
+ * @description Serviço para compra.
+ */
 export interface ICheckoutService {
-    find(filtro: any): Promise<Array<ICheckout>>;
+    /**
+     * @method
+     * @param {any} filter
+     * @return {Promise<Array<ICheckout>>} Promessa de uma lista de compras.
+     * @description Busca compras através de um filtro.
+     */
+    find(filter: any): Promise<Array<ICheckout>>;
+    /**
+     * @method
+     * @param {string} id
+     * @return {Promise<ICheckout>} Promessa de uma compra.
+     * @description Busca uma compra através do identificador.
+     */
     findById(id: string): Promise<ICheckout>;
+    /**
+     * @method
+     * @param {any} checkoutData
+     * @return {Promise<ICheckout>} Promessa de uma compra após persistida.
+     * @description Persiste uma compra no banco de dados.
+     */
     insert(checkoutData: any): Promise<ICheckout>;
+    /**
+     * @method
+     * @param {string} id Identificador da compra.
+     * @param {any} checkoutData Objeto contendo os campos que devem ser alterados.
+     * @return {Promise<ICheckout>} Promessa de uma compra após persistida.
+     * @description Persiste uma compra no banco de dados.
+     */
     update(id: string, checkoutData: any): Promise<ICheckout>;
+    /**
+     * @method
+     * @param {string} id Identificador da compra.
+     * @return {Promise<ICheckout>} Promessa da compra deletada.
+     * @description Deleta uma compra do banco de dados.
+     */
     delete(id: string): Promise<ICheckout>;
+    /**
+     * @method
+     * @param {ICheckout} checkout
+     * @return {Promise<string>} Promessa do XML gerado a partir da compra.
+     * @description Cria um XML a partir da compra.
+     */
     getXML(checkout: ICheckout): Promise<string>;
 }
 
+/**
+ * @class
+ * @description Serviço para compra.
+ */
 export class CheckoutService implements ICheckoutService {
     senderService: ISenderService;
-    constructor(user?: IUser) {
-        this.senderService = new SenderService(user);
+
+    /**
+     * @constructor
+     */
+    constructor() {
+        this.senderService = new SenderService();
     }
 
-    find(filtro: any) {
+    /**
+     * @method
+     * @param {any} filter
+     * @return {Promise<Array<ICheckout>>} Promessa de uma lista de compras.
+     * @description Busca compras através de um filtro.
+     */
+    find(filter: any) : Promise<Array<ICheckout>> {
         var self = this;
         return new Promise<Array<ICheckout>>((resolve: Function, reject: Function) =>
-            Checkout.find(filtro)
+            Checkout.find(filter)
                 .populate("receiver")
                 .populate("sender")
                 .exec((error: any, checkouts: Array<ICheckout>) =>
                 (!!error) ? reject(error) : resolve(checkouts)));
     }
 
-    findById(id: string) {
+    /**
+     * @method
+     * @param {string} id
+     * @return {Promise<ICheckout>} Promessa de uma compra.
+     * @description Busca uma compra através do identificador.
+     */
+    findById(id: string): Promise<ICheckout> {
         var self = this;
         return new Promise<ICheckout>((resolve: Function, reject: Function) =>
             Checkout.findById(id)
@@ -46,7 +106,13 @@ export class CheckoutService implements ICheckoutService {
                 (!!error) ? reject(error) : resolve(checkout)));
     }
 
-    insert(checkoutData: any) {
+    /**
+     * @method
+     * @param {any} checkoutData
+     * @return {Promise<ICheckout>} Promessa de uma compra após persistida.
+     * @description Persiste uma compra no banco de dados.
+     */
+    insert(checkoutData: any): Promise<ICheckout> {
         var self = this;
         return new Promise<ICheckout>((resolve: Function, reject: Function) => {
             var checkout: ICheckout = new Checkout(checkoutData);
@@ -59,19 +125,41 @@ export class CheckoutService implements ICheckoutService {
         });
     }
 
-    update(id: string, checkoutData: any) {
+    /**
+     * @method
+     * @param {string} id Identificador da compra.
+     * @param {any} checkoutData Objeto contendo os campos que devem ser alterados.
+     * @return {Promise<ICheckout>} Promessa de uma compra após persistida.
+     * @description Persiste uma compra no banco de dados.
+     */
+    update(id: string, checkoutData: any): Promise<ICheckout> {
         var self = this;
         return new Promise<ICheckout>((resolve: Function, reject: Function) => {
             Checkout.findByIdAndUpdate(id, checkoutData, (error: any, checkout: ICheckout) => !!error ? reject(error) : resolve(checkout));
         });
     }
 
-    delete(id: string) {
+    /**
+     * @method
+     * @param {string} id Identificador da compra.
+     * @return {Promise<ICheckout>} Promessa da compra deletada.
+     * @description Deleta uma compra do banco de dados.
+     */
+    delete(id: string): Promise<ICheckout> {
         var self = this;
         return new Promise<ICheckout>((resolve: Function, reject: Function) =>
-            Checkout.findByIdAndRemove(id, (error: any, checkout: ICheckout) => !!error ? reject(error) : resolve(checkout)));
+            Checkout.findByIdAndRemove(id)
+            .populate("receiver")
+            .populate("sender")
+            .exec((error: any, checkout: ICheckout) => !!error ? reject(error) : resolve(checkout)));
     }
 
+    /**
+     * @method
+     * @param {ICheckout} checkout
+     * @return {Promise<string>} Promessa do XML gerado a partir da compra.
+     * @description Cria um XML a partir da compra.
+     */
     getXML(checkout: ICheckout): Promise<string> {
         return new Promise<string>((resolve: Function, reject: Function) => {
             try {
