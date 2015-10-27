@@ -7,18 +7,64 @@ import {EnumURLPagSeguro} from "../models/urlpagseguro_enum";
 import * as request from "request";
 var xml2json = require("xml2json");
 
-
+/**
+ * @interface
+ * @description Serviço para transação.
+ */
 export interface ITransactionService {
+    /**
+     * @method
+     * @param {any} filter
+     * @return {Promise<Array<ITransaction>>} Promessa de um lista de transações.
+     * @description Busca transações através de um filtro.
+     */
     find(filtro: any): Promise<Array<ITransaction>>;
+    /**
+     * @method
+     * @param {string} code
+     * @return {Promise<ITransaction>} Promessa de uma transação.
+     * @description Busca uma transação através do código.
+     */
     findByCode(code: string): Promise<ITransaction>;
+    /**
+     * @method
+     * @param {string} code
+     * @return {Promise<ITransaction>} Promessa de uma transação.
+     * @description Busca uma transação através do código no servidor do PagSeguro, e
+     *              grava as alterações na base de dados.
+     */
     findByCodeAndSave(code: string): Promise<ITransaction>;
+    /**
+     * @method
+     * @param {string} notificationCode
+     * @return {Promise<void>} Promessa sem qualquer retorno.
+     * @description Busca uma transação através do código da notificação no servidor
+     *              do PagSeguro, e grava as alterações na base de dados.
+     *              Esse método é utilizado pela API do PagSeguro para notificar
+     *              alterações de status na transação, por esse motivo, não é retornado
+     *              qualquer valor.
+     */
     findByNotificationCodeAndSave(notificationCode: string): Promise<void>;
 }
 
+/**
+ * @class
+ * @description Serviço para transação.
+ */
 export class TransactionService implements ITransactionService {
+    /**
+     * @constructor
+     * @param {IUser} user Usuário logado.
+     */
     constructor(private user: IUser) {
     }
 
+    /**
+     * @method
+     * @param {any} filter
+     * @return {Promise<Array<ITransaction>>} Promessa de um lista de transações.
+     * @description Busca transações através de um filtro.
+     */
     find(filtro: any): Promise<Array<ITransaction>> {
         var self = this;
         return new Promise<Array<ITransaction>>((resolve: Function, reject: Function) =>
@@ -26,6 +72,12 @@ export class TransactionService implements ITransactionService {
                 (!!error) ? reject(error) : resolve(transactions)));
     }
 
+    /**
+     * @method
+     * @param {string} code
+     * @return {Promise<ITransaction>} Promessa de uma transação.
+     * @description Busca uma transação através do código.
+     */
     findByCode(code: string): Promise<ITransaction> {
         return new Promise<ITransaction>((resolve: Function, reject: Function) => {
             Transaction.findOne({ code: code },
@@ -33,6 +85,13 @@ export class TransactionService implements ITransactionService {
         });
     }
 
+    /**
+     * @method
+     * @param {string} code
+     * @return {Promise<ITransaction>} Promessa de uma transação.
+     * @description Busca uma transação através do código no servidor do PagSeguro, e
+     *              grava as alterações na base de dados.
+     */
     findByCodeAndSave(code: string): Promise<ITransaction> {
         var self = this;
         return new Promise<ITransaction>((resolve: Function, reject: Function) => {
@@ -70,6 +129,16 @@ export class TransactionService implements ITransactionService {
         });
     }
 
+    /**
+     * @method
+     * @param {string} notificationCode
+     * @return {Promise<void>} Promessa sem qualquer retorno.
+     * @description Busca uma transação através do código da notificação no servidor
+     *              do PagSeguro, e grava as alterações na base de dados.
+     *              Esse método é utilizado pela API do PagSeguro para notificar
+     *              alterações de status na transação, por esse motivo, não é retornado
+     *              qualquer valor.
+     */
     findByNotificationCodeAndSave(notificationCode: string): Promise<void> {
         var self = this;
         return new Promise<void>((resolve: Function, reject: Function) => {
@@ -106,6 +175,13 @@ export class TransactionService implements ITransactionService {
         });
     }
 
+    /**
+     * @method
+     * @param {any} data Objeto retornado pelo PagSeguro.
+     * @returns {string} Mensagens de erro.
+     * @description Método responsável por converter a estrutura de retorno de erros
+     *              do PagSeguro em um modelo válido.
+     */
     private getErrors(data: any) {
         var errors: Array<string> = new Array<string>();
         if (!!data.errors) {

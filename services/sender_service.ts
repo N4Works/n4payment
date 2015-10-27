@@ -47,7 +47,7 @@ export interface ISenderService {
     /**
      * @method
      * @param {string} id Identificador da comprador.
-     * @return {Promise<ISender>} Promessa da comprador deletado.
+     * @return {Promise<ISender>} Promessa do comprador deletado.
      * @description Deleta um comprador do banco de dados.
      */
     delete(id: string): Promise<ISender>;
@@ -127,7 +127,7 @@ export class SenderService implements ISenderService {
     /**
      * @method
      * @param {string} id Identificador da comprador.
-     * @return {Promise<ISender>} Promessa da comprador deletado.
+     * @return {Promise<ISender>} Promessa do comprador deletado.
      * @description Deleta um comprador do banco de dados.
      */
     delete(id: string) {
