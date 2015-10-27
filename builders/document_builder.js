@@ -1,8 +1,8 @@
 "use strict";
 var document_model_1 = require("../models/document_model");
 var DocumentBuilder = (function () {
-    function DocumentBuilder(senderBuilder) {
-        this.senderBuilder = senderBuilder;
+    function DocumentBuilder(builder) {
+        this.builder = builder;
         this.document = new document_model_1.Document();
     }
     DocumentBuilder.prototype.ofType = function (type) {
@@ -17,11 +17,11 @@ var DocumentBuilder = (function () {
         return this.document;
     };
     DocumentBuilder.prototype.buildAndReturn = function () {
-        this.senderBuilder.withDocument(this.document);
-        return this.senderBuilder;
+        this.builder.withDocument(this.document);
+        return this.builder;
     };
     DocumentBuilder.prototype.return = function () {
-        return this.senderBuilder;
+        return this.builder;
     };
     return DocumentBuilder;
 })();
