@@ -7,7 +7,6 @@ import {IItem} from "../models/item_model";
 import {ICheckout} from "../models/checkout_model";
 import {Checkout} from "../models/checkout_model";
 import {ICheckoutResponse} from "../models/checkout_model";
-import {IParentSenderBuilder} from "./sender_builder";
 import {ISenderBuilder} from "./sender_builder";
 import {SenderBuilder} from "./sender_builder";
 import {IItemBuilder} from "./item_builder";
@@ -17,6 +16,8 @@ import {IShippingBuilder} from "./shipping_builder";
 import {ShippingBuilder} from "./shipping_builder";
 import {ICheckoutService} from "../services/checkout_service";
 import {CheckoutService} from "../services/checkout_service";
+import {IPagSeguroSevice} from "../services/pagseguro_service";
+import {PagSeguroService} from "../services/pagseguro_service";
 import {EnumURLPagSeguro} from "../models/urlpagseguro_enum";
 import * as request from "request";
 var xml2json = require("xml2json");
@@ -117,7 +118,7 @@ export interface IPaymentBuilder {
  * @class
  * @description Builder de pagamento.
  */
-export class PaymentBuilder implements IPaymentBuilder {
+export class PaymentBuilder {
     checkout: ICheckout;
 
     /**
@@ -251,55 +252,7 @@ export class PaymentBuilder implements IPaymentBuilder {
      * @description Envia o pagamento ao PagSeguro.
      */
     send(): Promise<string> {
-        var self = this;
-        return new Promise<string>((resolve: Function, reject: Function) => {
-            var checkoutService: ICheckoutService = new CheckoutService();
-            checkoutService.insert(self.checkout)
-                .then((c: ICheckout) => {
-                return checkoutService.getXML(c);
-            })
-                .then((xml: string) => {
-                var urlCheckout = process.env.NODE_ENV === "production" ? EnumURLPagSeguro.checkout_production : EnumURLPagSeguro.checkout_development;
-                var requestOptions: request.Options = {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/xml; charset=UTF-8"
-                    },
-                    uri: `${urlCheckout}?email=${self.checkout.receiver.email}&token=${self.checkout.receiver.token}`,
-                    body: xml
-                };
-                request(requestOptions, (error: any, response: any, body: any) => {
-                    if (!!error) {
-                        return reject(error);
-                    }
-                    var data: any = xml2json.toJson(body, { object: true });
-                    var errors: string = this.getErrors(data);
-                    if (!!errors) {
-                        return reject(errors);
-                    }
-                    var checkout: ICheckoutResponse = data.checkout;
-                    var urlPayment = process.env.NODE_ENV === "production" ? EnumURLPagSeguro.payment_production : EnumURLPagSeguro.payment_development;
-                    return resolve(`${urlPayment}?code=${checkout.code}`);
-                });
-            })
-                .catch((error: any) => reject(error));
-        });
-    }
-
-    /**
-     * @method
-     * @param {any} data Objeto retornado pelo PagSeguro.
-     * @returns {string} Mensagens de erro.
-     * @description Método responsável por converter a estrutura de retorno de erros
-     *              do PagSeguro em um modelo válido.
-     */
-    private getErrors(data: any) {
-        var errors: Array<string> = new Array<string>();
-        if (!!data.errors) {
-            errors.push("Foram encontrados os seguintes problemas na requisição:");
-            data.errors = data.errors.error instanceof Array ? data.errors.error : [data.errors.error];
-            errors = errors.concat(data.errors.map(e => `  - ${e.code} -> ${e.message};`));
-        }
-        return errors.join("\n");
+        var pagseguroService: IPagSeguroSevice = new PagSeguroService(this.user);
+        return pagseguroService.sendPayment(this.checkout);
     }
 }

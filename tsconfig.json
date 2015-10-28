@@ -68,6 +68,7 @@
         "routes/sender_route.ts",
         "routes/user_route.ts",
         "services/checkout_service.ts",
+        "services/pagseguro_service.ts",
         "services/sender_service.ts",
         "services/transaction_service.ts",
         "services/user_service.ts",

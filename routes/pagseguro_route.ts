@@ -5,9 +5,13 @@ import * as bodyParser from "body-parser";
 import {IUserService} from "../services/user_service";
 import {UserService} from "../services/user_service";
 import {INotification} from "../models/notification_model";
+import {ICheckout} from "../models/checkout_model";
+import {Checkout} from "../models/checkout_model";
 import {ITransaction} from "../models/transaction_model";
 import {ITransactionService} from "../services/transaction_service";
 import {TransactionService} from "../services/transaction_service";
+import {IPagSeguroSevice} from "../services/pagseguro_service";
+import {PagSeguroService} from "../services/pagseguro_service";
 import {EnumShipping} from "../models/shipping_model";
 import {ICheckoutResponse} from "../models/checkout_model";
 import {IUser} from "../models/user_model";
@@ -148,6 +152,23 @@ export var Router = (server: express.Router) => {
                 var transactionService: ITransactionService = new TransactionService(users[0]);
                 return transactionService.findByCodeAndSave(request.params.id)
                     .then(() => response.status(200).end());
+            })
+                .catch(error => next(error));
+        });
+
+    router
+        .route("/payments/")
+        .post(bodyParser.json({}),
+        (request: express.Request, response: express.Response, next: Function) => {
+            var service: IUserService = new UserService();
+            service.find(null)
+                .then((users: Array<IUser>) => {
+                var pagseguroService: IPagSeguroSevice = new PagSeguroService(users[0]);
+                var checkout:ICheckout = new Checkout(request.body);
+                console.log(checkout);
+                return pagseguroService.sendPayment(checkout)
+                    .then((redirectURL: string) => response.redirect(redirectURL))
+                    .catch((e) => next(e));
             })
                 .catch(error => next(error));
         });

@@ -2,7 +2,7 @@
 
 import {IItem} from "../models/item_model";
 import {Item} from "../models/item_model";
-import {IPaymentBuilder} from "./pagseguro_builder";
+import {IPaymentBuilder} from "./payment_builder";
 
 /**
  * @interface

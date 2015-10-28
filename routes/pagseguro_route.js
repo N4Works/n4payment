@@ -2,7 +2,9 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var user_service_1 = require("../services/user_service");
+var checkout_model_1 = require("../models/checkout_model");
 var transaction_service_1 = require("../services/transaction_service");
+var pagseguro_service_1 = require("../services/pagseguro_service");
 var shipping_model_1 = require("../models/shipping_model");
 var payment_builder_1 = require("../builders/payment_builder");
 var cors = require("cors");
@@ -128,6 +130,21 @@ exports.Router = function (server) {
             var transactionService = new transaction_service_1.TransactionService(users[0]);
             return transactionService.findByCodeAndSave(request.params.id)
                 .then(function () { return response.status(200).end(); });
+        })
+            .catch(function (error) { return next(error); });
+    });
+    router
+        .route("/payments/")
+        .post(bodyParser.json({}), function (request, response, next) {
+        var service = new user_service_1.UserService();
+        service.find(null)
+            .then(function (users) {
+            var pagseguroService = new pagseguro_service_1.PagSeguroService(users[0]);
+            var checkout = new checkout_model_1.Checkout(request.body);
+            console.log(checkout);
+            return pagseguroService.sendPayment(checkout)
+                .then(function (redirectURL) { return response.redirect(redirectURL); })
+                .catch(function (e) { return next(e); });
         })
             .catch(function (error) { return next(error); });
     });
