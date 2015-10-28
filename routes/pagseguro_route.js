@@ -4,11 +4,11 @@ var bodyParser = require("body-parser");
 var user_service_1 = require("../services/user_service");
 var transaction_service_1 = require("../services/transaction_service");
 var shipping_model_1 = require("../models/shipping_model");
-var pagseguro_builder_1 = require("../services/pagseguro_builder");
+var payment_builder_1 = require("../builders/payment_builder");
 var cors = require("cors");
 var xmlparser = require("express-xml-bodyparser");
 var createTest = function (user) {
-    return pagseguro_builder_1.PagSeguroBuilder.createPaymentFor(user)
+    return new payment_builder_1.PaymentBuilder(user)
         .inCurrency("BRL")
         .withReference("reference123")
         .withMaxUses(999)

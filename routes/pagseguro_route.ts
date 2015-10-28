@@ -11,12 +11,13 @@ import {TransactionService} from "../services/transaction_service";
 import {EnumShipping} from "../models/shipping_model";
 import {ICheckoutResponse} from "../models/checkout_model";
 import {IUser} from "../models/user_model";
-import {PagSeguroBuilder as Builder} from "../services/pagseguro_builder";
+import {IPaymentBuilder} from "../builders/payment_builder";
+import {PaymentBuilder} from "../builders/payment_builder";
 import * as cors from "cors";
 var xmlparser = require("express-xml-bodyparser");
 
 var createTest = (user: IUser) => {
-    return Builder.createPaymentFor(user)
+    return new PaymentBuilder(user)
         .inCurrency("BRL")
         .withReference("reference123")
         .withMaxUses(999)

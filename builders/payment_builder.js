@@ -13,8 +13,7 @@ var EnumPayment;
     EnumPayment[EnumPayment["subscription"] = 1] = "subscription";
 })(EnumPayment || (EnumPayment = {}));
 var PaymentBuilder = (function () {
-    function PaymentBuilder(pagSeguroBuilder, user) {
-        this.pagSeguroBuilder = pagSeguroBuilder;
+    function PaymentBuilder(user) {
         this.user = user;
         this.checkout = new checkout_model_1.Checkout();
         this.checkout.receiver = user;
@@ -66,37 +65,11 @@ var PaymentBuilder = (function () {
         return this;
     };
     PaymentBuilder.prototype.send = function () {
-        return this.pagSeguroBuilder.send(this.checkout);
-    };
-    return PaymentBuilder;
-})();
-var SubscriptionBuilder = (function () {
-    function SubscriptionBuilder(pagSeguroBuilder, user) {
-        this.pagSeguroBuilder = pagSeguroBuilder;
-        this.user = user;
-    }
-    SubscriptionBuilder.prototype.return = function () {
-        return this.pagSeguroBuilder;
-    };
-    return SubscriptionBuilder;
-})();
-var PagSeguroBuilder = (function () {
-    function PagSeguroBuilder(user) {
-        this.user = user;
-    }
-    PagSeguroBuilder.createPaymentFor = function (user) {
-        var builder = new PagSeguroBuilder(user);
-        return new PaymentBuilder(builder, user);
-    };
-    PagSeguroBuilder.createSubscriptionFor = function (user) {
-        var builder = new PagSeguroBuilder(user);
-        return new SubscriptionBuilder(builder, user);
-    };
-    PagSeguroBuilder.prototype.send = function (checkout) {
+        var _this = this;
         var self = this;
         return new Promise(function (resolve, reject) {
             var checkoutService = new checkout_service_1.CheckoutService();
-            checkoutService.insert(checkout)
+            checkoutService.insert(self.checkout)
                 .then(function (c) {
                 return checkoutService.getXML(c);
             })
@@ -107,7 +80,7 @@ var PagSeguroBuilder = (function () {
                     headers: {
                         "Content-Type": "application/xml; charset=UTF-8"
                     },
-                    uri: urlCheckout + "?email=" + checkout.receiver.email + "&token=" + checkout.receiver.token,
+                    uri: urlCheckout + "?email=" + self.checkout.receiver.email + "&token=" + self.checkout.receiver.token,
                     body: xml
                 };
                 request(requestOptions, function (error, response, body) {
@@ -115,11 +88,9 @@ var PagSeguroBuilder = (function () {
                         return reject(error);
                     }
                     var data = xml2json.toJson(body, { object: true });
-                    if (!!data.errors) {
-                        data.errors = data.errors.error instanceof Array ? data.errors.error : [data.errors.error];
-                        var mensagem = "Foram encontrados os seguintes problemas na requisição:\n";
-                        mensagem += data.errors.map(function (e) { return ("  - " + e.code + " -> " + e.message + ";"); }).join("\n");
-                        return reject(mensagem);
+                    var errors = _this.getErrors(data);
+                    if (!!errors) {
+                        return reject(errors);
                     }
                     var checkout = data.checkout;
                     var urlPayment = process.env.NODE_ENV === "production" ? urlpagseguro_enum_1.EnumURLPagSeguro.payment_production : urlpagseguro_enum_1.EnumURLPagSeguro.payment_development;
@@ -129,6 +100,15 @@ var PagSeguroBuilder = (function () {
                 .catch(function (error) { return reject(error); });
         });
     };
-    return PagSeguroBuilder;
+    PaymentBuilder.prototype.getErrors = function (data) {
+        var errors = new Array();
+        if (!!data.errors) {
+            errors.push("Foram encontrados os seguintes problemas na requisição:");
+            data.errors = data.errors.error instanceof Array ? data.errors.error : [data.errors.error];
+            errors = errors.concat(data.errors.map(function (e) { return ("  - " + e.code + " -> " + e.message + ";"); }));
+        }
+        return errors.join("\n");
+    };
+    return PaymentBuilder;
 })();
-exports.PagSeguroBuilder = PagSeguroBuilder;
+exports.PaymentBuilder = PaymentBuilder;
