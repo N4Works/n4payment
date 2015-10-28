@@ -1,8 +1,8 @@
 "use strict";
 var phone_model_1 = require("../models/phone_model");
 var PhoneBuilder = (function () {
-    function PhoneBuilder(senderBuilder) {
-        this.senderBuilder = senderBuilder;
+    function PhoneBuilder(builder) {
+        this.builder = builder;
         this.phone = new phone_model_1.Phone();
     }
     PhoneBuilder.prototype.withAreaCode = function (areaCode) {
@@ -17,11 +17,11 @@ var PhoneBuilder = (function () {
         return this.phone;
     };
     PhoneBuilder.prototype.buildAndReturn = function () {
-        this.senderBuilder.withPhone(this.phone);
-        return this.senderBuilder;
+        this.builder.withPhone(this.phone);
+        return this.builder;
     };
     PhoneBuilder.prototype.return = function () {
-        return this.senderBuilder;
+        return this.builder;
     };
     return PhoneBuilder;
 })();

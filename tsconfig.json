@@ -24,7 +24,6 @@
         "builders/address_builder.ts",
         "builders/document_builder.ts",
         "builders/item_builder.ts",
-        "builders/pagseguro_builder.ts",
         "builders/payment_builder.ts",
         "builders/phone_builder.ts",
         "builders/sender_builder.ts",
