@@ -26,6 +26,7 @@ var PagSeguroService = (function () {
                     if (!!error) {
                         return reject(error);
                     }
+                    console.log(body);
                     var data = xml2json.toJson(body, { object: true });
                     var errors = PagSeguroService.getErrors(data);
                     if (!!errors) {

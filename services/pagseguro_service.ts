@@ -16,7 +16,6 @@ export interface IPagSeguroSevice {
 
 export class PagSeguroService {
     constructor(private user: IUser) {
-
     }
 
     sendPayment(checkout: ICheckout): Promise<string> {
@@ -38,6 +37,7 @@ export class PagSeguroService {
                         if (!!error) {
                             return reject(error);
                         }
+                        console.log(body);
                         var data: any = xml2json.toJson(body, { object: true });
                         var errors: string = PagSeguroService.getErrors(data);
                         if (!!errors) {
