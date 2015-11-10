@@ -10,7 +10,7 @@ var PagSeguroService = (function () {
     PagSeguroService.prototype.sendPayment = function (checkout) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            var checkoutService = new checkout_service_1.CheckoutService();
+            var checkoutService = new checkout_service_1.CheckoutService(self.user);
             checkoutService.getXML(checkout)
                 .then(function (xml) {
                 var urlCheckout = process.env.NODE_ENV === "production" ? urlpagseguro_enum_1.EnumURLPagSeguro.checkout_production : urlpagseguro_enum_1.EnumURLPagSeguro.checkout_development;
@@ -26,7 +26,6 @@ var PagSeguroService = (function () {
                     if (!!error) {
                         return reject(error);
                     }
-                    console.log(body);
                     var data = xml2json.toJson(body, { object: true });
                     var errors = PagSeguroService.getErrors(data);
                     if (!!errors) {
@@ -34,7 +33,8 @@ var PagSeguroService = (function () {
                     }
                     var checkout = data.checkout;
                     var urlPayment = process.env.NODE_ENV === "production" ? urlpagseguro_enum_1.EnumURLPagSeguro.payment_production : urlpagseguro_enum_1.EnumURLPagSeguro.payment_development;
-                    return resolve(urlPayment + "?code=" + checkout.code);
+                    var redirectURL = urlPayment + "?code=" + checkout.code;
+                    return resolve(redirectURL);
                 });
             })
                 .catch(function (e) { return reject(e); });

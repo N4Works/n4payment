@@ -6,12 +6,12 @@ import {ISender} from "../models/sender_model";
 import {ISenderService} from "../services/sender_service";
 import {SenderService} from "../services/sender_service";
 
-export var Router = (server: express.Router) => {
+export var Router = (server: express.Application) => {
     var router: express.Router = express.Router(server);
     var senderService: ISenderService = new SenderService();
 
     router
-        .route("/")
+        .route("/:userId")
         .get(bodyParser.urlencoded({extended: true}),
         (request: express.Request, response: express.Response, next: Function) => {
             var filter:any = request.body;
@@ -28,7 +28,7 @@ export var Router = (server: express.Router) => {
         });
 
     router
-        .route("/:id")
+        .route("/:userId/:id")
         .get(bodyParser.json({}),
         (request: express.Request, response: express.Response, next: Function) => {
             senderService.findById(request.params.id)

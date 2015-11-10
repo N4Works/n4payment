@@ -21,7 +21,7 @@ export class PagSeguroService {
     sendPayment(checkout: ICheckout): Promise<string> {
         var self = this;
         return new Promise<string>((resolve: Function, reject: Function) => {
-            var checkoutService: ICheckoutService = new CheckoutService();
+            var checkoutService: ICheckoutService = new CheckoutService(self.user);
             checkoutService.getXML(checkout)
                 .then((xml: string) => {
                     var urlCheckout = process.env.NODE_ENV === "production" ? EnumURLPagSeguro.checkout_production : EnumURLPagSeguro.checkout_development;
@@ -37,7 +37,6 @@ export class PagSeguroService {
                         if (!!error) {
                             return reject(error);
                         }
-                        console.log(body);
                         var data: any = xml2json.toJson(body, { object: true });
                         var errors: string = PagSeguroService.getErrors(data);
                         if (!!errors) {
@@ -45,7 +44,8 @@ export class PagSeguroService {
                         }
                         var checkout: ICheckoutResponse = data.checkout;
                         var urlPayment = process.env.NODE_ENV === "production" ? EnumURLPagSeguro.payment_production : EnumURLPagSeguro.payment_development;
-                        return resolve(`${urlPayment}?code=${checkout.code}`);
+                        var redirectURL = `${urlPayment}?code=${checkout.code}`;
+                        return resolve(redirectURL);
                     });
                 })
                 .catch(e => reject(e));

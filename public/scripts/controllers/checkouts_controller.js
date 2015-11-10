@@ -1,9 +1,11 @@
 "use strict";
 var CheckoutsController = (function () {
-    function CheckoutsController(resource, userResource, senderResource) {
+    function CheckoutsController($window, resource, userResource, senderResource, pagseguroResource) {
+        this.$window = $window;
         this.resource = resource;
         this.userResource = userResource;
         this.senderResource = senderResource;
+        this.pagseguroResource = pagseguroResource;
         this.checkout = new CheckoutModel();
         this.item = new ItemModel();
         var self = this;
@@ -32,13 +34,24 @@ var CheckoutsController = (function () {
             .catch(function (error) { return console.log(error); });
     };
     CheckoutsController.prototype.edit = function (checkout) {
-        this.checkout = checkout;
+        var _this = this;
+        this.resource.findById(checkout._id)
+            .then(function (checkoutCompleto) {
+            _this.checkout = angular.extend(checkout, checkoutCompleto);
+        })
+            .catch(function (e) { return console.log(e); });
     };
     CheckoutsController.prototype.delete = function (checkout) {
         var self = this;
         this.resource.delete(checkout._id)
             .then(function () { return self.checkouts.splice(self.checkouts.indexOf(checkout), 1); })
             .catch(function (error) { return console.log(error); });
+    };
+    CheckoutsController.prototype.send = function (checkout) {
+        var self = this;
+        this.pagseguroResource.send(checkout)
+            .then(function (redirectURL) { return self.$window.location.href = redirectURL; })
+            .catch(function (e) { return console.log(e); });
     };
     CheckoutsController.prototype.editItem = function (item) {
         this.itemSelected = item;
@@ -58,8 +71,10 @@ var CheckoutsController = (function () {
 })();
 angular.module("n4_payment")
     .controller("CheckoutsController", [
+    "$window",
     "CheckoutResource",
     "UserResource",
     "SenderResource",
+    "PagSeguroResource",
     CheckoutsController
 ]);

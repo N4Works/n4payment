@@ -7,8 +7,8 @@
         </select>
         <input maxLength="200" name="name" ng-model="controller.checkout.reference" placeholder="Código interno da transação" type="text">
         <input max="9999999" min="-9999999" name="extraAmount" ng-model="controller.checkout.extraAmount" placeholder="Valor de acréscimo ou desconto" type="number">
-        <input maxlength="255" name="redirectURL" ng-model="controller.checkout.redirectURL" placeholder="URL para redirecionamento" type="url">
-        <input maxlength="255" name="notificationURL" ng-model="controller.checkout.notificationURL" placeholder="URL para notificação" type="url">
+        <input maxlength="255" name="redirectURL" ng-model="controller.checkout.redirectURL" placeholder="URL para redirecionamento" type="uri">
+        <input maxlength="255" name="notificationURL" ng-model="controller.checkout.notificationURL" placeholder="URL para notificação" type="uri">
         <input max="999" min="0" name="maxUses" ng-model="controller.checkout.maxUses" placeholder="Número máximo de usos para o código de pagamento." type="number">
         <input max="999999999" min="30" name="maxAge" ng-model="controller.checkout.maxAge" placeholder="Prazo de validade do código de pagamento em segundos" type="number">
         <div>
@@ -114,7 +114,7 @@
                 <option value="1">PAC</option>
                 <option value="2">SEDEX</option>
             </select>
-            <input max="9999999" name="cost" ng-model="controller.checkout.cost" placeholder="Custo do frete" type="number">
+            <input max="9999999" name="cost" ng-model="controller.checkout.shipping.cost" placeholder="Custo do frete" type="number">
             <input maxLength="80" name="street" ng-model="controller.checkout.shipping.address.street" placeholder="Rua do endereço" type="text">
             <input maxLength="20" name="number" ng-model="controller.checkout.shipping.address.number" placeholder="Número" type="text">
             <input maxLength="8" name="postalCode" ng-model="controller.checkout.shipping.address.postalCode" pattern="\d+" placeholder="Código postal" type="text">
@@ -172,8 +172,10 @@
                 <td>
                     <button ng-click="controller.edit(checkout)">Edit</button>
                     <button ng-click="controller.delete(checkout)">Delete</button>
+                    <button ng-click="controller.send(checkout)">PagSeguro</button>
                 </td>
             </tr>
         </tbody>
     </table>
+    {{controller.checkout}}
 </div>

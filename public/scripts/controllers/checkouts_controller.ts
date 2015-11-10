@@ -7,7 +7,7 @@ class CheckoutsController {
     checkouts:Array<CheckoutModel>;
     senders:Array<SenderModel>;
     users:Array<UserModel>;
-    constructor(private resource:CheckoutResource, private userResource:UserResource, private senderResource:SenderResource) {
+    constructor(private $window: ng.IWindowService,private resource:CheckoutResource, private userResource:UserResource, private senderResource:SenderResource, private pagseguroResource:PagSeguroResource) {
         this.checkout = new CheckoutModel();
         this.item = new ItemModel();
         var self = this;
@@ -40,7 +40,11 @@ class CheckoutsController {
     }
 
     edit(checkout: CheckoutModel) {
-        this.checkout = checkout;
+        this.resource.findById(checkout._id)
+            .then((checkoutCompleto: CheckoutModel) => {
+                this.checkout = angular.extend(checkout, checkoutCompleto);
+            })
+            .catch(e => console.log(e));
     }
 
     delete(checkout: CheckoutModel) {
@@ -49,6 +53,13 @@ class CheckoutsController {
             .then(() => self.checkouts.splice(self.checkouts.indexOf(checkout), 1))
             .catch((error: any) => console.log(error));
 
+    }
+
+    send(checkout: CheckoutModel) {
+        var self = this;
+        this.pagseguroResource.send(checkout)
+            .then((redirectURL: string) => self.$window.location.href = redirectURL)
+            .catch(e => console.log(e));
     }
 
     editItem(item: ItemModel) {
@@ -71,8 +82,10 @@ class CheckoutsController {
 
 angular.module("n4_payment")
     .controller("CheckoutsController", [
+        "$window",
         "CheckoutResource",
         "UserResource",
         "SenderResource",
+        "PagSeguroResource",
         CheckoutsController
     ]);

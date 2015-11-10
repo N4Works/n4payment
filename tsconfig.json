@@ -60,6 +60,7 @@
         "public/scripts/models/transaction_model.ts",
         "public/scripts/models/user_model.ts",
         "public/scripts/resources/checkout_resource.ts",
+        "public/scripts/resources/pagseguro_resource.ts",
         "public/scripts/resources/sender_resource.ts",
         "public/scripts/resources/transaction_resource.ts",
         "public/scripts/resources/user_resource.ts",

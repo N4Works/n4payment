@@ -108,7 +108,7 @@ export var Checkout:mongoose.Model<ICheckout> = mongoose.model<ICheckout>("Check
     ],
     reference: { type: "string", maxLength: 200 },
     sender: { type: mongoose.Schema.Types.ObjectId, ref: "Sender" },
-    shipping: { type: mongoose.Schema.Types.ObjectId, ref: "Shipping" },
+    shipping: ShippingSchema,//{ type: mongoose.Schema.Types.ObjectId, ref: "Shipping" },
     extraAmount: { type: "number", min: -9999999, max: 9999999 },
     redirectURL: { type: "string", maxLength: 255 },
     notificationURL: { type: "string", maxLength: 255 },

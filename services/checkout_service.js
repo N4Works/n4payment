@@ -1,9 +1,11 @@
 "use strict";
 var checkout_model_1 = require("../models/checkout_model");
 var sender_service_1 = require("./sender_service");
+var pagseguro_service_1 = require("./pagseguro_service");
 var jsontoxml = require("jsontoxml");
 var CheckoutService = (function () {
-    function CheckoutService() {
+    function CheckoutService(user) {
+        this.user = user;
         this.senderService = new sender_service_1.SenderService();
     }
     CheckoutService.prototype.find = function (filter) {
@@ -32,12 +34,14 @@ var CheckoutService = (function () {
         var self = this;
         return new Promise(function (resolve, reject) {
             var checkout = new checkout_model_1.Checkout(checkoutData);
-            self.senderService.findByEmail(checkout.sender.email)
+            checkout.receiver = self.user;
+            self.senderService.findByEmail(checkoutData.sender.email)
                 .then(function (sender) {
-                checkout.sender = sender || checkout.sender;
-                checkout.sender.save();
+                checkout.sender = sender;
+                console.log(checkout);
                 checkout.save(function (error) { return !!error ? reject(error) : resolve(checkout); });
-            });
+            })
+                .catch(function (e) { return reject(e); });
         });
     };
     CheckoutService.prototype.update = function (id, checkoutData) {
@@ -55,6 +59,10 @@ var CheckoutService = (function () {
                 .exec(function (error, checkout) { return !!error ? reject(error) : resolve(checkout); });
         });
     };
+    CheckoutService.prototype.send = function (checkout) {
+        var pagseguroService = new pagseguro_service_1.PagSeguroService(this.user);
+        return pagseguroService.sendPayment(checkout);
+    };
     CheckoutService.prototype.getXML = function (checkout) {
         return new Promise(function (resolve, reject) {
             try {
@@ -64,6 +72,7 @@ var CheckoutService = (function () {
                     },
                     prettyPrint: true
                 };
+                console.log(checkout);
                 var xml = jsontoxml({
                     checkout: {
                         currency: checkout.currency,

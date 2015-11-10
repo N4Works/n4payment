@@ -1,6 +1,7 @@
 "use strict";
 var mongoose = require("mongoose");
 var item_model_1 = require("./item_model");
+var shipping_model_1 = require("./shipping_model");
 var EnumCurrency = (function () {
     function EnumCurrency() {
     }
@@ -18,7 +19,7 @@ exports.Checkout = mongoose.model("Checkout", new mongoose.Schema({
     ],
     reference: { type: "string", maxLength: 200 },
     sender: { type: mongoose.Schema.Types.ObjectId, ref: "Sender" },
-    shipping: { type: mongoose.Schema.Types.ObjectId, ref: "Shipping" },
+    shipping: shipping_model_1.ShippingSchema,
     extraAmount: { type: "number", min: -9999999, max: 9999999 },
     redirectURL: { type: "string", maxLength: 255 },
     notificationURL: { type: "string", maxLength: 255 },
