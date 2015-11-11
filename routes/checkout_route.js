@@ -6,7 +6,7 @@ var user_service_1 = require("../services/user_service");
 exports.Router = function (server) {
     var router = express.Router(server);
     router
-        .route("/:userId")
+        .route("/")
         .get(bodyParser.urlencoded({ extended: true }), function (request, response, next) {
         var filter = request.body;
         var userService = new user_service_1.UserService();
@@ -30,7 +30,7 @@ exports.Router = function (server) {
             .catch(function (error) { return next(error); });
     });
     router
-        .route("/:userId/:id")
+        .route("/:id")
         .get(bodyParser.json({}), function (request, response, next) {
         var userService = new user_service_1.UserService();
         userService.findById(request.params.userId)

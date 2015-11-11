@@ -1,7 +1,6 @@
 "use strict";
 
-import {ISender} from "../models/sender_model";
-import {Sender} from "../models/sender_model";
+import {ISender, Sender} from "../models/sender_model";
 
 /**
  * @interface

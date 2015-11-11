@@ -1,17 +1,11 @@
 "use strict";
 
-import * as mongoose from "mongoose";
-import {IPaymentMethod} from "./paymentmethod_model";
-import {PaymentMethodSchema} from "./paymentmethod_model";
-import {ICreditorFees} from "./creditorfees_model";
-import {CreditorFeesSchema} from "./creditorfees_model";
-import {IItem} from "./item_model";
-import {Item} from "./item_model";
-import {ItemSchema} from "./item_model";
-import {ShippingSchema} from "./shipping_model";
-import {IShipping} from "./shipping_model";
-import {ISender} from "./sender_model";
-import {SenderSchema} from "./sender_model";
+import mongoose = require("mongoose");
+import {IPaymentMethod, PaymentMethodSchema} from "./paymentmethod_model";
+import {ICreditorFees, CreditorFeesSchema} from "./creditorfees_model";
+import {IItem, Item, ItemSchema} from "./item_model";
+import {ShippingSchema, IShipping} from "./shipping_model";
+import {ISender, SenderSchema} from "./sender_model";
 
 /**
  * @enum

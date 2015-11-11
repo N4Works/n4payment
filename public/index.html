@@ -6,7 +6,17 @@
         <link rel="stylesheet" href="styles/main.css">
     </head>
     <body ng-app="n4_payment" ng-controller="RootController as rootCtrl">
-        <header></header>
+        <header ng-controller="LoginController as loginCtrl">
+            <div ng-if="!loginCtrl.loginData.user">
+                <input type="email" ng-model="loginCtrl.loginData.email">
+                <input type="password" ng-model="loginCtrl.loginData.password">
+                <button ng-click="loginCtrl.login()">Log in</button>
+            </div>
+            <div ng-if="loginCtrl.loginData.user">
+                <p ng-bind="loginCtrl.loginData.email"></p>
+                <button ng-click="loginCtrl.logout()">Log out</button>
+            </div>
+        </header>
         <section ng-view=""></section>
         <footer></footer>
 
@@ -23,11 +33,13 @@
         <script type="text/javascript" src="scripts/controllers/senders_controller.js"></script>
         <script type="text/javascript" src="scripts/controllers/checkouts_controller.js"></script>
         <script type="text/javascript" src="scripts/controllers/transactions_controller.js"></script>
+        <script type="text/javascript" src="scripts/controllers/login_controller.js"></script>
         <script type="text/javascript" src="scripts/resources/user_resource.js"></script>
         <script type="text/javascript" src="scripts/resources/sender_resource.js"></script>
         <script type="text/javascript" src="scripts/resources/checkout_resource.js"></script>
         <script type="text/javascript" src="scripts/resources/transaction_resource.js"></script>
         <script type="text/javascript" src="scripts/resources/pagseguro_resource.js"></script>
+        <script type="text/javascript" src="scripts/resources/login_resource.js"></script>
         <script type="text/javascript" src="scripts/models/user_model.js"></script>
         <script type="text/javascript" src="scripts/models/sender_model.js"></script>
         <script type="text/javascript" src="scripts/models/phone_model.js"></script>
@@ -39,6 +51,7 @@
         <script type="text/javascript" src="scripts/models/creditorfees_model.js"></script>
         <script type="text/javascript" src="scripts/models/paymentmethod_model.js"></script>
         <script type="text/javascript" src="scripts/models/transaction_model.js"></script>
+        <script type="text/javascript" src="scripts/models/login_model.js"></script>
         <!-- endbuild -->
     </body>
 </html>

@@ -5,7 +5,7 @@ class UserModel {
     email: string;
     password: string;
     token: string;
-    payment: string;
+    admin: boolean;
     constructor(userData?:any) {
         angular.extend(this, userData);
     }

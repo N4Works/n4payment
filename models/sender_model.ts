@@ -1,10 +1,8 @@
 "use strict";
 
-import * as mongoose from "mongoose";
-import {IDocument} from "./document_model";
-import {DocumentSchema} from "./document_model";
-import {IPhone} from "./phone_model";
-import {PhoneSchema} from "./phone_model";
+import mongoose = require("mongoose");
+import {IDocument, DocumentSchema} from "./document_model";
+import {IPhone, PhoneSchema} from "./phone_model";
 
 /**
  * @interface

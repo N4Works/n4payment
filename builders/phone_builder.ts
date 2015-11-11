@@ -1,7 +1,6 @@
 "use strict";
 
-import {IPhone} from "../models/phone_model";
-import {Phone} from "../models/phone_model";
+import {IPhone, Phone} from "../models/phone_model";
 import {ISenderBuilder} from "./sender_builder";
 
 /**

@@ -1,16 +1,12 @@
 "use strict";
 
 import {IUser} from "../models/user_model";
-import {ICheckout} from "../models/checkout_model";
+import {ICheckout, Checkout} from "../models/checkout_model";
 import {IDocument} from "../models/document_model";
 import {IItem} from "../models/item_model";
-import {Checkout} from "../models/checkout_model";
-import {ISender} from "../models/sender_model";
-import {Sender} from "../models/sender_model";
-import {ISenderService} from "./sender_service";
-import {SenderService} from "./sender_service";
-import {IPagSeguroSevice} from "./pagseguro_service";
-import {PagSeguroService} from "./pagseguro_service";
+import {ISender, Sender} from "../models/sender_model";
+import {ISenderService, SenderService} from "./sender_service";
+import {IPagSeguroSevice, PagSeguroService} from "./pagseguro_service";
 var jsontoxml = require("jsontoxml");
 
 /**

@@ -1,6 +1,6 @@
 "use strict";
 
-import * as mongoose from "mongoose";
+import mongoose = require("mongoose");
 
 /**
  * @interface
@@ -9,12 +9,14 @@ import * as mongoose from "mongoose";
  * @property {string} password Senha local para realizar chamada ao PagSeguro.
  * @property {string} token Token configurado no PagSeguro, no menu "Minha conta", "Preferências", "Integrações".
                       32 carácteres.
+ * @property {boolean} admin Indica se usuário é um administrador.
  * @description Usuário da API.
  */
 export interface IUser extends mongoose.Document {
     email: string;
     password: string;
     token: string;
+    admin: boolean;
 };
 
 /**
@@ -25,7 +27,8 @@ export type MUser = mongoose.Model<IUser>;
 var UserSchema:mongoose.Schema = new mongoose.Schema({
     email: { type: "string", lowercase: true, maxLength: 60, required: true },
     password: { type: "string", required: true },
-    token: { type: "string", required: true, match: /^\w{32}$/ }
+    token: { type: "string", required: true, match: /^\w{32}$/ },
+    admin: { type: "boolean", required: true, default: false }
 });
 
 /**
@@ -35,6 +38,7 @@ var UserSchema:mongoose.Schema = new mongoose.Schema({
  * @property {string} password Senha local para realizar chamada ao PagSeguro.
  * @property {string} token Token configurado no PagSeguro, no menu "Minha conta", "Preferências", "Integrações".
                       32 carácteres.
+ * @property {boolean} admin Indica se usuário é um administrador.
  * @description Usuário da API.
  */
 export var User:MUser = mongoose.model<IUser>("User", UserSchema);

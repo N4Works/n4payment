@@ -1,11 +1,9 @@
 "use strict";
 
-import * as mongoose from "mongoose";
+import mongoose = require("mongoose");
 import {ISender} from "./sender_model";
-import {IItem} from "./item_model";
-import {ItemSchema} from "./item_model";
-import {ShippingSchema} from "./shipping_model";
-import {IShipping} from "./shipping_model";
+import {IItem, ItemSchema} from "./item_model";
+import {ShippingSchema, IShipping} from "./shipping_model";
 import {IUser} from "./user_model";
 
 /**

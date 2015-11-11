@@ -6,7 +6,7 @@ exports.Router = function (server) {
     var router = express.Router(server);
     var senderService = new sender_service_1.SenderService();
     router
-        .route("/:userId")
+        .route("/")
         .get(bodyParser.urlencoded({ extended: true }), function (request, response, next) {
         var filter = request.body;
         senderService.find(filter)
@@ -20,7 +20,7 @@ exports.Router = function (server) {
             .catch(function (error) { return next(error); });
     });
     router
-        .route("/:userId/:id")
+        .route("/:id")
         .get(bodyParser.json({}), function (request, response, next) {
         senderService.findById(request.params.id)
             .then(function (sender) { return response.status(200).json(sender); })

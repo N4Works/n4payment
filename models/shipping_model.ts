@@ -1,8 +1,7 @@
 "use strict";
 
-import * as mongoose from "mongoose";
-import {IAddress} from "./address_model";
-import {AddressSchema} from "./address_model";
+import mongoose = require("mongoose");
+import {IAddress, AddressSchema} from "./address_model";
 
 /**
  * @enum

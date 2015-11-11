@@ -1,7 +1,6 @@
 "use strict";
 
-import {IDocument} from "../models/document_model";
-import {Document} from "../models/document_model";
+import {IDocument, Document} from "../models/document_model";
 import {ISenderBuilder} from "./sender_builder";
 
 /**

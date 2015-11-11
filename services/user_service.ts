@@ -1,7 +1,6 @@
 "use strict";
 
-import {IUser} from "../models/user_model";
-import {User} from "../models/user_model";
+import {IUser, User} from "../models/user_model";
 
 /**
  * @interface

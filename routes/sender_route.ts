@@ -3,15 +3,14 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import {ISender} from "../models/sender_model";
-import {ISenderService} from "../services/sender_service";
-import {SenderService} from "../services/sender_service";
+import {ISenderService, SenderService} from "../services/sender_service";
 
 export var Router = (server: express.Application) => {
     var router: express.Router = express.Router(server);
     var senderService: ISenderService = new SenderService();
 
     router
-        .route("/:userId")
+        .route("/")
         .get(bodyParser.urlencoded({extended: true}),
         (request: express.Request, response: express.Response, next: Function) => {
             var filter:any = request.body;
@@ -28,7 +27,7 @@ export var Router = (server: express.Application) => {
         });
 
     router
-        .route("/:userId/:id")
+        .route("/:id")
         .get(bodyParser.json({}),
         (request: express.Request, response: express.Response, next: Function) => {
             senderService.findById(request.params.id)

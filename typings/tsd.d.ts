@@ -12,3 +12,4 @@
 /// <reference path="form-data/form-data.d.ts" />
 /// <reference path="request/request.d.ts" />
 /// <reference path="cors/cors.d.ts" />
+/// <reference path="cookie-parser/cookie-parser.d.ts" />

@@ -1,12 +1,10 @@
 "use strict";
 
 import {IUser} from "../models/user_model";
-import {ICheckout} from "../models/checkout_model";
+import {ICheckout, ICheckoutResponse} from "../models/checkout_model";
 import {EnumURLPagSeguro} from "../models/urlpagseguro_enum";
-import {ICheckoutService} from "../services/checkout_service";
-import {CheckoutService} from "../services/checkout_service";
-import {ICheckoutResponse} from "../models/checkout_model";
-import * as request from "request";
+import {ICheckoutService, CheckoutService} from "../services/checkout_service";
+import request = require("request");
 var xml2json = require("xml2json");
 
 export interface IPagSeguroSevice {

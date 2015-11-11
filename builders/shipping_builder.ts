@@ -1,12 +1,9 @@
 "use strict";
 
 import {IAddress} from "../models/address_model";
-import {IShipping} from "../models/shipping_model";
-import {Shipping} from "../models/shipping_model";
-import {EnumShipping} from "../models/shipping_model";
+import {IShipping, Shipping, EnumShipping} from "../models/shipping_model";
 import {IPaymentBuilder} from "./payment_builder";
-import {IAddressBuilder} from "./address_builder";
-import {AddressBuilder} from "./address_builder";
+import {IAddressBuilder, AddressBuilder} from "./address_builder";
 
 /**
  * @interface

@@ -1,10 +1,9 @@
 "use strict";
 
-import {ITransaction} from "../models/transaction_model";
-import {Transaction} from "../models/transaction_model";
+import {ITransaction, Transaction} from "../models/transaction_model";
 import {IUser} from "../models/user_model";
 import {EnumURLPagSeguro} from "../models/urlpagseguro_enum";
-import * as request from "request";
+import request = require("request");
 var xml2json = require("xml2json");
 
 /**

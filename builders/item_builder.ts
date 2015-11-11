@@ -1,7 +1,6 @@
 "use strict";
 
-import {IItem} from "../models/item_model";
-import {Item} from "../models/item_model";
+import {IItem, Item} from "../models/item_model";
 import {IPaymentBuilder} from "./payment_builder";
 
 /**

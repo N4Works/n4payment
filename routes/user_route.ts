@@ -3,8 +3,7 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import {IUser} from "../models/user_model";
-import {IUserService} from "../services/user_service";
-import {UserService} from "../services/user_service";
+import {IUserService, UserService} from "../services/user_service";
 
 export var Router = (server: express.Router) => {
     var router: express.Router = express.Router(server);

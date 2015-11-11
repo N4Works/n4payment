@@ -1,22 +1,31 @@
 "use strict";
 
-import * as express from "express";
-import * as mongoose from "mongoose";
+import express = require("express");
+import mongoose = require("mongoose");
+import cookieParser = require("cookie-parser");
 import {Router as UserRouter} from "./routes/user_route";
 import {Router as SenderRouter} from "./routes/sender_route";
 import {Router as CheckoutRouter} from "./routes/checkout_route";
 import {Router as PagSeguroRouter} from "./routes/pagseguro_route";
+import {Router as LoginRouter} from "./routes/login_route";
+import login from "./middlewares/login_middleware";
+import {connectAdminDatabase, connectUserDatabase} from "./middlewares/database_middleware";
 
-mongoose.connect("mongodb://localhost/n4-payment", function (error) {
+var application: express.Application = express();
+
+mongoose.connect(`mongodb://localhost/n4-payment`, (error: any) => {
     if (error) {
-        console.log("Erro ao conectar no mongodb: " + error);
+        return console.log(`Erro ao conectar no mongodb: ${error}`);
     }
 });
 
-var application: express.Application = express();
-application.use("/api/users", UserRouter(application));
-application.use("/api/senders", SenderRouter(application));
-application.use("/api/checkouts", CheckoutRouter(application));
+application.use(cookieParser());
+
+application.use("/api/login", LoginRouter(application));
+application.use("/api/users", login, UserRouter(application));
+application.use("/api/senders", login, SenderRouter(application));
+application.use("/api/checkouts", login, CheckoutRouter(application));
+// Login controlado por método, pois existe um acesso da API do PagSeguro.
 application.use("/api/pagseguro", PagSeguroRouter(application));
 
 application.use("/", express.static("./public"));

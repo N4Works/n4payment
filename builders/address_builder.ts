@@ -1,7 +1,6 @@
 "use strict";
 
-import {IAddress} from "../models/address_model";
-import {Address} from "../models/address_model";
+import {IAddress, Address} from "../models/address_model";
 import {IShippingBuilder} from "./shipping_builder";
 
 /**

@@ -1,16 +1,12 @@
 "use strict";
 
-import {ISender} from "../models/sender_model";
-import {Sender} from "../models/sender_model";
+import {ISender, Sender} from "../models/sender_model";
 import {IPhone} from "../models/phone_model";
-import {IPhoneBuilder} from "./phone_builder";
-import {PhoneBuilder} from "./phone_builder";
+import {IPhoneBuilder, PhoneBuilder} from "./phone_builder";
 import {IDocument} from "../models/document_model";
-import {IDocumentBuilder} from "./document_builder";
-import {DocumentBuilder} from "./document_builder";
+import {IDocumentBuilder, DocumentBuilder} from "./document_builder";
 import {IPaymentBuilder} from "./payment_builder";
-import {ISenderService} from "../services/sender_service";
-import {SenderService} from "../services/sender_service";
+import {ISenderService, SenderService} from "../services/sender_service";
 
 /**
  * @interface
