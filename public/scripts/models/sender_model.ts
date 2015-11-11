@@ -9,8 +9,8 @@ class SenderModel {
     bornDate: Date;
     constructor(senderData?:any) {
         if (!!senderData) {
-            senderData.bornDate = !!senderData.bornDate ? new Date(senderData.bornDate) : null;
             angular.extend(this, senderData);
+            this.bornDate = !!senderData.bornDate ? new Date(senderData.bornDate) : null;
         }
         this.phone = new PhoneModel(this.phone);
         this.documents = !!this.documents && this.documents.length > 0 ? this.documents.map(d => new DocumentModel(d)) : [ new DocumentModel() ];

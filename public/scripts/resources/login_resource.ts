@@ -9,6 +9,12 @@ class LoginResource {
         this.provider = <ILoginResource>$resource("/api/login", {}, {});
     }
 
+    getUser() {
+        return this.provider.get()
+            .$promise
+            .then((userData:any) => new UserModel(userData));
+    }
+
     login(login: LoginModel) {
         return this.provider.save(login)
             .$promise

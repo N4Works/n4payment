@@ -22,7 +22,7 @@ var CheckoutResource = (function () {
     CheckoutResource.prototype.findAll = function () {
         return this.provider.query()
             .$promise
-            .then(function (checkouts) { return checkouts.map(function (u) { return new CheckoutModel(u); }); });
+            .then(function (checkouts) { return checkouts.map(function (checkoutData) { return new CheckoutModel(checkoutData); }); });
     };
     CheckoutResource.prototype.findById = function (id) {
         return this.provider.get({ id: id })

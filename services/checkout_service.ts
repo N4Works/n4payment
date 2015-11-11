@@ -120,7 +120,6 @@ export class CheckoutService implements ICheckoutService {
             self.senderService.findByEmail(checkoutData.sender.email)
                 .then((sender: ISender) => {
                 checkout.sender = sender;
-                console.log(checkout);
                 checkout.save(error => !!error ? reject(error) : resolve(checkout));
             })
                 .catch(e => reject(e));
@@ -137,7 +136,8 @@ export class CheckoutService implements ICheckoutService {
     update(id: string, checkoutData: any): Promise<ICheckout> {
         var self = this;
         return new Promise<ICheckout>((resolve: Function, reject: Function) => {
-            Checkout.findByIdAndUpdate(id, checkoutData, (error: any, checkout: ICheckout) => !!error ? reject(error) : resolve(checkout));
+            var update = new Checkout(checkoutData);
+            Checkout.findByIdAndUpdate(id, update, (error: any, checkout: ICheckout) => !!error ? reject(error) : resolve(checkout));
         });
     }
 
@@ -156,11 +156,6 @@ export class CheckoutService implements ICheckoutService {
                 .exec((error: any, checkout: ICheckout) => !!error ? reject(error) : resolve(checkout)));
     }
 
-    send(checkout: ICheckout): Promise<string> {
-        var pagseguroService: IPagSeguroSevice = new PagSeguroService(this.user);
-        return pagseguroService.sendPayment(checkout);
-    }
-
     /**
      * @method
      * @param {ICheckout} checkout
@@ -176,60 +171,7 @@ export class CheckoutService implements ICheckoutService {
                     },
                     prettyPrint: true
                 };
-                console.log(checkout);
-                var xml: string = jsontoxml({
-                    checkout: {
-                        currency: checkout.currency,
-                        reference: checkout.reference,
-                        redirectURL: checkout.redirectURL,
-                        notificationURL: checkout.notificationURL,
-                        maxUses: checkout.maxUses,
-                        maxAge: checkout.maxAge,
-                        sender: {
-                            name: checkout.sender.name,
-                            email: checkout.sender.email,
-                            bornDate: checkout.sender.bornDate.toISOString().replace(/^(\d{4})-(\d{2})-(\d{2}).*$/, "$3/$2/$1"),
-                            phone: {
-                                areaCode: checkout.sender.phone.areaCode,
-                                number: checkout.sender.phone.number
-                            },
-                            documents: checkout.sender.documents.map((d: IDocument) => {
-                                return {
-                                    document: {
-                                        type: d.type,
-                                        value: d.value
-                                    }
-                                };
-                            })
-                        },
-                        items: checkout.items.map((i: IItem) => {
-                            return {
-                                item: {
-                                    id: i.id,
-                                    description: i.description,
-                                    amount: i.amount.toFixed(2),
-                                    quantity: i.quantity.toFixed(0),
-                                    shippingCost: i.shippingCost.toFixed(2),
-                                    weight: i.weight.toFixed(0)
-                                }
-                            };
-                        }),
-                        shipping: {
-                            type: checkout.shipping.type,
-                            cost: checkout.shipping.cost.toFixed(2),
-                            address: {
-                                street: checkout.shipping.address.street,
-                                number: checkout.shipping.address.number,
-                                postalCode: checkout.shipping.address.postalCode,
-                                city: checkout.shipping.address.city,
-                                state: checkout.shipping.address.state,
-                                country: checkout.shipping.address.country,
-                                complement: checkout.shipping.address.complement,
-                                district: checkout.shipping.address.district
-                            }
-                        }
-                    }
-                }, options);
+                var xml: string = jsontoxml((<any>Checkout).toPagSeguro(checkout), options);
                 resolve(xml);
             }
             catch (e) {

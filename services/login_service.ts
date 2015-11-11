@@ -2,7 +2,7 @@
 
 import fs = require("fs");
 import os = require("os");
-import {IUser} from "../models/user_model";
+import {IUser, User} from "../models/user_model";
 import {ILogin} from "../models/login_model";
 import {IUserService, UserService} from "./user_service";
 
@@ -19,12 +19,12 @@ export class LoginService implements ILoginService {
                 return reject("Token inválido.");
             }
 
-            fs.readFile(`${os.tmpdir() }/${token}`, function(error, data) {
+            fs.readFile(`${os.tmpdir()}/${token}`, function(error, data) {
                 if (!!error) {
                     return reject(error);
                 }
 
-                resolve(JSON.parse(data.toString()));
+                resolve(new User(JSON.parse(data.toString())));
             });
         });
     }

@@ -6,6 +6,9 @@ class LoginController {
     constructor(private loginResource: LoginResource) {
         this.logado = false;
         this.loginData = new LoginModel();
+        var self = this;
+        loginResource.getUser()
+            .then(user => self.loginData.user = user);
     }
 
     login() {

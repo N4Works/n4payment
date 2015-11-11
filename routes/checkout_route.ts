@@ -15,24 +15,16 @@ export var Router = (server: express.Router) => {
         .get(bodyParser.urlencoded({ extended: true }),
         (request: express.Request, response: express.Response, next: Function) => {
             var filter: any = request.body;
-            var userService: IUserService = new UserService();
-            userService.findById(request.params.userId)
-                .then((user: IUser) => {
-                var checkoutService: ICheckoutService = new CheckoutService(user);
-                return checkoutService.find(filter);
-            })
+            var checkoutService: ICheckoutService = new CheckoutService(request.user);
+            checkoutService.find(filter)
                 .then((checkouts: Array<ICheckout>) => response.status(200).json(checkouts))
                 .catch((error: any) => next(error));
         })
         .post(bodyParser.json({}),
         (request: express.Request, response: express.Response, next: Function) => {
             var checkoutData: any = request.body;
-            var userService: IUserService = new UserService();
-            userService.findById(request.params.userId)
-                .then((user: IUser) => {
-                var checkoutService: ICheckoutService = new CheckoutService(user);
-                return checkoutService.insert(checkoutData);
-            })
+            var checkoutService: ICheckoutService = new CheckoutService(request.user);
+            checkoutService.insert(checkoutData)
                 .then((checkout: ICheckout) => response.status(201).json(checkout))
                 .catch((error: any) => next(error));
         });
@@ -41,34 +33,22 @@ export var Router = (server: express.Router) => {
         .route("/:id")
         .get(bodyParser.json({}),
         (request: express.Request, response: express.Response, next: Function) => {
-            var userService: IUserService = new UserService();
-            userService.findById(request.params.userId)
-                .then((user: IUser) => {
-                var checkoutService: ICheckoutService = new CheckoutService(user);
-                return checkoutService.findById(request.params.id);
-            })
+            var checkoutService: ICheckoutService = new CheckoutService(request.user);
+            checkoutService.findById(request.params.id)
                 .then((checkout: ICheckout) => response.status(200).json(checkout))
                 .catch((error: any) => next(error));
         })
         .put(bodyParser.json({}),
         (request: express.Request, response: express.Response, next: Function) => {
             var checkoutData: any = request.body;
-            var userService: IUserService = new UserService();
-            userService.findById(request.params.userId)
-                .then((user: IUser) => {
-                var checkoutService: ICheckoutService = new CheckoutService(user);
-                return checkoutService.update(request.params.id, checkoutData);
-            })
+            var checkoutService: ICheckoutService = new CheckoutService(request.user);
+            checkoutService.update(request.params.id, checkoutData)
                 .then((checkout: ICheckout) => response.status(200).json(checkout))
                 .catch((error: any) => next(error));
         })
         .delete((request: express.Request, response: express.Response, next: Function) => {
-        var userService: IUserService = new UserService();
-        userService.findById(request.params.userId)
-            .then((user: IUser) => {
-            var checkoutService: ICheckoutService = new CheckoutService(user);
-            return checkoutService.delete(request.params.id);
-        })
+        var checkoutService: ICheckoutService = new CheckoutService(request.user);
+        checkoutService.delete(request.params.id)
             .then((checkout: ICheckout) => response.status(204).json(checkout))
             .catch((error: any) => next(error));
     });

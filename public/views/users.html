@@ -4,16 +4,27 @@
         <input type="email" name="email" placeholder="User email" maxlength="60" ng-model="controller.user.email">
         <input type="password" name="password" placeholder="User password" ng-model="controller.user.password">
         <input type="text" name="token" placeholder="Payment token" maxlength="32" ng-model="controller.user.token">
+        <input type="uri" name="redirectURL" placeholder="URL de redirecionamento" ng-model="controller.user.redirectURL">
+        <input type="uri" name="notificationURL" placeholder="URL de notificação" ng-model="controller.user.notificationURL">
         <button name="save" ng-click="controller.save()">Save</button>
     </form>
     <table>
         <thead>
             <tr>
                 <th>
+                    Id
+                </th>
+                <th>
                     Email
                 </th>
                 <th>
                     Token
+                </th>
+                <th>
+                    Redirect URL
+                </th>
+                <th>
+                    Notification URL
                 </th>
                 <th>
 
@@ -22,9 +33,15 @@
         </thead>
         <tbody>
             <tr ng-repeat="user in controller.users">
+                <td ng-bind="user._id">
+                </td>
                 <td ng-bind="user.email">
                 </td>
                 <td ng-bind="user.token">
+                </td>
+                <td ng-bind="user.redirectURL">
+                </td>
+                <td ng-bind="user.notificationURL">
                 </td>
                 <td>
                     <button ng-click="controller.edit(user)">Edit</button>

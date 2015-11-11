@@ -4,6 +4,11 @@ var LoginResource = (function () {
     function LoginResource($resource) {
         this.provider = $resource("/api/login", {}, {});
     }
+    LoginResource.prototype.getUser = function () {
+        return this.provider.get()
+            .$promise
+            .then(function (userData) { return new UserModel(userData); });
+    };
     LoginResource.prototype.login = function (login) {
         return this.provider.save(login)
             .$promise

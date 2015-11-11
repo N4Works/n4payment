@@ -4,6 +4,9 @@ var LoginController = (function () {
         this.loginResource = loginResource;
         this.logado = false;
         this.loginData = new LoginModel();
+        var self = this;
+        loginResource.getUser()
+            .then(function (user) { return self.loginData.user = user; });
     }
     LoginController.prototype.login = function () {
         var self = this;

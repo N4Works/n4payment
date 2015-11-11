@@ -5,7 +5,8 @@ class UserModel {
     email: string;
     password: string;
     token: string;
-    admin: boolean;
+    redirectURL: string;
+    notificationURL: string;
     constructor(userData?:any) {
         angular.extend(this, userData);
     }

@@ -28,7 +28,6 @@
         "builders/phone_builder.ts",
         "builders/sender_builder.ts",
         "builders/shipping_builder.ts",
-        "middlewares/database_middleware.ts",
         "middlewares/login_middleware.ts",
         "models/address_model.ts",
         "models/checkout_model.ts",

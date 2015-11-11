@@ -13,12 +13,7 @@ var CheckoutsController = (function () {
             .then(function (checkouts) { return self.checkouts = checkouts; });
         senderResource.findAll()
             .then(function (senders) { return self.senders = senders; });
-        userResource.findAll()
-            .then(function (users) { return self.users = users; });
     }
-    CheckoutsController.prototype.selectUser = function (user) {
-        this.checkout.receiver = user;
-    };
     CheckoutsController.prototype.selectSender = function (sender) {
         this.checkout.sender = sender;
     };

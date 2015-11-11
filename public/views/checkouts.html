@@ -2,15 +2,17 @@
     <a ng-href="#/">Home</a>
     <form class="">
         <label for="currency">Currency</label>
-        <select class="" name="currency" ng-model="controller.checkout.currency">
+        <select class="" readonly="" name="currency" ng-model="controller.checkout.currency">
             <option value="BRL">Brazilian Real</option>
         </select>
         <input maxLength="200" name="name" ng-model="controller.checkout.reference" placeholder="Código interno da transação" type="text">
+        <!--
         <input max="9999999" min="-9999999" name="extraAmount" ng-model="controller.checkout.extraAmount" placeholder="Valor de acréscimo ou desconto" type="number">
         <input maxlength="255" name="redirectURL" ng-model="controller.checkout.redirectURL" placeholder="URL para redirecionamento" type="uri">
         <input maxlength="255" name="notificationURL" ng-model="controller.checkout.notificationURL" placeholder="URL para notificação" type="uri">
         <input max="999" min="0" name="maxUses" ng-model="controller.checkout.maxUses" placeholder="Número máximo de usos para o código de pagamento." type="number">
         <input max="999999999" min="30" name="maxAge" ng-model="controller.checkout.maxAge" placeholder="Prazo de validade do código de pagamento em segundos" type="number">
+        -->
         <div>
             <label for="">Sender:
                 <span ng-bind="controller.checkout.sender.email"></span>
@@ -107,7 +109,7 @@
                 </tbody>
             </table>
         </div>
-        <div>
+        <!--<div>
             <label for="shippingType">Tipo do frete</label>
             <select class="" name="shippingType" ng-model="controller.checkout.shipping.type">
                 <option value="3">Não especificado</option>
@@ -124,6 +126,8 @@
             <input name="country" ng-model="controller.checkout.shipping.address.country" placeholder="País" readonly="" type="text">
             <input maxLength="40" name="complement" ng-model="controller.checkout.shipping.address.complement" placeholder="Complemento" type="text">
         </div>
+        -->
+        <!--
         <div>
             <label for="">Receiver:
                 <span ng-bind="controller.checkout.receiver.email"></span>
@@ -147,6 +151,7 @@
                 </tbody>
             </table>
         </div>
+        -->
         <button name="save" ng-click="controller.save()">Save</button>
     </form>
     <table>
@@ -177,5 +182,4 @@
             </tr>
         </tbody>
     </table>
-    {{controller.checkout}}
 </div>

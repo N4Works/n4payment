@@ -15,13 +15,16 @@ class CheckoutsController {
             .then((checkouts:Array<CheckoutModel>) => self.checkouts = checkouts);
         senderResource.findAll()
             .then((senders: Array<SenderModel>) => self.senders = senders);
+        /*
         userResource.findAll()
             .then((users: Array<UserModel>) => self.users = users);
+            */
     }
 
+    /*
     selectUser(user:UserModel) {
         this.checkout.receiver = user;
-    }
+    }*/
 
     selectSender(sender:SenderModel) {
         this.checkout.sender = sender;

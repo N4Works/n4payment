@@ -9,14 +9,16 @@ import mongoose = require("mongoose");
  * @property {string} password Senha local para realizar chamada ao PagSeguro.
  * @property {string} token Token configurado no PagSeguro, no menu "Minha conta", "Preferências", "Integrações".
                       32 carácteres.
- * @property {boolean} admin Indica se usuário é um administrador.
+ * @property {string} redirectURL URL de redirecionamento utilizada pelo PagSeguro ao término do pagamento.
+ * @property {string} notificationURL URL de notificação utilizada para comunicação do PagSeguro com o sistema.
  * @description Usuário da API.
  */
 export interface IUser extends mongoose.Document {
     email: string;
     password: string;
     token: string;
-    admin: boolean;
+    redirectURL: string;
+    notificationURL: string;
 };
 
 /**
@@ -28,7 +30,8 @@ var UserSchema:mongoose.Schema = new mongoose.Schema({
     email: { type: "string", lowercase: true, maxLength: 60, required: true },
     password: { type: "string", required: true },
     token: { type: "string", required: true, match: /^\w{32}$/ },
-    admin: { type: "boolean", required: true, default: false }
+    redirectURL: { type: "string", required: true },
+    notificationURL: { type: "string", required: true }
 });
 
 /**
@@ -38,7 +41,8 @@ var UserSchema:mongoose.Schema = new mongoose.Schema({
  * @property {string} password Senha local para realizar chamada ao PagSeguro.
  * @property {string} token Token configurado no PagSeguro, no menu "Minha conta", "Preferências", "Integrações".
                       32 carácteres.
- * @property {boolean} admin Indica se usuário é um administrador.
+ * @property {string} redirectURL URL de redirecionamento utilizada pelo PagSeguro ao término do pagamento.
+ * @property {string} notificationURL URL de notificação utilizada para comunicação do PagSeguro com o sistema.
  * @description Usuário da API.
  */
 export var User:MUser = mongoose.model<IUser>("User", UserSchema);

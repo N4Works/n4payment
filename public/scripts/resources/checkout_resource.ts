@@ -29,7 +29,7 @@ class CheckoutResource {
     findAll() {
         return this.provider.query()
             .$promise
-            .then((checkouts:Array<any>) => checkouts.map((u:any) => new CheckoutModel(u)));
+            .then((checkouts:Array<any>) => checkouts.map((checkoutData:any) => new CheckoutModel(checkoutData)));
     }
 
     findById(id: string) {

@@ -1,6 +1,7 @@
 "use strict";
 var fs = require("fs");
 var os = require("os");
+var user_model_1 = require("../models/user_model");
 var user_service_1 = require("./user_service");
 ;
 var LoginService = (function () {
@@ -15,7 +16,7 @@ var LoginService = (function () {
                 if (!!error) {
                     return reject(error);
                 }
-                resolve(JSON.parse(data.toString()));
+                resolve(new user_model_1.User(JSON.parse(data.toString())));
             });
         });
     };

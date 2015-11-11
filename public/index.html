@@ -13,7 +13,7 @@
                 <button ng-click="loginCtrl.login()">Log in</button>
             </div>
             <div ng-if="loginCtrl.loginData.user">
-                <p ng-bind="loginCtrl.loginData.email"></p>
+                <p ng-bind="loginCtrl.loginData.user.email"></p>
                 <button ng-click="loginCtrl.logout()">Log out</button>
             </div>
         </header>
