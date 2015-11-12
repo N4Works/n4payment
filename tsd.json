@@ -9,7 +9,7 @@
       "commit": "8c4ec896ab619e7cb6572f82423e6e1eece70f5a"
     },
     "node/node.d.ts": {
-      "commit": "8c4ec896ab619e7cb6572f82423e6e1eece70f5a"
+      "commit": "c2c22c3b953fe9730d4802022d5e0d18d083909e"
     },
     "serve-static/serve-static.d.ts": {
       "commit": "8c4ec896ab619e7cb6572f82423e6e1eece70f5a"
@@ -49,6 +49,18 @@
     },
     "cookie-parser/cookie-parser.d.ts": {
       "commit": "8c4ec896ab619e7cb6572f82423e6e1eece70f5a"
+    },
+    "nodemailer-direct-transport/nodemailer-direct-transport.d.ts": {
+      "commit": "c2c22c3b953fe9730d4802022d5e0d18d083909e"
+    },
+    "nodemailer/nodemailer.d.ts": {
+      "commit": "c2c22c3b953fe9730d4802022d5e0d18d083909e"
+    },
+    "nodemailer-smtp-transport/nodemailer-smtp-transport.d.ts": {
+      "commit": "c2c22c3b953fe9730d4802022d5e0d18d083909e"
+    },
+    "nodemailer/nodemailer-types.d.ts": {
+      "commit": "c2c22c3b953fe9730d4802022d5e0d18d083909e"
     }
   }
 }

@@ -4,6 +4,7 @@ import mongoose = require("mongoose");
 
 /**
  * @interface
+ * @property {string} name Nome do vendedor.
  * @property {string} email E-mail cadastrado no PagSeguro.
                             60 carácteres.
  * @property {string} password Senha local para realizar chamada ao PagSeguro.
@@ -14,6 +15,7 @@ import mongoose = require("mongoose");
  * @description Usuário da API.
  */
 export interface IUser extends mongoose.Document {
+    name: string;
     email: string;
     password: string;
     token: string;
@@ -27,6 +29,7 @@ export interface IUser extends mongoose.Document {
 export type MUser = mongoose.Model<IUser>;
 
 var UserSchema:mongoose.Schema = new mongoose.Schema({
+    name: { type: "string", maxLength: 60, required: true },
     email: { type: "string", lowercase: true, maxLength: 60, required: true },
     password: { type: "string", required: true },
     token: { type: "string", required: true, match: /^\w{32}$/ },
@@ -36,6 +39,7 @@ var UserSchema:mongoose.Schema = new mongoose.Schema({
 
 /**
  * @class
+ * @property {string} name Nome do vendedor.
  * @property {string} email E-mail cadastrado no PagSeguro.
                             60 carácteres.
  * @property {string} password Senha local para realizar chamada ao PagSeguro.

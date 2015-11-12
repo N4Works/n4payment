@@ -4,6 +4,7 @@ import {IUser} from "../models/user_model";
 import {ICheckout, ICheckoutResponse} from "../models/checkout_model";
 import {EnumURLPagSeguro} from "../models/urlpagseguro_enum";
 import {ICheckoutService, CheckoutService} from "../services/checkout_service";
+import nodemailer = require("nodemailer");
 import request = require("request");
 var xml2json = require("xml2json");
 
@@ -19,9 +20,6 @@ export class PagSeguroService {
     sendPayment(checkout: ICheckout): Promise<string> {
         var self = this;
         return new Promise<string>((resolve: Function, reject: Function) => {
-            if (!!checkout.sentDate) {
-                return reject("Pagamento já enviado.");
-            }
             var checkoutService: ICheckoutService = new CheckoutService(self.user);
             checkoutService.getXML(checkout)
                 .then((xml: string) => {
@@ -48,7 +46,25 @@ export class PagSeguroService {
                         var checkoutResponse: ICheckoutResponse = data.checkout;
                         var urlPayment = process.env.NODE_ENV === "production" ? EnumURLPagSeguro.payment_production : EnumURLPagSeguro.payment_development;
                         var redirectURL = `${urlPayment}?code=${checkoutResponse.code}`;
-                        return resolve(redirectURL);
+
+                        var transporter = nodemailer.createTransport({
+                            service: "gmail",
+                            auth: {
+                                user: "n4payment",
+                                pass: "omtxtxtkrbghcjnu"
+                            }
+                        });
+
+                        transporter.sendMail({
+                            to: checkout.sender.email,
+                            subject: `Pagamento para ${checkout.receiver.name || "n4payment"}`,
+                            text: redirectURL
+                        }, (error: any, response: any) => {
+                            if (error) {
+                                return reject(`Ocorreu o seguinte problema ao enviar e-mail ao cliente ${checkout.sender.name}: ${error}.`);
+                            }
+                            return resolve(redirectURL);
+                        });
                     });
                 })
                 .catch(e => reject(e));

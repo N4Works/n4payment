@@ -1,6 +1,7 @@
 "use strict";
 var urlpagseguro_enum_1 = require("../models/urlpagseguro_enum");
 var checkout_service_1 = require("../services/checkout_service");
+var nodemailer = require("nodemailer");
 var request = require("request");
 var xml2json = require("xml2json");
 var PagSeguroService = (function () {
@@ -10,9 +11,6 @@ var PagSeguroService = (function () {
     PagSeguroService.prototype.sendPayment = function (checkout) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            if (!!checkout.sentDate) {
-                return reject("Pagamento já enviado.");
-            }
             var checkoutService = new checkout_service_1.CheckoutService(self.user);
             checkoutService.getXML(checkout)
                 .then(function (xml) {
@@ -39,7 +37,23 @@ var PagSeguroService = (function () {
                     var checkoutResponse = data.checkout;
                     var urlPayment = process.env.NODE_ENV === "production" ? urlpagseguro_enum_1.EnumURLPagSeguro.payment_production : urlpagseguro_enum_1.EnumURLPagSeguro.payment_development;
                     var redirectURL = urlPayment + "?code=" + checkoutResponse.code;
-                    return resolve(redirectURL);
+                    var transporter = nodemailer.createTransport({
+                        service: "gmail",
+                        auth: {
+                            user: "n4payment",
+                            pass: "omtxtxtkrbghcjnu"
+                        }
+                    });
+                    transporter.sendMail({
+                        to: checkout.sender.email,
+                        subject: "Pagamento para " + (checkout.receiver.name || "n4payment"),
+                        text: redirectURL
+                    }, function (error, response) {
+                        if (error) {
+                            return reject("Ocorreu o seguinte problema ao enviar e-mail ao cliente " + checkout.sender.name + ": " + error + ".");
+                        }
+                        return resolve(redirectURL);
+                    });
                 });
             })
                 .catch(function (e) { return reject(e); });

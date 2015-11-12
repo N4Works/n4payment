@@ -1,8 +1,9 @@
 <div>
     <form class="form-user" name="user_register">
-        <input type="email" name="email" placeholder="User email" maxlength="60" ng-model="controller.user.email">
-        <input type="password" name="password" placeholder="User password" ng-model="controller.user.password">
-        <input type="text" name="token" placeholder="Payment token" maxlength="32" ng-model="controller.user.token">
+        <input type="text" name="name" placeholder="Nome" maxLength="50" ng-model="controller.user.name">
+        <input type="email" name="email" placeholder="E-mail" maxlength="60" ng-model="controller.user.email">
+        <input type="password" name="password" placeholder="Senha" ng-model="controller.user.password">
+        <input type="text" name="token" placeholder="Token do PagSeguro" maxlength="32" ng-model="controller.user.token">
         <input type="uri" name="redirectURL" placeholder="URL de redirecionamento" ng-model="controller.user.redirectURL">
         <input type="uri" name="notificationURL" placeholder="URL de notificação" ng-model="controller.user.notificationURL">
         <div class="panel-form-actions">
@@ -14,6 +15,9 @@
             <tr>
                 <th>
                     Identificador
+                </th>
+                <th>
+                    Nome
                 </th>
                 <th>
                     E-mail
@@ -35,6 +39,8 @@
         <tbody>
             <tr ng-repeat="user in controller.users">
                 <td ng-bind="user._id">
+                </td>
+                <td ng-bind="user.name">
                 </td>
                 <td ng-bind="user.email">
                 </td>

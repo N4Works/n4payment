@@ -34,6 +34,14 @@ angular.module("n4_payment", [
                 templateUrl: "views/transactions.html",
                 controller: "TransactionsController",
                 controllerAs: "controller"
+            })
+            .when("/confirmation", {
+                templateUrl: "views/confirmation.html",
+            })
+            //n4payment
+            //Yt4-4Qu-NGm-ffF
+            .otherwise({
+                redirectTo: "/"
             });
     }
 ]);

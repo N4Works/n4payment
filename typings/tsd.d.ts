@@ -13,3 +13,7 @@
 /// <reference path="request/request.d.ts" />
 /// <reference path="cors/cors.d.ts" />
 /// <reference path="cookie-parser/cookie-parser.d.ts" />
+/// <reference path="nodemailer-direct-transport/nodemailer-direct-transport.d.ts" />
+/// <reference path="nodemailer-smtp-transport/nodemailer-smtp-transport.d.ts" />
+/// <reference path="nodemailer/nodemailer-types.d.ts" />
+/// <reference path="nodemailer/nodemailer.d.ts" />
