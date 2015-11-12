@@ -41,7 +41,7 @@ var PagSeguroService = (function () {
                         service: "gmail",
                         auth: {
                             user: "n4payment",
-                            pass: "omtxtxtkrbghcjnu"
+                            pass: "omtx txtk rbgh cjnu"
                         }
                     });
                     transporter.sendMail({

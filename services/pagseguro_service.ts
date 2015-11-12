@@ -51,7 +51,7 @@ export class PagSeguroService {
                             service: "gmail",
                             auth: {
                                 user: "n4payment",
-                                pass: "omtxtxtkrbghcjnu"
+                                pass: "omtx txtk rbgh cjnu"
                             }
                         });
 
