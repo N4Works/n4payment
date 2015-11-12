@@ -1,11 +1,10 @@
 <div class="">
-    <a ng-href="#/">Home</a>
-    <form class="">
-        <label for="currency">Currency</label>
+    <form class="form-checkout">
+        <label for="currency">Moeda</label>
         <select class="" readonly="" name="currency" ng-model="controller.checkout.currency">
-            <option value="BRL">Brazilian Real</option>
+            <option value="BRL">Real</option>
         </select>
-        <input maxLength="200" name="name" ng-model="controller.checkout.reference" placeholder="Código interno da transação" type="text">
+        <input maxLength="200" name="name" ng-model="controller.checkout.reference" placeholder="Código da compra" type="text">
         <!--
         <input max="9999999" min="-9999999" name="extraAmount" ng-model="controller.checkout.extraAmount" placeholder="Valor de acréscimo ou desconto" type="number">
         <input maxlength="255" name="redirectURL" ng-model="controller.checkout.redirectURL" placeholder="URL para redirecionamento" type="uri">
@@ -13,30 +12,27 @@
         <input max="999" min="0" name="maxUses" ng-model="controller.checkout.maxUses" placeholder="Número máximo de usos para o código de pagamento." type="number">
         <input max="999999999" min="30" name="maxAge" ng-model="controller.checkout.maxAge" placeholder="Prazo de validade do código de pagamento em segundos" type="number">
         -->
-        <div>
-            <label for="">Sender:
+        <div class="panel-sender">
+            <label for="">Comprador:
                 <span ng-bind="controller.checkout.sender.email"></span>
             </label>
-            <table>
+            <table class="table-sender">
                 <thead>
                     <tr>
                         <th>
-                            Name
+                            Nome
                         </th>
                         <th>
-                            Email
+                            E-mail
                         </th>
                         <th>
-                            Area code
+                            DDD
                         </th>
                         <th>
-                            Phone number
+                            Telefone
                         </th>
                         <th>
-                            Bithday
-                        </th>
-                        <th>
-                            Documents
+                            Nascimento
                         </th>
                     </tr>
                 </thead>
@@ -47,40 +43,31 @@
                         <td ng-bind="sender.phone.areaCode"></td>
                         <td ng-bind="sender.phone.number"></td>
                         <td ng-bind="sender.bornDate | date:'dd/MM/yyyy'"></td>
-                        <td ng-bind="sender.documents.length"></td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div>
+        <div class="panel-items">
             <label>Itens</label>
             <input required="" maxLength="100" placeholder="Identificador do item" ng-model="controller.item.id" name="id" type="text">
             <input required="" maxLength="100" placeholder="Descrição do item" ng-model="controller.item.description" name="description" type="text">
             <input required="" min="0" max="9999999" placeholder="Valor do item" ng-model="controller.item.amount" name="amount" type="number">
             <input required="" min="0" max="999" placeholder="Quantidade do item" ng-model="controller.item.quantity" name="quantity" type="number">
-            <input min="0" max="9999999" placeholder="Valor do frete para o item" ng-model="controller.item.shippingCost" name="quantity" type="number">
-            <input min="0" placeholder="Peso do item" ng-model="controller.item.weight" name="weight" type="number">
             <button name="saveItem" ng-click="controller.saveItem(item)">Save</button>
-            <table>
+            <table class="table-items">
                 <thead>
                     <tr>
                         <th>
-                            Id
+                            Código
                         </th>
                         <th>
-                            Description
+                            Descrição
                         </th>
                         <th>
-                            Amount
+                            Valor unitário
                         </th>
                         <th>
-                            Quantity
-                        </th>
-                        <th>
-                            Shipping cost
-                        </th>
-                        <th>
-                            Weight
+                            Quantidade
                         </th>
                         <th>
 
@@ -96,10 +83,6 @@
                         <td ng-bind="item.amount">
                         </td>
                         <td ng-bind="item.quantity">
-                        </td>
-                        <td ng-bind="item.shippingCost">
-                        </td>
-                        <td ng-bind="item.weight">
                         </td>
                         <td>
                             <button ng-click="controller.editItem(item)">Edit</button>
@@ -152,19 +135,25 @@
             </table>
         </div>
         -->
-        <button name="save" ng-click="controller.save()">Save</button>
+        <div class="panel-form-actions">
+            <button name="save" ng-click="controller.save()">Gravar</button>
+        </div>
     </form>
-    <table>
+    <hr />
+    <table class="table-checkout">
         <thead>
             <tr>
                 <th>
-                    Sender email
+                    Comprador
                 </th>
                 <th>
-                    Receiver email
+                    Vendedor
                 </th>
                 <th>
-                    Reference code
+                    Código da compra
+                </th>
+                <th>
+                    Data de envio do pagamento
                 </th>
                 <th></th>
             </tr>
@@ -174,10 +163,12 @@
                 <td ng-bind="checkout.sender.email"></td>
                 <td ng-bind="checkout.receiver.email"></td>
                 <td ng-bind="checkout.reference"></td>
+                <td ng-bind="checkout.sentDate | date:'dd/MM/yyyy'">
+                </td>
                 <td>
-                    <button ng-click="controller.edit(checkout)">Edit</button>
-                    <button ng-click="controller.delete(checkout)">Delete</button>
-                    <button ng-click="controller.send(checkout)">PagSeguro</button>
+                    <button ng-click="controller.edit(checkout)">Editar</button>
+                    <button ng-click="controller.delete(checkout)">Deletar</button>
+                    <button ng-disabled="checkout.sentDate" ng-click="controller.send(checkout)">Enviar pagamento</button>
                 </td>
             </tr>
         </tbody>

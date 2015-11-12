@@ -1,40 +1,38 @@
 <div>
-    <a ng-href="#/">Home</a>
-    <form name="user_register">
+    <form class="form-sender" name="user_register">
         <input type="text" name="name" placeholder="Name" maxLength="50" ng-model="controller.sender.name">
         <input type="email" name="email" placeholder="Email" maxLength="60" ng-model="controller.sender.email">
         <input type="text" name="areaCode" placeholder="Area code" maxLength="2" ng-model="controller.sender.phone.areaCode">
         <input type="phone" name="phoneNumber" placeholder="Phone number" maxLength="20" ng-model="controller.sender.phone.number">
         <input type="Date" name="bornDate" placeholder="Birthday" ng-model="controller.sender.bornDate">
-        <h4>Documents</h4>
-        <ul>
+        <h4>Documentos</h4>
+        <ul class="list-documents">
             <li ng-repeat="document in controller.sender.documents">
                 <label for="value">CPF</label>
                 <input type="text" name="value" value="" placeholder="CPF" maxlength="11" ng-model="document.value">
             </li>
         </ul>
-        <button name="save" ng-click="controller.save()">Save</button>
+        <div class="panel-form-actions">
+            <button name="save" ng-click="controller.save()">Gravar</button>
+        </div>
     </form>
-    <table>
+    <table class="table-sender">
         <thead>
             <tr>
                 <th>
-                    Name
+                    Nome
                 </th>
                 <th>
-                    Email
+                    E-mail
                 </th>
                 <th>
-                    Area code
+                    DDD
                 </th>
                 <th>
-                    Phone number
+                    Telefone
                 </th>
                 <th>
-                    Bithday
-                </th>
-                <th>
-                    Documents
+                    Nascimento
                 </th>
                 <th>
 
@@ -53,11 +51,9 @@
                 </td>
                 <td ng-bind="sender.bornDate | date:'dd/MM/yyyy'">
                 </td>
-                <td ng-bind="sender.documents.length">
-                </td>
                 <td>
-                    <button ng-click="controller.edit(sender)">Edit</button>
-                    <button ng-click="controller.delete(sender)">Delete</button>
+                    <button ng-click="controller.edit(sender)">Editar</button>
+                    <button ng-click="controller.delete(sender)">Deletar</button>
                 </td>
             </tr>
         </tbody>

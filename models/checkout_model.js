@@ -1,6 +1,7 @@
 "use strict";
 var mongoose = require("mongoose");
 var item_model_1 = require("./item_model");
+var shipping_model_1 = require("./shipping_model");
 var EnumCurrency = (function () {
     function EnumCurrency() {
     }
@@ -18,14 +19,15 @@ exports.CheckoutSchema = new mongoose.Schema({
     ],
     reference: { type: "string", maxLength: 200 },
     sender: { type: mongoose.Schema.Types.ObjectId, ref: "Sender" },
+    shipping: shipping_model_1.ShippingSchema,
     extraAmount: { type: "number", min: -9999999, max: 9999999 },
     redirectURL: { type: "string", maxLength: 255 },
     notificationURL: { type: "string", maxLength: 255 },
     maxUses: { type: "number", min: 0, max: 999, default: 10 },
-    maxAge: { type: "number", min: 30, max: 999999999, default: 120 }
+    maxAge: { type: "number", min: 30, max: 999999999, default: 120 },
+    sentDate: { type: "Date" }
 });
 exports.CheckoutSchema.static("toPagSeguro", function (checkout) {
-    console.log(checkout);
     var data = {
         checkout: {
             currency: checkout.currency,
@@ -65,22 +67,6 @@ exports.CheckoutSchema.static("toPagSeguro", function (checkout) {
             })
         }
     };
-    if (checkout.shipping) {
-        data.checkout.shipping = {
-            type: checkout.shipping.type,
-            cost: checkout.shipping.cost.toFixed(2),
-            address: {
-                street: checkout.shipping.address.street,
-                number: checkout.shipping.address.number,
-                postalCode: checkout.shipping.address.postalCode,
-                city: checkout.shipping.address.city,
-                state: checkout.shipping.address.state,
-                country: checkout.shipping.address.country,
-                complement: checkout.shipping.address.complement,
-                district: checkout.shipping.address.district
-            }
-        };
-    }
     return data;
 });
 exports.Checkout = mongoose.model("Checkout", exports.CheckoutSchema);

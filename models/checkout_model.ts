@@ -46,6 +46,7 @@ export class EnumCurrency {
  * @property {any} metadata Metadados da transação.
  *                          Permite adicionar informações extras, agrupadas ou não, em sua requisição de pagamento.
  *                          Não implementado.
+ * @property {Date} sentDate Data de envio ao PagSeguro.
  * @description Compra.
  */
 export interface ICheckout extends mongoose.Document {
@@ -60,6 +61,7 @@ export interface ICheckout extends mongoose.Document {
     notificationURL: string;
     maxUses: number;
     maxAge: number;
+    sentDate: Date;
 };
 
 /**
@@ -75,16 +77,16 @@ export var CheckoutSchema:mongoose.Schema = new mongoose.Schema({
     ],
     reference: { type: "string", maxLength: 200 },
     sender: { type: mongoose.Schema.Types.ObjectId, ref: "Sender" },
-    //shipping: ShippingSchema,//{ type: mongoose.Schema.Types.ObjectId, ref: "Shipping" },
+    shipping: ShippingSchema,
     extraAmount: { type: "number", min: -9999999, max: 9999999 },
     redirectURL: { type: "string", maxLength: 255 },
     notificationURL: { type: "string", maxLength: 255 },
     maxUses: { type: "number", min: 0, max: 999, default: 10 },
-    maxAge: { type: "number", min: 30, max: 999999999, default: 120 }
+    maxAge: { type: "number", min: 30, max: 999999999, default: 120 },
+    sentDate: { type: "Date" }
 });
 
 CheckoutSchema.static("toPagSeguro", (checkout: ICheckout):any => {
-    console.log(checkout);
     var data:any = {
         checkout: {
             currency: checkout.currency,
@@ -125,6 +127,7 @@ CheckoutSchema.static("toPagSeguro", (checkout: ICheckout):any => {
         }
     };
 
+    /*
     if (checkout.shipping) {
         data.checkout.shipping = {
             type: checkout.shipping.type,
@@ -140,7 +143,7 @@ CheckoutSchema.static("toPagSeguro", (checkout: ICheckout):any => {
                 district: checkout.shipping.address.district
             }
         };
-    }
+    }*/
 
     return data;
 });
@@ -175,6 +178,7 @@ CheckoutSchema.static("toPagSeguro", (checkout: ICheckout):any => {
  * @property {any} metadata Metadados da transação.
  *                          Permite adicionar informações extras, agrupadas ou não, em sua requisição de pagamento.
  *                          Não implementado.
+ * @property {Date} sentDate Data de envio ao PagSeguro.
  * @description Compra.
  */
 export var Checkout:mongoose.Model<ICheckout> = mongoose.model<ICheckout>("Checkout", CheckoutSchema);

@@ -6,15 +6,18 @@
         <link rel="stylesheet" href="styles/main.css">
     </head>
     <body ng-app="n4_payment" ng-controller="RootController as rootCtrl">
-        <header ng-controller="LoginController as loginCtrl">
-            <div ng-if="!loginCtrl.loginData.user">
-                <input type="email" ng-model="loginCtrl.loginData.email">
-                <input type="password" ng-model="loginCtrl.loginData.password">
-                <button ng-click="loginCtrl.login()">Log in</button>
-            </div>
-            <div ng-if="loginCtrl.loginData.user">
-                <p ng-bind="loginCtrl.loginData.user.email"></p>
-                <button ng-click="loginCtrl.logout()">Log out</button>
+        <header class="menu-header" ng-controller="LoginController as loginCtrl">
+            <a ng-href="#/">Home</a>
+            <div class="panel-login">
+                <div class="form-login" ng-if="!loginCtrl.loginData.user">
+                    <input type="email" ng-model="loginCtrl.loginData.email">
+                    <input type="password" ng-model="loginCtrl.loginData.password">
+                    <button ng-click="loginCtrl.login()">Entrar</button>
+                </div>
+                <div class="info-login" ng-if="loginCtrl.loginData.user">
+                    <p ng-bind="loginCtrl.loginData.user.email"></p>
+                    <button ng-click="loginCtrl.logout()">Sair</button>
+                </div>
             </div>
         </header>
         <section ng-view=""></section>

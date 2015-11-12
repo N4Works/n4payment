@@ -19,6 +19,9 @@ export class PagSeguroService {
     sendPayment(checkout: ICheckout): Promise<string> {
         var self = this;
         return new Promise<string>((resolve: Function, reject: Function) => {
+            if (!!checkout.sentDate) {
+                return reject("Pagamento já enviado.");
+            }
             var checkoutService: ICheckoutService = new CheckoutService(self.user);
             checkoutService.getXML(checkout)
                 .then((xml: string) => {
@@ -40,9 +43,11 @@ export class PagSeguroService {
                         if (!!errors) {
                             return reject(errors);
                         }
-                        var checkout: ICheckoutResponse = data.checkout;
+                        checkout.sentDate = new Date();
+                        checkout.save();
+                        var checkoutResponse: ICheckoutResponse = data.checkout;
                         var urlPayment = process.env.NODE_ENV === "production" ? EnumURLPagSeguro.payment_production : EnumURLPagSeguro.payment_development;
-                        var redirectURL = `${urlPayment}?code=${checkout.code}`;
+                        var redirectURL = `${urlPayment}?code=${checkoutResponse.code}`;
                         return resolve(redirectURL);
                     });
                 })

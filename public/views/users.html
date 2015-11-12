@@ -1,30 +1,32 @@
 <div>
     <a ng-href="#/">Home</a>
-    <form name="user_register">
+    <form class="form-user" name="user_register">
         <input type="email" name="email" placeholder="User email" maxlength="60" ng-model="controller.user.email">
         <input type="password" name="password" placeholder="User password" ng-model="controller.user.password">
         <input type="text" name="token" placeholder="Payment token" maxlength="32" ng-model="controller.user.token">
         <input type="uri" name="redirectURL" placeholder="URL de redirecionamento" ng-model="controller.user.redirectURL">
         <input type="uri" name="notificationURL" placeholder="URL de notificação" ng-model="controller.user.notificationURL">
-        <button name="save" ng-click="controller.save()">Save</button>
+        <div class="panel-form-actions">
+            <button name="save" ng-click="controller.save()">Gravar</button>
+        </div>
     </form>
-    <table>
+    <table class="table-user">
         <thead>
             <tr>
                 <th>
-                    Id
+                    Identificador
                 </th>
                 <th>
-                    Email
+                    E-mail
                 </th>
                 <th>
-                    Token
+                    Token PagSeguro
                 </th>
                 <th>
-                    Redirect URL
+                    Endereço de redirecionamento
                 </th>
                 <th>
-                    Notification URL
+                    Endereço de notificação
                 </th>
                 <th>
 
@@ -44,8 +46,8 @@
                 <td ng-bind="user.notificationURL">
                 </td>
                 <td>
-                    <button ng-click="controller.edit(user)">Edit</button>
-                    <button ng-click="controller.delete(user)">Delete</button>
+                    <button ng-click="controller.edit(user)">Editar</button>
+                    <button ng-click="controller.delete(user)">Deletar</button>
                 </td>
             </tr>
         </tbody>
