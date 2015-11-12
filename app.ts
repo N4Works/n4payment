@@ -9,7 +9,6 @@ import {Router as CheckoutRouter} from "./routes/checkout_route";
 import {Router as PagSeguroRouter} from "./routes/pagseguro_route";
 import {Router as LoginRouter} from "./routes/login_route";
 import login from "./middlewares/login_middleware";
-import {connectAdminDatabase, connectUserDatabase} from "./middlewares/database_middleware";
 
 var application: express.Application = express();
 
@@ -22,7 +21,7 @@ mongoose.connect(`mongodb://localhost/n4-payment`, (error: any) => {
 application.use(cookieParser());
 
 application.use("/api/login", LoginRouter(application));
-application.use("/api/users", login, UserRouter(application));
+application.use("/api/users", UserRouter(application));
 application.use("/api/senders", login, SenderRouter(application));
 application.use("/api/checkouts", login, CheckoutRouter(application));
 // Login controlado por método, pois existe um acesso da API do PagSeguro.

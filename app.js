@@ -16,7 +16,7 @@ mongoose.connect("mongodb://localhost/n4-payment", function (error) {
 });
 application.use(cookieParser());
 application.use("/api/login", login_route_1.Router(application));
-application.use("/api/users", login_middleware_1.default, user_route_1.Router(application));
+application.use("/api/users", user_route_1.Router(application));
 application.use("/api/senders", login_middleware_1.default, sender_route_1.Router(application));
 application.use("/api/checkouts", login_middleware_1.default, checkout_route_1.Router(application));
 application.use("/api/pagseguro", pagseguro_route_1.Router(application));
