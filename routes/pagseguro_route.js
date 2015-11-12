@@ -14,6 +14,7 @@ exports.Router = function (server) {
         .route("/notifications/:userId")
         .post(cors({ origin: "pagseguro.uol.com.br" }), bodyParser.urlencoded({ extended: true }), xmlparser(), function (request, response, next) {
         var notification = request.body;
+        console.log(notification);
         var service = new user_service_1.UserService();
         service.findById(request.params.userId)
             .then(function (user) {

@@ -22,10 +22,10 @@ application.use(cookieParser());
 
 application.use("/api/login", LoginRouter(application));
 application.use("/api/users", UserRouter(application));
-application.use("/api/senders", login, SenderRouter(application));
-application.use("/api/checkouts", login, CheckoutRouter(application));
 // Login controlado por método, pois existe um acesso da API do PagSeguro.
 application.use("/api/pagseguro", PagSeguroRouter(application));
+application.use("/api/senders", login, SenderRouter(application));
+application.use("/api/checkouts", login, CheckoutRouter(application));
 
 application.use("/", express.static("./public"));
 application.use("/node_modules", express.static("./node_modules"));

@@ -25,6 +25,7 @@ export var Router = (server: express.Router) => {
         xmlparser(),
         (request: express.Request, response: express.Response, next: Function) => {
             var notification: INotification = request.body;
+            console.log(notification);
             var service: IUserService = new UserService();
             service.findById(request.params.userId)
                 .then((user: IUser) => {

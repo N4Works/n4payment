@@ -17,9 +17,9 @@ mongoose.connect("mongodb://localhost/n4-payment", function (error) {
 application.use(cookieParser());
 application.use("/api/login", login_route_1.Router(application));
 application.use("/api/users", user_route_1.Router(application));
+application.use("/api/pagseguro", pagseguro_route_1.Router(application));
 application.use("/api/senders", login_middleware_1.default, sender_route_1.Router(application));
 application.use("/api/checkouts", login_middleware_1.default, checkout_route_1.Router(application));
-application.use("/api/pagseguro", pagseguro_route_1.Router(application));
 application.use("/", express.static("./public"));
 application.use("/node_modules", express.static("./node_modules"));
 application.listen(3000, function () { return console.log("Rodando na porta 3000"); });
