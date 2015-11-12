@@ -5,8 +5,10 @@ angular.module("n4_payment", [
     "ngRoute"
 ])
     .config([
+    "$locationProvider",
     "$routeProvider",
-    ($routeProvider: ng.route.IRouteProvider) => {
+    ($locationProvider: ng.ILocationProvider, $routeProvider: ng.route.IRouteProvider) => {
+        $locationProvider.html5Mode(true);
         $routeProvider
             .when("/", {
                 templateUrl: "views/main.html",
