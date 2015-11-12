@@ -3,7 +3,6 @@ var mongoose = require("mongoose");
 var paymentmethod_model_1 = require("./paymentmethod_model");
 var creditorfees_model_1 = require("./creditorfees_model");
 var item_model_1 = require("./item_model");
-var shipping_model_1 = require("./shipping_model");
 var sender_model_1 = require("./sender_model");
 (function (EnumTransactionType) {
     EnumTransactionType[EnumTransactionType["payment"] = 1] = "payment";
@@ -52,7 +51,6 @@ exports.TransactionSchema = new mongoose.Schema({
     items: [
         item_model_1.ItemSchema
     ],
-    sender: sender_model_1.SenderSchema,
-    shipping: shipping_model_1.ShippingSchema,
+    sender: sender_model_1.SenderSchema
 });
 exports.Transaction = mongoose.model("Transaction", exports.TransactionSchema);

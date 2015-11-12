@@ -116,13 +116,13 @@ export class TransactionService implements ITransactionService {
                 data.items = data.items.item;
                 self.findByCode(data.code)
                     .then((t: ITransaction) => {
-                        if (!!t) {
-                            return Transaction.update({
-                                code: t.code
-                            }, data, (error) => error ? reject(error) : resolve());
-                        }
-                        new Transaction(data).save((error) => error ? reject(error) : resolve());
-                    })
+                    if (!!t) {
+                        return Transaction.update({
+                            code: t.code
+                        }, data, (error) => error ? reject(error) : resolve());
+                    }
+                    new Transaction(data).save((error) => error ? reject(error) : resolve());
+                })
                     .catch(error => reject(error));
             });
         });
@@ -161,15 +161,17 @@ export class TransactionService implements ITransactionService {
                 }
                 data = data.transaction;
                 data.items = data.items.item;
+                console.log(data);
                 self.findByCode(data.code)
                     .then(t => {
-                    if (!!t) {
-                        return Transaction.update({
-                            code: t.code
-                        }, data, (error) => error ? reject(error) : resolve());
-                    }
-                    new Transaction(data).save((error) => error ? reject(error) : resolve());
-                }).catch(error => reject(error));
+                        if (!!t) {
+                            return Transaction.update({
+                                code: t.code
+                            }, data, (error) => error ? reject(error) : resolve());
+                        }
+                        t = new Transaction(data);
+                        t.save((error) => error ? reject(error) : resolve());
+                    }).catch(error => reject(error));
             });
         });
     }

@@ -160,8 +160,8 @@ export var TransactionSchema: mongoose.Schema = new mongoose.Schema({
     items: [
         ItemSchema
     ],
-    sender: SenderSchema,
-    shipping: ShippingSchema,
+    sender: SenderSchema
+    //shipping: ShippingSchema,
 });
 
 /**

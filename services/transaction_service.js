@@ -79,6 +79,7 @@ var TransactionService = (function () {
                 }
                 data = data.transaction;
                 data.items = data.items.item;
+                console.log(data);
                 self.findByCode(data.code)
                     .then(function (t) {
                     if (!!t) {
@@ -86,7 +87,8 @@ var TransactionService = (function () {
                             code: t.code
                         }, data, function (error) { return error ? reject(error) : resolve(); });
                     }
-                    new transaction_model_1.Transaction(data).save(function (error) { return error ? reject(error) : resolve(); });
+                    t = new transaction_model_1.Transaction(data);
+                    t.save(function (error) { return error ? reject(error) : resolve(); });
                 }).catch(function (error) { return reject(error); });
             });
         });
