@@ -8,6 +8,7 @@ import {Router as SenderRouter} from "./routes/sender_route";
 import {Router as CheckoutRouter} from "./routes/checkout_route";
 import {Router as PagSeguroRouter} from "./routes/pagseguro_route";
 import {Router as LoginRouter} from "./routes/login_route";
+import {Router as ItemRouter} from "./routes/item_route";
 import login from "./middlewares/login_middleware";
 
 var application: express.Application = express();
@@ -25,6 +26,7 @@ application.use("/api/users", UserRouter(application));
 // Login controlado por método, pois existe um acesso da API do PagSeguro.
 application.use("/api/pagseguro", PagSeguroRouter(application));
 application.use("/api/senders", login, SenderRouter(application));
+application.use("/api/items", ItemRouter(application));
 application.use("/api/checkouts", login, CheckoutRouter(application));
 
 application.use("/", express.static("./public"));

@@ -1,11 +1,9 @@
 "use strict";
 
-import * as express from "express";
-import * as bodyParser from "body-parser";
+import express = require("express");
+import bodyParser = require("body-parser");
 import {ICheckout} from "../models/checkout_model";
-import {IUser} from "../models/user_model";
 import {ICheckoutService, CheckoutService} from "../services/checkout_service";
-import {IUserService, UserService} from "../services/user_service";
 
 export var Router = (server: express.Router) => {
     var router: express.Router = express.Router(server);

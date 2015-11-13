@@ -1,7 +1,7 @@
 "use strict";
 
-import * as express from "express";
-import * as bodyParser from "body-parser";
+import express = require("express");
+import bodyParser = require("body-parser");
 import {ISender} from "../models/sender_model";
 import {ISenderService, SenderService} from "../services/sender_service";
 

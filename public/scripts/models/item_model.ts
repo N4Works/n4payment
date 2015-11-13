@@ -1,6 +1,7 @@
 "use strict";
 
 class ItemModel {
+    _id: string;
     id: string;
     description: string;
     amount: number;

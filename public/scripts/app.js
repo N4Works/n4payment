@@ -34,8 +34,10 @@ angular.module("n4_payment", [
             controller: "TransactionsController",
             controllerAs: "controller"
         })
-            .when("/confirmation", {
-            templateUrl: "views/confirmation.html",
+            .when("/items", {
+            templateUrl: "views/items.html",
+            controller: "ItemsController",
+            controllerAs: "controller"
         })
             .otherwise({
             redirectTo: "/"

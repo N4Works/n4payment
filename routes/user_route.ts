@@ -1,7 +1,7 @@
 "use strict";
 
-import * as express from "express";
-import * as bodyParser from "body-parser";
+import express = require("express");
+import bodyParser = require("body-parser");
 import {IUser} from "../models/user_model";
 import {IUserService, UserService} from "../services/user_service";
 

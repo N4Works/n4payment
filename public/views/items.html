@@ -1,0 +1,45 @@
+<div>
+    <label>Itens</label>
+    <input required="" maxLength="100" placeholder="Identificador do item" ng-model="controller.item.id" name="id" type="text">
+    <input required="" maxLength="100" placeholder="Descrição do item" ng-model="controller.item.description" name="description" type="text">
+    <input required="" min="0" max="9999999" placeholder="Valor do item" ng-model="controller.item.amount" name="amount" type="number">
+    <input required="" min="0" max="999" placeholder="Quantidade do item" ng-model="controller.item.quantity" name="quantity" type="number">
+    <button name="saveItem" ng-click="controller.save(item)">Save</button>
+    <table class="table-items">
+        <thead>
+            <tr>
+                <th>
+                    Código
+                </th>
+                <th>
+                    Descrição
+                </th>
+                <th>
+                    Valor unitário
+                </th>
+                <th>
+                    Quantidade
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in controller.items">
+                <td ng-bind="item.id">
+                </td>
+                <td ng-bind="item.description">
+                </td>
+                <td ng-bind="item.amount">
+                </td>
+                <td ng-bind="item.quantity">
+                </td>
+                <td>
+                    <button ng-click="controller.edit(item)">Editar</button>
+                    <button ng-click="controller.delete(item)">Deletar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
