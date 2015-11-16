@@ -72,9 +72,12 @@ export type MCheckout = mongoose.Model<ICheckout>;
 export var CheckoutSchema:mongoose.Schema = new mongoose.Schema({
     receiver: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     currency: { type: "string", enum: [ "BRL" ], required: true },
-    items: [
-        ItemSchema
-    ],
+    items: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Item",
+        required: true,
+        validate: [items => !!items.length, "É necessário informar ao menos um item."]
+    }],
     reference: { type: "string", maxLength: 200 },
     sender: { type: mongoose.Schema.Types.ObjectId, ref: "Sender" },
     shipping: ShippingSchema,

@@ -1,6 +1,5 @@
 "use strict";
 var mongoose = require("mongoose");
-var item_model_1 = require("./item_model");
 var shipping_model_1 = require("./shipping_model");
 var EnumCurrency = (function () {
     function EnumCurrency() {
@@ -14,9 +13,12 @@ exports.EnumCurrency = EnumCurrency;
 exports.CheckoutSchema = new mongoose.Schema({
     receiver: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     currency: { type: "string", enum: ["BRL"], required: true },
-    items: [
-        item_model_1.ItemSchema
-    ],
+    items: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Item",
+            required: true,
+            validate: [function (items) { return !!items.length; }, "É necessário informar ao menos um item."]
+        }],
     reference: { type: "string", maxLength: 200 },
     sender: { type: mongoose.Schema.Types.ObjectId, ref: "Sender" },
     shipping: shipping_model_1.ShippingSchema,

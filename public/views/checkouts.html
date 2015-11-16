@@ -4,14 +4,7 @@
         <select class="" readonly="" name="currency" ng-model="controller.checkout.currency">
             <option value="BRL">Real</option>
         </select>
-        <input maxLength="200" name="name" ng-model="controller.checkout.reference" placeholder="Código da compra" type="text">
-        <!--
-        <input max="9999999" min="-9999999" name="extraAmount" ng-model="controller.checkout.extraAmount" placeholder="Valor de acréscimo ou desconto" type="number">
-        <input maxlength="255" name="redirectURL" ng-model="controller.checkout.redirectURL" placeholder="URL para redirecionamento" type="uri">
-        <input maxlength="255" name="notificationURL" ng-model="controller.checkout.notificationURL" placeholder="URL para notificação" type="uri">
-        <input max="999" min="0" name="maxUses" ng-model="controller.checkout.maxUses" placeholder="Número máximo de usos para o código de pagamento." type="number">
-        <input max="999999999" min="30" name="maxAge" ng-model="controller.checkout.maxAge" placeholder="Prazo de validade do código de pagamento em segundos" type="number">
-        -->
+        <input maxLength="200" name="name" ng-model="controller.checkout.reference" placeholder="Descrição para a compra" type="text">
         <div class="panel-sender">
             <label for="">Comprador:
                 <span ng-bind="controller.checkout.sender.email"></span>
@@ -61,9 +54,6 @@
                         <th>
                             Valor unitário
                         </th>
-                        <th>
-                            Quantidade
-                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -74,55 +64,10 @@
                         </td>
                         <td ng-bind="item.amount">
                         </td>
-                        <td ng-bind="item.quantity">
-                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <!--<div>
-            <label for="shippingType">Tipo do frete</label>
-            <select class="" name="shippingType" ng-model="controller.checkout.shipping.type">
-                <option value="3">Não especificado</option>
-                <option value="1">PAC</option>
-                <option value="2">SEDEX</option>
-            </select>
-            <input max="9999999" name="cost" ng-model="controller.checkout.shipping.cost" placeholder="Custo do frete" type="number">
-            <input maxLength="80" name="street" ng-model="controller.checkout.shipping.address.street" placeholder="Rua do endereço" type="text">
-            <input maxLength="20" name="number" ng-model="controller.checkout.shipping.address.number" placeholder="Número" type="text">
-            <input maxLength="8" name="postalCode" ng-model="controller.checkout.shipping.address.postalCode" pattern="\d+" placeholder="Código postal" type="text">
-            <input maxLength="60" minLength="2" name="city" ng-model="controller.checkout.shipping.address.city" placeholder="Cidade" type="text">
-            <input maxLength="60" name="district" ng-model="controller.checkout.shipping.address.district" placeholder="Bairro" type="text">
-            <input maxLength="2" name="state" ng-model="controller.checkout.shipping.address.state" pattern="[A-Z]{2}" placeholder="Estado" type="text">
-            <input name="country" ng-model="controller.checkout.shipping.address.country" placeholder="País" readonly="" type="text">
-            <input maxLength="40" name="complement" ng-model="controller.checkout.shipping.address.complement" placeholder="Complemento" type="text">
-        </div>
-        -->
-        <!--
-        <div>
-            <label for="">Receiver:
-                <span ng-bind="controller.checkout.receiver.email"></span>
-            </label>
-            <table>
-                <thead>
-                    <tr>
-                        <th>
-                            Email
-                        </th>
-                        <th>
-                            Token
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-class="{'selected': controller.checkout.receiver === user}" ng-click="controller.selectUser(user)" ng-repeat="user in controller.users">
-                        <td ng-bind="user.email"></td>
-                        <td ng-bind="user.token"></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        -->
         <div class="panel-form-actions">
             <button name="save" ng-click="controller.save()">Gravar</button>
         </div>
@@ -138,7 +83,7 @@
                     Vendedor
                 </th>
                 <th>
-                    Código da compra
+                    Descrição
                 </th>
                 <th>
                     Data de envio do pagamento

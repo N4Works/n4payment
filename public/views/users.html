@@ -1,15 +1,4 @@
 <div>
-    <form class="form-user" name="user_register">
-        <input type="text" name="name" placeholder="Nome" maxLength="50" ng-model="controller.user.name">
-        <input type="email" name="email" placeholder="E-mail" maxlength="60" ng-model="controller.user.email">
-        <input type="password" name="password" placeholder="Senha" ng-model="controller.user.password">
-        <input type="text" name="token" placeholder="Token do PagSeguro" maxlength="32" ng-model="controller.user.token">
-        <input type="uri" name="redirectURL" placeholder="URL de redirecionamento" ng-model="controller.user.redirectURL">
-        <input type="uri" name="notificationURL" placeholder="URL de notificação" ng-model="controller.user.notificationURL">
-        <div class="panel-form-actions">
-            <button name="save" ng-click="controller.save()">Gravar</button>
-        </div>
-    </form>
     <table class="table-user">
         <thead>
             <tr>
@@ -51,7 +40,7 @@
                 <td ng-bind="user.notificationURL">
                 </td>
                 <td>
-                    <button ng-click="controller.edit(user)">Editar</button>
+                    <a ng-href="/users/{{user._id}}">Editar</a>
                     <button ng-click="controller.delete(user)">Deletar</button>
                 </td>
             </tr>

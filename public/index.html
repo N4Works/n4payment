@@ -1,63 +1,79 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>PagSeguro</title>
-        <base href="/" />
-        <link rel="stylesheet" href="styles/main.css">
-    </head>
-    <body ng-app="n4_payment" ng-controller="RootController as rootCtrl">
-        <header class="menu-header" ng-controller="LoginController as loginCtrl">
-            <a ng-href="/">Home</a>
-            <div class="panel-login">
-                <div class="form-login" ng-if="!loginCtrl.loginData.user">
-                    <input type="email" ng-model="loginCtrl.loginData.email">
-                    <input type="password" ng-model="loginCtrl.loginData.password">
-                    <button ng-click="loginCtrl.login()">Entrar</button>
-                </div>
-                <div class="info-login" ng-if="loginCtrl.loginData.user">
-                    <p ng-bind="loginCtrl.loginData.user.email"></p>
-                    <button ng-click="loginCtrl.logout()">Sair</button>
-                </div>
-            </div>
-        </header>
-        <section ng-view=""></section>
-        <footer></footer>
 
-        <!-- build:js_vendor ./scripts/vendor.js -->
-        <script type="text/javascript" src="../node_modules/angular/angular.js"></script>
-        <script type="text/javascript" src="../node_modules/angular-route/angular-route.js"></script>
-        <script type="text/javascript" src="../node_modules/angular-resource/angular-resource.js"></script>
-        <!-- endbuild -->
-        <!-- build:js_n4_payment ./scripts/n4_payment.js -->
-        <script type="text/javascript" src="scripts/app.js"></script>
-        <script type="text/javascript" src="scripts/controllers/root_controller.js"></script>
-        <script type="text/javascript" src="scripts/controllers/main_controller.js"></script>
-        <script type="text/javascript" src="scripts/controllers/users_controller.js"></script>
-        <script type="text/javascript" src="scripts/controllers/senders_controller.js"></script>
-        <script type="text/javascript" src="scripts/controllers/checkouts_controller.js"></script>
-        <script type="text/javascript" src="scripts/controllers/transactions_controller.js"></script>
-        <script type="text/javascript" src="scripts/controllers/login_controller.js"></script>
-        <script type="text/javascript" src="scripts/controllers/items_controller.js"></script>
-        <script type="text/javascript" src="scripts/resources/user_resource.js"></script>
-        <script type="text/javascript" src="scripts/resources/sender_resource.js"></script>
-        <script type="text/javascript" src="scripts/resources/checkout_resource.js"></script>
-        <script type="text/javascript" src="scripts/resources/transaction_resource.js"></script>
-        <script type="text/javascript" src="scripts/resources/pagseguro_resource.js"></script>
-        <script type="text/javascript" src="scripts/resources/login_resource.js"></script>
-        <script type="text/javascript" src="scripts/resources/item_resource.js"></script>
-        <script type="text/javascript" src="scripts/models/user_model.js"></script>
-        <script type="text/javascript" src="scripts/models/sender_model.js"></script>
-        <script type="text/javascript" src="scripts/models/phone_model.js"></script>
-        <script type="text/javascript" src="scripts/models/address_model.js"></script>
-        <script type="text/javascript" src="scripts/models/checkout_model.js"></script>
-        <script type="text/javascript" src="scripts/models/item_model.js"></script>
-        <script type="text/javascript" src="scripts/models/shipping_model.js"></script>
-        <script type="text/javascript" src="scripts/models/document_model.js"></script>
-        <script type="text/javascript" src="scripts/models/creditorfees_model.js"></script>
-        <script type="text/javascript" src="scripts/models/paymentmethod_model.js"></script>
-        <script type="text/javascript" src="scripts/models/transaction_model.js"></script>
-        <script type="text/javascript" src="scripts/models/login_model.js"></script>
-        <!-- endbuild -->
-    </body>
+<head>
+    <meta charset="utf-8">
+    <title>PagSeguro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+
+    <link rel="stylesheet" href="styles/main.css">
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="../node_modules/materialize-css/bin/materialize.css" media="screen,projection" />
+</head>
+
+<body ng-app="n4_payment" ng-controller="RootController as rootCtrl">
+    <header class="menu-header">
+        <nav>
+            <div ng-class="{'main':  'black', 'users': 'blue', 'senders': 'yellow darken-1', 'items': 'orange', 'checkouts': 'red', 'transactions': 'green'}[rootCtrl.route.current.name]" class="nav-wrapper">
+                <a class="brand-logo center" ng-href="/">Controle de pagamentos - PagSeguro</a>
+            </div>
+        </nav>
+    </header>
+    <section>
+        <div class="fixed-action-btn vertical" style="bottom: 45px; right: 24px;">
+            <a ng-href="/checkouts" class="btn-floating btn-large red">
+                <i class="large material-icons">add</i>
+            </a>
+            <ul>
+                <li><a ng-href="/users" class="btn-floating blue"><i class="material-icons">settings</i></a></li>
+                <li><a ng-href="/senders" class="btn-floating yellow darken-1"><i class="material-icons">person_add</i></a></li>
+                <li><a ng-href="/items" class="btn-floating orange"><i class="material-icons">card_giftcard</i></a></li>
+                <li><a ng-href="/checkouts" class="btn-floating red"><i class="material-icons">shopping_cart</i></a></li>
+            </ul>
+        </div>
+    </section>
+    <section class="container" ng-view=""></section>
+    <footer></footer>
+
+    <!-- build:js_vendor ./scripts/vendor.js -->
+    <script type="text/javascript" src="../node_modules/angular/angular.js"></script>
+    <script type="text/javascript" src="../node_modules/angular-route/angular-route.js"></script>
+    <script type="text/javascript" src="../node_modules/angular-resource/angular-resource.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../node_modules/materialize-css/bin/materialize.js"></script>
+    <!-- endbuild -->
+    <!-- build:js_n4_payment ./scripts/n4_payment.js -->
+    <script type="text/javascript" src="scripts/app.js"></script>
+    <script type="text/javascript" src="scripts/controllers/root_controller.js"></script>
+    <script type="text/javascript" src="scripts/controllers/main_controller.js"></script>
+    <script type="text/javascript" src="scripts/controllers/users_controller.js"></script>
+    <script type="text/javascript" src="scripts/controllers/user_controller.js"></script>
+    <script type="text/javascript" src="scripts/controllers/senders_controller.js"></script>
+    <script type="text/javascript" src="scripts/controllers/checkouts_controller.js"></script>
+    <script type="text/javascript" src="scripts/controllers/transactions_controller.js"></script>
+    <script type="text/javascript" src="scripts/controllers/login_controller.js"></script>
+    <script type="text/javascript" src="scripts/controllers/items_controller.js"></script>
+    <script type="text/javascript" src="scripts/resources/user_resource.js"></script>
+    <script type="text/javascript" src="scripts/resources/sender_resource.js"></script>
+    <script type="text/javascript" src="scripts/resources/checkout_resource.js"></script>
+    <script type="text/javascript" src="scripts/resources/transaction_resource.js"></script>
+    <script type="text/javascript" src="scripts/resources/pagseguro_resource.js"></script>
+    <script type="text/javascript" src="scripts/resources/login_resource.js"></script>
+    <script type="text/javascript" src="scripts/resources/item_resource.js"></script>
+    <script type="text/javascript" src="scripts/models/user_model.js"></script>
+    <script type="text/javascript" src="scripts/models/sender_model.js"></script>
+    <script type="text/javascript" src="scripts/models/phone_model.js"></script>
+    <script type="text/javascript" src="scripts/models/address_model.js"></script>
+    <script type="text/javascript" src="scripts/models/checkout_model.js"></script>
+    <script type="text/javascript" src="scripts/models/item_model.js"></script>
+    <script type="text/javascript" src="scripts/models/shipping_model.js"></script>
+    <script type="text/javascript" src="scripts/models/document_model.js"></script>
+    <script type="text/javascript" src="scripts/models/creditorfees_model.js"></script>
+    <script type="text/javascript" src="scripts/models/paymentmethod_model.js"></script>
+    <script type="text/javascript" src="scripts/models/transaction_model.js"></script>
+    <script type="text/javascript" src="scripts/models/login_model.js"></script>
+    <!-- endbuild -->
+</body>
+
 </html>

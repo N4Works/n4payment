@@ -1,0 +1,36 @@
+<div class="card form-user" name="user_register">
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">Cadastro de usuário</span>
+            <div class="input-field">
+                <input id="name" type="text" name="name" maxLength="50" ng-model="controller.user.name">
+                <label ng-class="{'active':controller.user.name}" for="name">Nome</label>
+            </div>
+            <div class="input-field">
+                <input id="email" type="email" name="email" maxlength="60" ng-model="controller.user.email">
+                <label ng-class="{'active':controller.user.email}" for="email">E-mail</label>
+            </div>
+            <div class="input-field">
+                <input id="password" type="password" name="password" ng-model="controller.user.password">
+                <label ng-class="{'active':controller.user.password}" for="password">Senha</label>
+            </div>
+            <div class="input-field">
+                <input id="token" type="text" name="token" maxlength="32" ng-model="controller.user.token">
+                <label ng-class="{'active':controller.user.token}" for="token">Token do PagSeguro</label>
+            </div>
+            <div class="input-field">
+                <input id="redirectURL" type="text" name="redirectURL" ng-model="controller.user.redirectURL">
+                <label ng-class="{'active':controller.user.redirectURL}" for="redirectURL">URL de redirecionamento</label>
+            </div>
+            <div class="input-field">
+                <input id="notificationURL" type="text" name="notificationURL" ng-model="controller.user.notificationURL">
+                <label ng-class="{'active':controller.user.notificationURL}" for="notificationURL">URL de notificação</label>
+            </div>
+        </div>
+        <div class="panel-form-actions card-action">
+            <div class="center">
+                <button class="btn waves-effect waves-light" name="save" ng-click="controller.save()">Gravar</button>
+            </div>
+        </div>
+    </div>
+</div>

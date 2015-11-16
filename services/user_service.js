@@ -29,6 +29,7 @@ var UserService = (function () {
     UserService.prototype.update = function (id, userData) {
         var self = this;
         return new Promise(function (resolve, reject) {
+            userData = new user_model_1.User(userData);
             user_model_1.User.findByIdAndUpdate(id, userData, function (error, user) { return !!error ? reject(error) : resolve(user); });
         });
     };

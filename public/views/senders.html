@@ -5,13 +5,7 @@
         <input type="text" name="areaCode" placeholder="DDD" maxLength="2" ng-model="controller.sender.phone.areaCode">
         <input type="phone" name="phoneNumber" placeholder="Telefone" maxLength="20" ng-model="controller.sender.phone.number">
         <input type="Date" name="bornDate" placeholder="Nascimento" ng-model="controller.sender.bornDate">
-        <h4>Documentos</h4>
-        <ul class="list-documents">
-            <li ng-repeat="document in controller.sender.documents">
-                <label for="value">CPF</label>
-                <input type="text" name="value" value="" placeholder="CPF" maxlength="11" ng-model="document.value">
-            </li>
-        </ul>
+        <input type="text" name="cpf" value="" placeholder="CPF" maxlength="11" ng-model="controller.sender.documents[0].value">
         <div class="panel-form-actions">
             <button name="save" ng-click="controller.save()">Gravar</button>
         </div>

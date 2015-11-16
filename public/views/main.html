@@ -1,5 +1,88 @@
-<a ng-href="/users">Users</a>
-<a ng-href="/senders">Senders</a>
-<a ng-href="/items">Items</a>
-<a ng-href="/checkouts">Checkout</a>
-<a ng-href="/transactions">Transactions</a>
+<div>
+    <div class="card panel-login" ng-controller="LoginController as loginCtrl">
+        <div class="">
+            <div class="card-content form-login">
+                <span class="card-title">Autenticação</span>
+                <div class="" ng-if="!loginCtrl.loginData.user">
+                    <div class="input-field">
+                        <i class="material-icons prefix">account_circle</i>
+                        <input id="email" name="email" type="email" ng-model="loginCtrl.loginData.email">
+                        <label for="email">E-mail</label>
+                    </div>
+                    <div class="input-field">
+                        <i class="material-icons prefix">vpn_key</i>
+                        <input id="password" name="password" type="password" ng-model="loginCtrl.loginData.password">
+                        <label for="password">Senha</label>
+                    </div>
+                </div>
+                <p class="center info-login" ng-if="loginCtrl.loginData.user">
+                    Bem-vindo <span ng-bind="loginCtrl.loginData.user.name"></span>.<br/>
+                    Utilize o menu ao lado para acessar os cadastros.
+                </p>
+            </div>
+            <div class="card-action">
+                <div class="center">
+                    <button  ng-if="!loginCtrl.loginData.user" class="btn waves-effect waves-light" ng-click="loginCtrl.login()">Entrar</button>
+                    <button  ng-if="loginCtrl.loginData.user" class="btn waves-effect waves-light" ng-click="loginCtrl.logout()">Sair</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" ng-controller="TransactionsController as transactionsCtrl">
+        <div class="card-content">
+            <span class="card-title">Transações</span>
+            <table class="table-transaction responsive-table">
+                <thead>
+                    <tr>
+                        <th>
+                            Data
+                        </th>
+                        <th>
+                            Comprador
+                        </th>
+                        <th>
+                            Descrição da compra
+                        </th>
+                        <th>
+                            Tipo
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Valor bruto
+                        </th>
+                        <th>
+                            Valor líquido
+                        </th>
+                        <th>
+                            Data de liberação
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="transaction in transactionsCtrl.transactions">
+                        <td ng-bind="transaction.date | date:'dd/MM/yyyy'">
+                        </td>
+                        <td ng-bind="transaction.sender.name">
+                        </td>
+                        <td ng-bind="transaction.reference">
+                        </td>
+                        <td ng-bind="transaction.type">
+                        </td>
+                        <td ng-bind="transaction.status">
+                        </td>
+                        <td ng-bind="transaction.grossAmount | currency:'R$'">
+                        </td>
+                        <td ng-bind="transaction.netAmount | currency:'R$'">
+                        </td>
+                        <td ng-bind="transaction.escrowEndDate | date:'dd/MM/yyyy'">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

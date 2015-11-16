@@ -9,6 +9,7 @@ class ItemModel {
     shippingCost: number;
     weight: number;
     constructor(itemData?:any) {
+        this.quantity = 1;
         angular.extend(this, itemData);
     }
 }
