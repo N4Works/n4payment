@@ -37,7 +37,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-class="{'selected': controller.checkout.sender === sender}" ng-click="controller.selectSender(sender)" ng-repeat="sender in controller.senders">
+                    <tr ng-class="{'selected': controller.senderIsSelected(sender)}" ng-click="controller.selectSender(sender)" ng-repeat="sender in controller.senders">
                         <td ng-bind="sender.name"></td>
                         <td ng-bind="sender.email"></td>
                         <td ng-bind="sender.phone.areaCode"></td>
@@ -49,11 +49,6 @@
         </div>
         <div class="panel-items">
             <label>Itens</label>
-            <input required="" maxLength="100" placeholder="Identificador do item" ng-model="controller.item.id" name="id" type="text">
-            <input required="" maxLength="100" placeholder="Descrição do item" ng-model="controller.item.description" name="description" type="text">
-            <input required="" min="0" max="9999999" placeholder="Valor do item" ng-model="controller.item.amount" name="amount" type="number">
-            <input required="" min="0" max="999" placeholder="Quantidade do item" ng-model="controller.item.quantity" name="quantity" type="number">
-            <button name="saveItem" ng-click="controller.saveItem(item)">Save</button>
             <table class="table-items">
                 <thead>
                     <tr>
@@ -69,13 +64,10 @@
                         <th>
                             Quantidade
                         </th>
-                        <th>
-
-                        </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="item in controller.checkout.items">
+                    <tr ng-class="{'selected': controller.itemIsSelected(item)}" ng-click="controller.selectItem(item)" ng-repeat="item in controller.items">
                         <td ng-bind="item.id">
                         </td>
                         <td ng-bind="item.description">
@@ -83,10 +75,6 @@
                         <td ng-bind="item.amount">
                         </td>
                         <td ng-bind="item.quantity">
-                        </td>
-                        <td>
-                            <button ng-click="controller.editItem(item)">Edit</button>
-                            <button ng-click="controller.deleteItem(item)">Delete</button>
                         </td>
                     </tr>
                 </tbody>

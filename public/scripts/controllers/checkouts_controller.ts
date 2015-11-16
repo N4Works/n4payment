@@ -2,32 +2,31 @@
 
 class CheckoutsController {
     checkout:CheckoutModel;
-    item:ItemModel;
-    itemSelected:ItemModel;
     checkouts:Array<CheckoutModel>;
     senders:Array<SenderModel>;
-    users:Array<UserModel>;
-    constructor(private $window: ng.IWindowService,private resource:CheckoutResource, private userResource:UserResource, private senderResource:SenderResource, private pagseguroResource:PagSeguroResource) {
+    items:Array<ItemModel>;
+    constructor(private $window: ng.IWindowService,
+        private filter: ng.IFilterFilter,
+        private resource:CheckoutResource,
+        private senderResource:SenderResource,
+        private pagseguroResource:PagSeguroResource,
+        private itemResource:ItemResource) {
         this.checkout = new CheckoutModel();
-        this.item = new ItemModel();
         var self = this;
         resource.findAll()
-            .then((checkouts:Array<CheckoutModel>) => self.checkouts = checkouts);
+            .then(checkouts => self.checkouts = checkouts);
         senderResource.findAll()
-            .then((senders: Array<SenderModel>) => self.senders = senders);
-        /*
-        userResource.findAll()
-            .then((users: Array<UserModel>) => self.users = users);
-            */
+            .then(senders => self.senders = senders);
+        itemResource.findAll()
+            .then(items => self.items = items);
     }
-
-    /*
-    selectUser(user:UserModel) {
-        this.checkout.receiver = user;
-    }*/
 
     selectSender(sender:SenderModel) {
         this.checkout.sender = sender;
+    }
+
+    senderIsSelected(sender: SenderModel) {
+        return this.checkout.sender._id === sender._id;
     }
 
     save() {
@@ -65,30 +64,28 @@ class CheckoutsController {
             .catch(e => console.log(e));
     }
 
-    editItem(item: ItemModel) {
-        this.itemSelected = item;
-        this.item = new ItemModel(angular.copy(item));
+    itemIsSelected(item: ItemModel) {
+        var filtered = this.filter(this.checkout.items, {_id: item._id});
+        return filtered.length;
     }
 
-    saveItem() {
-        var indice = this.checkout.items.indexOf(this.itemSelected);
-        this.checkout.items.splice(indice, 1, this.item);
-        delete this.itemSelected;
-        this.item = new ItemModel();
-    }
-
-    deleteItem(item: ItemModel) {
-        var indice = this.checkout.items.indexOf(item);
-        this.checkout.items.splice(indice, 1);
+    selectItem(item: ItemModel) {
+        var filtered = this.filter(this.checkout.items, {_id: item._id});
+        if (filtered.length) {
+            this.checkout.items.splice(this.checkout.items.indexOf(filtered[0]), 1);
+        } else {
+            this.checkout.items.push(item);
+        }
     }
 }
 
 angular.module("n4_payment")
     .controller("CheckoutsController", [
         "$window",
+        "filterFilter",
         "CheckoutResource",
-        "UserResource",
         "SenderResource",
         "PagSeguroResource",
+        "ItemResource",
         CheckoutsController
     ]);

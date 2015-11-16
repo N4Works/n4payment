@@ -1,21 +1,26 @@
 "use strict";
 var CheckoutsController = (function () {
-    function CheckoutsController($window, resource, userResource, senderResource, pagseguroResource) {
+    function CheckoutsController($window, filter, resource, senderResource, pagseguroResource, itemResource) {
         this.$window = $window;
+        this.filter = filter;
         this.resource = resource;
-        this.userResource = userResource;
         this.senderResource = senderResource;
         this.pagseguroResource = pagseguroResource;
+        this.itemResource = itemResource;
         this.checkout = new CheckoutModel();
-        this.item = new ItemModel();
         var self = this;
         resource.findAll()
             .then(function (checkouts) { return self.checkouts = checkouts; });
         senderResource.findAll()
             .then(function (senders) { return self.senders = senders; });
+        itemResource.findAll()
+            .then(function (items) { return self.items = items; });
     }
     CheckoutsController.prototype.selectSender = function (sender) {
         this.checkout.sender = sender;
+    };
+    CheckoutsController.prototype.senderIsSelected = function (sender) {
+        return this.checkout.sender._id === sender._id;
     };
     CheckoutsController.prototype.save = function () {
         var self = this;
@@ -48,28 +53,28 @@ var CheckoutsController = (function () {
             .then(function (redirectURL) { return self.$window.location.href = redirectURL; })
             .catch(function (e) { return console.log(e); });
     };
-    CheckoutsController.prototype.editItem = function (item) {
-        this.itemSelected = item;
-        this.item = new ItemModel(angular.copy(item));
+    CheckoutsController.prototype.itemIsSelected = function (item) {
+        var filtered = this.filter(this.checkout.items, { _id: item._id });
+        return filtered.length;
     };
-    CheckoutsController.prototype.saveItem = function () {
-        var indice = this.checkout.items.indexOf(this.itemSelected);
-        this.checkout.items.splice(indice, 1, this.item);
-        delete this.itemSelected;
-        this.item = new ItemModel();
-    };
-    CheckoutsController.prototype.deleteItem = function (item) {
-        var indice = this.checkout.items.indexOf(item);
-        this.checkout.items.splice(indice, 1);
+    CheckoutsController.prototype.selectItem = function (item) {
+        var filtered = this.filter(this.checkout.items, { _id: item._id });
+        if (filtered.length) {
+            this.checkout.items.splice(this.checkout.items.indexOf(filtered[0]), 1);
+        }
+        else {
+            this.checkout.items.push(item);
+        }
     };
     return CheckoutsController;
 })();
 angular.module("n4_payment")
     .controller("CheckoutsController", [
     "$window",
+    "filterFilter",
     "CheckoutResource",
-    "UserResource",
     "SenderResource",
     "PagSeguroResource",
+    "ItemResource",
     CheckoutsController
 ]);
