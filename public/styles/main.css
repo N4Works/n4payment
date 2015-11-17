@@ -1,3 +1,14 @@
 .selected {
     background: #c1c2c3;
 }
+
+body {
+    background: #e1e2e3;
+}
+
+p {
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+}

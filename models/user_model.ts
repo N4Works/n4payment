@@ -21,6 +21,7 @@ export interface IUser extends mongoose.Document {
     token: string;
     redirectURL: string;
     notificationURL: string;
+    urlPhoto: string;
 };
 
 /**
@@ -34,7 +35,8 @@ var UserSchema:mongoose.Schema = new mongoose.Schema({
     password: { type: "string", required: true },
     token: { type: "string", required: true, match: /^\w{32}$/ },
     redirectURL: { type: "string", required: true },
-    notificationURL: { type: "string", required: true }
+    notificationURL: { type: "string", required: true },
+    urlPhoto: { type: "string" }
 });
 
 /**

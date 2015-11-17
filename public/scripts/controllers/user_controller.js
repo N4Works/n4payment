@@ -5,9 +5,14 @@ var UserController = (function () {
         this.parameters = parameters;
         this.location = location;
         var self = this;
-        resource.findById(parameters["id"])
-            .then(function (user) { return self.user = user; })
-            .catch(function (error) { return console.log(error); });
+        if (parameters["id"]) {
+            resource.findById(parameters["id"])
+                .then(function (user) { return self.user = user; })
+                .catch(function (error) { return console.log(error); });
+        }
+        else {
+            this.user = new UserModel();
+        }
     }
     UserController.prototype.save = function () {
         var self = this;

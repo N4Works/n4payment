@@ -1,42 +1,42 @@
 "use strict";
 
-class UserController {
-    private user: UserModel;
-    constructor(private resource: UserResource,
+class SenderController {
+    private sender: SenderModel;
+    constructor(private resource: SenderResource,
         private parameters: ng.route.IRouteParamsService,
         private location: ng.ILocationService) {
         var self = this;
         if (parameters["id"]) {
             resource.findById(parameters["id"])
-                .then(user => self.user = user)
+                .then(sender => self.sender = sender)
                 .catch(error => console.log(error));
         } else {
-            this.user = new UserModel();
+            this.sender = new SenderModel();
         }
     }
 
     save() {
         var self = this;
-        this.resource.save(this.user)
-            .then((user: UserModel) => {
-                self.location.path("/users");
+        this.resource.save(this.sender)
+            .then((sender: SenderModel) => {
+                self.location.path("/senders");
             })
             .catch((error: any) => console.log(error));
     }
 
     delete() {
         var self = this;
-        this.resource.delete(this.user._id)
-            .then(() => self.location.path("/users"))
+        this.resource.delete(this.sender._id)
+            .then(() => self.location.path("/senders"))
             .catch((error: any) => console.log(error));
 
     }
 }
 
 angular.module("n4_payment")
-    .controller("UserController", [
-    "UserResource",
+    .controller("SenderController", [
+    "SenderResource",
     "$routeParams",
     "$location",
-    UserController
+    SenderController
 ]);

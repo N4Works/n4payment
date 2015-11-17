@@ -7,6 +7,7 @@ class UserModel {
     token: string;
     redirectURL: string;
     notificationURL: string;
+    urlPhoto: string;
     constructor(userData?:any) {
         angular.extend(this, userData);
     }

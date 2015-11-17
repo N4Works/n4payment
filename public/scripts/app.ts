@@ -26,13 +26,7 @@ angular.module("n4_payment", [
                 name: "users",
                 templateUrl: "views/user.html",
                 controller: "UserController",
-                controllerAs: "controller",
-                resolve: {
-                    user: [
-                        "$q",
-                        (q: ng.IQService) => q.resolve(new UserModel())
-                    ]
-                }
+                controllerAs: "controller"
             })
             .when("/users/:id", {
                 name: "users",
@@ -44,6 +38,18 @@ angular.module("n4_payment", [
                 name: "senders",
                 templateUrl: "views/senders.html",
                 controller: "SendersController",
+                controllerAs: "controller"
+            })
+            .when("/senders/new", {
+                name: "senders",
+                templateUrl: "views/sender.html",
+                controller: "SenderController",
+                controllerAs: "controller"
+            })
+            .when("/senders/:id", {
+                name: "senders",
+                templateUrl: "views/sender.html",
+                controller: "SenderController",
                 controllerAs: "controller"
             })
             .when("/checkouts", {

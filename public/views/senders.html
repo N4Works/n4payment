@@ -1,55 +1,27 @@
-<div>
-    <form class="form-sender" name="user_register">
-        <input type="text" name="name" placeholder="Nome" maxLength="50" ng-model="controller.sender.name">
-        <input type="email" name="email" placeholder="E-mail" maxLength="60" ng-model="controller.sender.email">
-        <input type="text" name="areaCode" placeholder="DDD" maxLength="2" ng-model="controller.sender.phone.areaCode">
-        <input type="phone" name="phoneNumber" placeholder="Telefone" maxLength="20" ng-model="controller.sender.phone.number">
-        <input type="Date" name="bornDate" placeholder="Nascimento" ng-model="controller.sender.bornDate">
-        <input type="text" name="cpf" value="" placeholder="CPF" maxlength="11" ng-model="controller.sender.documents[0].value">
-        <div class="panel-form-actions">
-            <button name="save" ng-click="controller.save()">Gravar</button>
+<div class="row">
+    <div class="col s12 m6 l6" ng-repeat="sender in controller.senders">
+        <div class="card grey-text">
+            <div class="card-content center">
+                <a ng-href="/senders/{{sender._id}}">
+                    <span class="card-title grey-text text-darken-4" ng-bind="sender.name">Card Title</span>
+                </a>
+                <p>e-mail: <span ng-bind="sender.email"></span></p>
+                <p>telefone: (<span ng-bind="sender.phone.areaCode"></span>) <span ng-bind="sender.phone.number"></span></p>
+                <a class="activator" href="">mostrar mais</a>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4"><span ng-bind="sender.name"></span><i class="material-icons right">close</i></span>
+                <p>e-mail: <span ng-bind="sender.email"></span></p>
+                <p>telefone: (<span ng-bind="sender.phone.areaCode"></span>) <span ng-bind="sender.phone.number"></span></p>
+                <p>nascimento: <span ng-bind="sender.bornDate | date:'dd/MM/yyyy'"></span></p>
+                <p>cpf: <span ng-bind="sender.documents[0].value"></span></p>
+            </div>
+            <div class="panel-form-actions card-action">
+                <div class="center">
+                    <a ng-href="/senders/{{sender._id}}">Editar</a>
+                    <a href="" name="delete" ng-click="controller.delete(sender)">Deletar</button>
+                </div>
+            </div>
         </div>
-    </form>
-    <table class="table-sender">
-        <thead>
-            <tr>
-                <th>
-                    Nome
-                </th>
-                <th>
-                    E-mail
-                </th>
-                <th>
-                    DDD
-                </th>
-                <th>
-                    Telefone
-                </th>
-                <th>
-                    Nascimento
-                </th>
-                <th>
-
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="sender in controller.senders">
-                <td ng-bind="sender.name">
-                </td>
-                <td ng-bind="sender.email">
-                </td>
-                <td ng-bind="sender.phone.areaCode">
-                </td>
-                <td ng-bind="sender.phone.number">
-                </td>
-                <td ng-bind="sender.bornDate | date:'dd/MM/yyyy'">
-                </td>
-                <td>
-                    <button ng-click="controller.edit(sender)">Editar</button>
-                    <button ng-click="controller.delete(sender)">Deletar</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    </div>
 </div>

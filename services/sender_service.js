@@ -34,6 +34,7 @@ var SenderService = (function () {
     SenderService.prototype.update = function (id, senderData) {
         var self = this;
         return new Promise(function (resolve, reject) {
+            senderData = new sender_model_1.Sender(senderData);
             sender_model_1.Sender.findByIdAndUpdate(id, senderData, function (error, sender) { return !!error ? reject(error) : resolve(sender); });
         });
     };

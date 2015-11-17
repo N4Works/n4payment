@@ -7,6 +7,7 @@ var UserSchema = new mongoose.Schema({
     password: { type: "string", required: true },
     token: { type: "string", required: true, match: /^\w{32}$/ },
     redirectURL: { type: "string", required: true },
-    notificationURL: { type: "string", required: true }
+    notificationURL: { type: "string", required: true },
+    urlPhoto: { type: "string" }
 });
 exports.User = mongoose.model("User", UserSchema);
