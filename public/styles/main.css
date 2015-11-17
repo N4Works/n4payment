@@ -1,5 +1,26 @@
 .selected {
-    background: #c1c2c3;
+    background: #ee6e73;
+    color: #fff;
+}
+.nav-breadcrumb {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.nav-breadcrumb > .nav-wrapper a.breadcrumb {
+    color: #c1c2c3;
+}
+
+.nav-breadcrumb > .nav-wrapper a.breadcrumb:before {
+    color: #c1c2c3;
+}
+
+.nav-breadcrumb > .nav-wrapper a.breadcrumb:last-of-type {
+    color: #a1a2a3;
+}
+
+.nav-breadcrumb > .nav-wrapper a.breadcrumb:last-of-type:before {
+    color: #a1a2a3;
 }
 
 body {

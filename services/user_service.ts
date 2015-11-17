@@ -101,6 +101,7 @@ export class UserService implements IUserService {
         var self = this;
         return new Promise<IUser>((resolve: Function, reject: Function) => {
             userData = new User(userData);
+            userData._id = id;
             User.findByIdAndUpdate(id, userData, (error:any, user:IUser) => !!error ? reject(error) : resolve(user));
         });
     }

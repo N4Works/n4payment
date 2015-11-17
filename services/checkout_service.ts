@@ -102,6 +102,7 @@ export class CheckoutService implements ICheckoutService {
             Checkout.findById(id)
                 .populate("receiver")
                 .populate("sender")
+                .populate("items")
                 .exec((error: any, checkout: ICheckout) =>
                 (!!error) ? reject(error) : resolve(checkout)));
     }
@@ -136,8 +137,9 @@ export class CheckoutService implements ICheckoutService {
     update(id: string, checkoutData: any): Promise<ICheckout> {
         var self = this;
         return new Promise<ICheckout>((resolve: Function, reject: Function) => {
-            var update = new Checkout(checkoutData);
-            Checkout.findByIdAndUpdate(id, update, (error: any, checkout: ICheckout) => !!error ? reject(error) : resolve(checkout));
+            var checkoutData = new Checkout(checkoutData);
+            checkoutData._id = id;
+            Checkout.findByIdAndUpdate(id, checkoutData, (error: any, checkout: ICheckout) => !!error ? reject(error) : resolve(checkout));
         });
     }
 
@@ -153,6 +155,7 @@ export class CheckoutService implements ICheckoutService {
             Checkout.findByIdAndRemove(id)
                 .populate("receiver")
                 .populate("sender")
+                .populate("items")
                 .exec((error: any, checkout: ICheckout) => !!error ? reject(error) : resolve(checkout)));
     }
 

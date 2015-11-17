@@ -1,109 +1,41 @@
 <div class="">
-    <form class="form-checkout">
-        <label for="currency">Moeda</label>
-        <select class="" readonly="" name="currency" ng-model="controller.checkout.currency">
-            <option value="BRL">Real</option>
-        </select>
-        <input maxLength="200" name="name" ng-model="controller.checkout.reference" placeholder="Descrição para a compra" type="text">
-        <div class="panel-sender">
-            <label for="">Comprador:
-                <span ng-bind="controller.checkout.sender.email"></span>
-            </label>
-            <table class="table-sender">
-                <thead>
-                    <tr>
-                        <th>
-                            Nome
-                        </th>
-                        <th>
-                            E-mail
-                        </th>
-                        <th>
-                            DDD
-                        </th>
-                        <th>
-                            Telefone
-                        </th>
-                        <th>
-                            Nascimento
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-class="{'selected': controller.senderIsSelected(sender)}" ng-click="controller.selectSender(sender)" ng-repeat="sender in controller.senders">
-                        <td ng-bind="sender.name"></td>
-                        <td ng-bind="sender.email"></td>
-                        <td ng-bind="sender.phone.areaCode"></td>
-                        <td ng-bind="sender.phone.number"></td>
-                        <td ng-bind="sender.bornDate | date:'dd/MM/yyyy'"></td>
-                    </tr>
-                </tbody>
-            </table>
+    <nav class="nav-breadcrumb">
+        <div class="nav-wrapper">
+            <div class="col s12">
+                <a class="breadcrumb" ng-href="/">Principal</a>
+                <a class="breadcrumb" ng-href="">Compras</a>
+            </div>
         </div>
-        <div class="panel-items">
-            <label>Itens</label>
-            <table class="table-items">
-                <thead>
-                    <tr>
-                        <th>
-                            Código
-                        </th>
-                        <th>
-                            Descrição
-                        </th>
-                        <th>
-                            Valor unitário
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-class="{'selected': controller.itemIsSelected(item)}" ng-click="controller.selectItem(item)" ng-repeat="item in controller.items">
-                        <td ng-bind="item.id">
-                        </td>
-                        <td ng-bind="item.description">
-                        </td>
-                        <td ng-bind="item.amount">
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    </nav>
+    <div class="col s12 m6 l6" ng-repeat="checkout in controller.checkouts">
+        <div class="card grey-text">
+            <div class="card-content center">
+                <a ng-href="/checkouts/{{checkout._id}}">
+                    <span class="card-title grey-text text-darken-4" ng-bind="checkout.reference">Card Title</span>
+                </a>
+                <p>vendedor: <span ng-bind="checkout.receiver.name"></span></p>
+                <p>comprador: <span ng-bind="checkout.sender.name"></span></p>
+                <a class="activator" href="">mostrar mais</a>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4"><span ng-bind="checkout.reference"></span><i class="material-icons right">close</i></span>
+                <p>data de envio: <span ng-bind="checkout.sentDate | date:'dd/MM/yyyy'"></span></p>
+                <hr>
+                <p>nome do vendedor: <span ng-bind="checkout.receiver.name"></span></p>
+                <p>e-mail do vendedor: <span ng-bind="checkout.receiver.email"></span></p>
+                <hr>
+                <p>nome do comprador: <span ng-bind="checkout.sender.name"></span></p>
+                <p>e-mail do comprador: <span ng-bind="checkout.sender.email"></span></p>
+                <p>telefone do comprador: (<span ng-bind="checkout.sender.phone.areaCode"></span>) <span ng-bind="checkout.sender.phone.number"></span></p>
+                <p>cpf do comprador: <span ng-bind="checkout.sender.documents[0].value"></span></p>
+            </div>
+            <div class="panel-form-actions card-action">
+                <div class="center">
+                    <a ng-href="/checkouts/{{checkout._id}}">Editar</a>
+                    <a href="" name="delete" ng-click="controller.delete(checkout)">Deletar</button>
+                    <a href="" name="send" ng-click="controller.send(checkout)">Enviar</a>
+                </div>
+            </div>
         </div>
-        <div class="panel-form-actions">
-            <button name="save" ng-click="controller.save()">Gravar</button>
-        </div>
-    </form>
-    <hr />
-    <table class="table-checkout">
-        <thead>
-            <tr>
-                <th>
-                    Comprador
-                </th>
-                <th>
-                    Vendedor
-                </th>
-                <th>
-                    Descrição
-                </th>
-                <th>
-                    Data de envio do pagamento
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="checkout in controller.checkouts">
-                <td ng-bind="checkout.sender.email"></td>
-                <td ng-bind="checkout.receiver.email"></td>
-                <td ng-bind="checkout.reference"></td>
-                <td ng-bind="checkout.sentDate | date:'dd/MM/yyyy'">
-                </td>
-                <td>
-                    <button ng-click="controller.edit(checkout)">Editar</button>
-                    <button ng-click="controller.delete(checkout)">Deletar</button>
-                    <button ng-click="controller.send(checkout)">Enviar pagamento</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    </div>
 </div>

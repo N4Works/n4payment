@@ -1,0 +1,70 @@
+"use strict";
+var CheckoutController = (function () {
+    function CheckoutController(resource, parameters, location, $window, filter, senderResource, pagseguroResource, itemResource) {
+        this.resource = resource;
+        this.parameters = parameters;
+        this.location = location;
+        this.$window = $window;
+        this.filter = filter;
+        this.senderResource = senderResource;
+        this.pagseguroResource = pagseguroResource;
+        this.itemResource = itemResource;
+        var self = this;
+        this.checkout = new CheckoutModel();
+        senderResource.findAll()
+            .then(function (senders) { return self.senders = senders; });
+        itemResource.findAll()
+            .then(function (items) { return self.items = items; });
+        if (parameters["id"]) {
+            resource.findById(parameters["id"])
+                .then(function (checkout) { return self.checkout = checkout; })
+                .catch(function (error) { return console.log(error); });
+        }
+    }
+    CheckoutController.prototype.selectSender = function (sender) {
+        this.checkout.sender = sender;
+    };
+    CheckoutController.prototype.senderIsSelected = function (sender) {
+        return this.checkout.sender._id === sender._id;
+    };
+    CheckoutController.prototype.itemIsSelected = function (item) {
+        var filtered = this.filter(this.checkout.items, { _id: item._id });
+        return filtered.length;
+    };
+    CheckoutController.prototype.selectItem = function (item) {
+        var filtered = this.filter(this.checkout.items, { _id: item._id });
+        if (filtered.length) {
+            this.checkout.items.splice(this.checkout.items.indexOf(filtered[0]), 1);
+        }
+        else {
+            this.checkout.items.push(item);
+        }
+    };
+    CheckoutController.prototype.save = function () {
+        var self = this;
+        this.resource.save(this.checkout)
+            .then(function (checkout) {
+            self.location.path("/checkouts");
+        })
+            .catch(function (error) { return console.log(error); });
+    };
+    CheckoutController.prototype.delete = function () {
+        var self = this;
+        this.resource.delete(this.checkout._id)
+            .then(function () { return self.location.path("/checkouts"); })
+            .catch(function (error) { return console.log(error); });
+    };
+    return CheckoutController;
+})();
+angular.module("n4_payment")
+    .controller("CheckoutController", [
+    "CheckoutResource",
+    "$routeParams",
+    "$location",
+    "$window",
+    "filterFilter",
+    "SenderResource",
+    "PagSeguroResource",
+    "ItemResource",
+    CheckoutController
+]);

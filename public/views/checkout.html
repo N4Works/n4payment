@@ -1,0 +1,87 @@
+<div class="form-checkout">
+    <nav class="nav-breadcrumb">
+        <div class="nav-wrapper">
+            <div class="col s12">
+                <a class="breadcrumb" ng-href="/">Principal</a>
+                <a class="breadcrumb" ng-href="/checkouts">Compras</a>
+                <a class="breadcrumb" ng-href="">Cadastro</a>
+            </div>
+        </div>
+    </nav>
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">Informações</span>
+            <div class="input-field">
+                <input id="reference" maxLength="200" name="name" ng-model="controller.checkout.reference" type="text">
+                <label for="id" ng-class="{'active':controller.checkout.reference}">Descrição</label>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">Comprador</span>
+            <table class="table-sender responsive-table">
+                <thead>
+                    <tr>
+                        <th>
+                            Nome
+                        </th>
+                        <th>
+                            E-mail
+                        </th>
+                        <th>
+                            DDD
+                        </th>
+                        <th>
+                            Telefone
+                        </th>
+                        <th>
+                            Nascimento
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-class="{'selected': controller.senderIsSelected(sender)}" ng-click="controller.selectSender(sender)" ng-repeat="sender in controller.senders">
+                        <td ng-bind="sender.name"></td>
+                        <td ng-bind="sender.email"></td>
+                        <td ng-bind="sender.phone.areaCode"></td>
+                        <td ng-bind="sender.phone.number"></td>
+                        <td ng-bind="sender.bornDate | date:'dd/MM/yyyy'"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">Produtos / Serviços</span>
+            <table class="table-items responsive-table">
+                <thead>
+                    <tr>
+                        <th>
+                            Código
+                        </th>
+                        <th>
+                            Descrição
+                        </th>
+                        <th>
+                            Valor unitário
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-class="{'selected': controller.itemIsSelected(item)}" ng-click="controller.selectItem(item)" ng-repeat="item in controller.items">
+                        <td ng-bind="item.id"></td>
+                        <td ng-bind="item.description"></td>
+                        <td ng-bind="item.amount"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="panel-form-actions card-action">
+            <div class="center">
+                <button class="btn waves-effect waves-light" name="save" ng-click="controller.save()">Gravar</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -120,6 +120,7 @@ export class SenderService implements ISenderService {
         var self = this;
         return new Promise<ISender>((resolve: Function, reject: Function) => {
             senderData = new Sender(senderData);
+            senderData._id = id;
             Sender.findByIdAndUpdate(id, senderData, (error:any, sender:ISender) => !!error ? reject(error) : resolve(sender));
         });
     }

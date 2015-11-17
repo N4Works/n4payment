@@ -35,6 +35,7 @@ var SenderService = (function () {
         var self = this;
         return new Promise(function (resolve, reject) {
             senderData = new sender_model_1.Sender(senderData);
+            senderData._id = id;
             sender_model_1.Sender.findByIdAndUpdate(id, senderData, function (error, sender) { return !!error ? reject(error) : resolve(sender); });
         });
     };

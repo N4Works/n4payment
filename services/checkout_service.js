@@ -24,6 +24,7 @@ var CheckoutService = (function () {
             return checkout_model_1.Checkout.findById(id)
                 .populate("receiver")
                 .populate("sender")
+                .populate("items")
                 .exec(function (error, checkout) {
                 return (!!error) ? reject(error) : resolve(checkout);
             });
@@ -45,8 +46,9 @@ var CheckoutService = (function () {
     CheckoutService.prototype.update = function (id, checkoutData) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            var update = new checkout_model_1.Checkout(checkoutData);
-            checkout_model_1.Checkout.findByIdAndUpdate(id, update, function (error, checkout) { return !!error ? reject(error) : resolve(checkout); });
+            var checkoutData = new checkout_model_1.Checkout(checkoutData);
+            checkoutData._id = id;
+            checkout_model_1.Checkout.findByIdAndUpdate(id, checkoutData, function (error, checkout) { return !!error ? reject(error) : resolve(checkout); });
         });
     };
     CheckoutService.prototype.delete = function (id) {
@@ -55,6 +57,7 @@ var CheckoutService = (function () {
             return checkout_model_1.Checkout.findByIdAndRemove(id)
                 .populate("receiver")
                 .populate("sender")
+                .populate("items")
                 .exec(function (error, checkout) { return !!error ? reject(error) : resolve(checkout); });
         });
     };
