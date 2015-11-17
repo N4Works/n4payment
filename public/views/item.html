@@ -1,0 +1,24 @@
+<div class="form-item">
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">Cadastro de produto</span>
+            <div class="input-field">
+                <input id="id" required="" maxLength="100" ng-model="controller.item.id" name="id" type="text">
+                <label ng-class="{'active':controller.item.id}" for="id">Código do produto</label>
+            </div>
+            <div class="input-field">
+                <input id="description" required="" maxLength="100" ng-model="controller.item.description" name="description" type="text">
+                <label ng-class="{'active':controller.item.description}" for="description">Descrição</label>
+            </div>
+            <div class="input-field">
+                <input id="amount" required="" min="0" max="9999999" ng-model="controller.item.amount" name="amount" type="number">
+                <label ng-class="{'active':controller.item.amount}" for="amount">Valor</label>
+            </div>
+        </div>
+        <div class="panel-form-actions card-action">
+            <div class="center">
+                <button class="btn waves-effect waves-light" name="save" ng-click="controller.save()">Gravar</button>
+            </div>
+        </div>
+    </div>
+</div>

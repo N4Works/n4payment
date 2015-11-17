@@ -1,39 +1,19 @@
-<div>
-    <label>Itens</label>
-    <input required="" maxLength="100" placeholder="Identificador do item" ng-model="controller.item.id" name="id" type="text">
-    <input required="" maxLength="100" placeholder="Descrição do item" ng-model="controller.item.description" name="description" type="text">
-    <input required="" min="0" max="9999999" placeholder="Valor do item" ng-model="controller.item.amount" name="amount" type="number">
-    <button name="saveItem" ng-click="controller.save(item)">Gravar</button>
-    <table class="table-items">
-        <thead>
-            <tr>
-                <th>
-                    Código
-                </th>
-                <th>
-                    Descrição
-                </th>
-                <th>
-                    Valor unitário
-                </th>
-                <th>
-
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="item in controller.items">
-                <td ng-bind="item.id">
-                </td>
-                <td ng-bind="item.description">
-                </td>
-                <td ng-bind="item.amount">
-                </td>
-                <td>
-                    <button ng-click="controller.edit(item)">Editar</button>
-                    <button ng-click="controller.delete(item)">Deletar</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<div class="row">
+    <div class="col s12 m6 l6" ng-repeat="item in controller.items">
+        <div class="card grey-text">
+            <div class="card-content center">
+                <a ng-href="/items/{{item._id}}">
+                    <span class="card-title grey-text text-darken-4" ng-bind="item.description">Card Title</span>
+                </a>
+                <p>código: <span ng-bind="item.id"></span></p>
+                <p>valor: <span ng-bind="item.amount | currency:'R$'"></span></p>
+            </div>
+            <div class="panel-form-actions card-action">
+                <div class="center">
+                    <a ng-href="/items/{{item._id}}">Editar</a>
+                    <a href="" name="delete" ng-click="controller.delete(item)">Deletar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

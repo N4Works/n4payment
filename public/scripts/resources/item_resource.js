@@ -25,12 +25,12 @@ var ItemResource = (function () {
             .then(function (items) { return items.map(function (itemData) { return new ItemModel(itemData); }); });
     };
     ItemResource.prototype.findById = function (id) {
-        return this.provider.get({ id: id })
+        return this.provider.get({ _id: id })
             .$promise
             .then(function (itemData) { return new ItemModel(itemData); });
     };
     ItemResource.prototype.delete = function (id) {
-        return this.provider.delete({ id: id })
+        return this.provider.delete({ _id: id })
             .$promise
             .then(function (itemData) { return new ItemModel(itemData); });
     };

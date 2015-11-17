@@ -33,13 +33,13 @@ class ItemResource {
     }
 
     findById(id: string) {
-        return this.provider.get({ id: id })
+        return this.provider.get({ _id: id })
             .$promise
             .then((itemData:any) => new ItemModel(itemData));
     }
 
     delete(id: string) {
-        return this.provider.delete({ id: id })
+        return this.provider.delete({ _id: id })
             .$promise
             .then((itemData:any) => new ItemModel(itemData));
     }

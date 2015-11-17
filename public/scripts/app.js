@@ -63,6 +63,18 @@ angular.module("n4_payment", [
             controller: "ItemsController",
             controllerAs: "controller"
         })
+            .when("/items/new", {
+            name: "items",
+            templateUrl: "views/item.html",
+            controller: "ItemController",
+            controllerAs: "controller"
+        })
+            .when("/items/:id", {
+            name: "items",
+            templateUrl: "views/item.html",
+            controller: "ItemController",
+            controllerAs: "controller"
+        })
             .otherwise({
             redirectTo: "/"
         });

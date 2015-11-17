@@ -1,30 +1,30 @@
 
-<div>
+<div class="form-sender">
     <div class="card">
         <div class="card-content">
             <span class="card-title">Cadastro de comprador</span>
             <div class="input-field">
-                <input id="name" type="text" name="name" placeholder="Nome" maxLength="50" ng-model="controller.sender.name">
+                <input id="name" type="text" name="name" maxLength="50" ng-model="controller.sender.name">
                 <label ng-class="{'active':controller.sender.name}" for="name">Nome</label>
             </div>
             <div class="input-field">
-                <input id="email" type="email" name="email" placeholder="E-mail" maxLength="60" ng-model="controller.sender.email">
+                <input id="email" type="email" name="email" maxLength="60" ng-model="controller.sender.email">
                 <label ng-class="{'active':controller.sender.email}" for="email">E-mail</label>
             </div>
             <div class="input-field">
-                <input id="areaCode" type="text" name="areaCode" placeholder="DDD" maxLength="2" ng-model="controller.sender.phone.areaCode">
+                <input id="areaCode" type="text" name="areaCode" maxLength="2" ng-model="controller.sender.phone.areaCode">
                 <label ng-class="{'active':controller.sender.phone.areaCode}" for="areaCode">DDD</label>
             </div>
             <div class="input-field">
-                <input id="phoneNumber" type="text" name="phoneNumber" placeholder="Telefone" maxLength="20" ng-model="controller.sender.phone.number">
+                <input id="phoneNumber" type="text" name="phoneNumber" maxLength="20" ng-model="controller.sender.phone.number">
                 <label ng-class="{'active':controller.sender.phone.number}" for="phoneNumber">Telefone</label>
             </div>
             <div class="input-field">
-                <input id="bornDate" type="Date" name="bornDate" placeholder="Nascimento" ng-model="controller.sender.bornDate">
+                <input id="bornDate" type="Date" name="bornDate" ng-model="controller.sender.bornDate">
                 <label ng-class="{'active':controller.sender.bornDate}" for="bornDate">Data de nascimento</label>
             </div>
             <div class="input-field">
-                <input id="cpf" type="text" name="cpf" value="" placeholder="CPF" maxlength="11" ng-model="controller.sender.documents[0].value">
+                <input id="cpf" type="text" name="cpf" value="" maxlength="11" ng-model="controller.sender.documents[0].value">
                 <label ng-class="{'active':controller.sender.documents[0].value}" for="cpf">CPF</label>
             </div>
         </div>
