@@ -13,7 +13,7 @@ exports.Router = function (server) {
             .then(function (checkouts) { return response.status(200).json(checkouts); })
             .catch(function (error) { return next(error); });
     })
-        .post(bodyParser.json({}), function (request, response, next) {
+        .post(function (request, response, next) {
         var checkoutData = request.body;
         var checkoutService = new checkout_service_1.CheckoutService(request.user);
         checkoutService.insert(checkoutData)
@@ -22,13 +22,13 @@ exports.Router = function (server) {
     });
     router
         .route("/:id")
-        .get(bodyParser.json({}), function (request, response, next) {
+        .get(function (request, response, next) {
         var checkoutService = new checkout_service_1.CheckoutService(request.user);
         checkoutService.findById(request.params.id)
             .then(function (checkout) { return response.status(200).json(checkout); })
             .catch(function (error) { return next(error); });
     })
-        .put(bodyParser.json({}), function (request, response, next) {
+        .put(function (request, response, next) {
         var checkoutData = request.body;
         var checkoutService = new checkout_service_1.CheckoutService(request.user);
         checkoutService.update(request.params.id, checkoutData)

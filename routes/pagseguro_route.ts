@@ -1,7 +1,6 @@
 "use strict";
 
 import express = require("express");
-import bodyParser = require("body-parser");
 import cors = require("cors");
 var xmlparser = require("express-xml-bodyparser");
 import {IUserService, UserService} from "../services/user_service";
@@ -21,7 +20,6 @@ export var Router = (server: express.Router) => {
     router
         .route("/notifications/:userId")
         .post(cors({ origin: "pagseguro.uol.com.br" }),
-        bodyParser.urlencoded({ extended: true }),
         xmlparser(),
         (request: express.Request, response: express.Response, next: Function) => {
             var notification: INotification = request.body;
@@ -37,8 +35,7 @@ export var Router = (server: express.Router) => {
 
     router
         .route("/notifications/:notificationCode")
-        .get(login, bodyParser.json({}),
-        (request: express.Request, response: express.Response, next: Function) => {
+        .get(login, (request: express.Request, response: express.Response, next: Function) => {
             var transactionService: ITransactionService = new TransactionService(request.user);
             transactionService.findByNotificationCodeAndSave(request.params.notificationCode)
                 .then(() => response.status(200).end())
@@ -47,8 +44,7 @@ export var Router = (server: express.Router) => {
 
     router
         .route("/transactions")
-        .get(login, bodyParser.json({}),
-        (request: express.Request, response: express.Response, next: Function) => {
+        .get(login, (request: express.Request, response: express.Response, next: Function) => {
             var transactionService: ITransactionService = new TransactionService(request.user);
             transactionService.find(null)
                 .then((transactions: Array<ITransaction>) => response.status(200).json(transactions))
@@ -57,8 +53,7 @@ export var Router = (server: express.Router) => {
 
     router
         .route("/transactions/:id")
-        .get(login, bodyParser.json({}),
-        (request: express.Request, response: express.Response, next: Function) => {
+        .get(login, (request: express.Request, response: express.Response, next: Function) => {
             var transactionService: ITransactionService = new TransactionService(request.user);
             transactionService.findByCodeAndSave(request.params.id)
                 .then(() => response.status(200).end())
@@ -67,8 +62,8 @@ export var Router = (server: express.Router) => {
 
     router
         .route("/payments/:id")
-        .post(login, bodyParser.json({}),
-        (request: express.Request, response: express.Response, next: Function) => {
+        .post(login,
+            (request: express.Request, response: express.Response, next: Function) => {
             var checkoutService: ICheckoutService = new CheckoutService(request.user);
             var pagseguroService: IPagSeguroSevice = new PagSeguroService(request.user);
             checkoutService.findById(request.params.id)

@@ -3,33 +3,19 @@
 class UsersController {
     user: UserModel = new UserModel();
     users: Array<UserModel> = new Array<UserModel>();
-    constructor(private resource: UserResource) {
+    constructor(private resource: UserResource,
+        private notificationsService: n4Notifications.N4NotificationsService) {
         var self = this;
         resource.findAll()
-            .then((users: Array<UserModel>) => self.users = users);
-    }
-
-    save() {
-        var self = this;
-        this.resource.save(this.user)
-            .then((user: UserModel) => {
-                if (!self.user._id) {
-                    self.users.unshift(user);
-                }
-                self.user = new UserModel();
-            })
-            .catch((error: any) => console.log(error));
-    }
-
-    edit(user: UserModel) {
-        this.user = user;
+            .then((users: Array<UserModel>) => self.users = users)
+            .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
     }
 
     delete(user: UserModel) {
         var self = this;
         this.resource.delete(user._id)
             .then(() => self.users.splice(self.users.indexOf(user), 1))
-            .catch((error: any) => console.log(error));
+            .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
 
     }
 }
@@ -37,5 +23,6 @@ class UsersController {
 angular.module("n4_payment")
     .controller("UsersController", [
     "UserResource",
+    "n4NotificationsService",
     UsersController
 ]);

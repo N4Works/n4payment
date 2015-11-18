@@ -21,7 +21,6 @@ var TransactionService = (function () {
         });
     };
     TransactionService.prototype.findByCodeAndSave = function (code) {
-        var _this = this;
         var self = this;
         return new Promise(function (resolve, reject) {
             var urlTransaction = process.env.NODE_ENV === "production" ? urlpagseguro_enum_1.EnumURLPagSeguro.transaction_production : urlpagseguro_enum_1.EnumURLPagSeguro.transaction_development;
@@ -36,28 +35,11 @@ var TransactionService = (function () {
                 if (!!error) {
                     return reject(error);
                 }
-                var data = xml2json.toJson(body, { object: true });
-                var errors = _this.getErrors(data);
-                if (!!errors) {
-                    return reject(errors);
-                }
-                data = data.transaction;
-                data.items = data.items.item;
-                self.findByCode(data.code)
-                    .then(function (t) {
-                    if (!!t) {
-                        return transaction_model_1.Transaction.update({
-                            code: t.code
-                        }, data, function (error) { return error ? reject(error) : resolve(); });
-                    }
-                    new transaction_model_1.Transaction(data).save(function (error) { return error ? reject(error) : resolve(); });
-                })
-                    .catch(function (error) { return reject(error); });
+                self.saveTransaction(body, resolve, reject);
             });
         });
     };
     TransactionService.prototype.findByNotificationCodeAndSave = function (notificationCode) {
-        var _this = this;
         var self = this;
         return new Promise(function (resolve, reject) {
             var urlTransaction = process.env.NODE_ENV === "production" ? urlpagseguro_enum_1.EnumURLPagSeguro.transaction_notification_production : urlpagseguro_enum_1.EnumURLPagSeguro.transaction_notification_development;
@@ -72,24 +54,7 @@ var TransactionService = (function () {
                 if (!!error) {
                     return reject(error);
                 }
-                var data = xml2json.toJson(body, { object: true });
-                var errors = _this.getErrors(data);
-                if (!!errors) {
-                    return reject(errors);
-                }
-                data = data.transaction;
-                data.items = data.items.item;
-                console.log(data);
-                self.findByCode(data.code)
-                    .then(function (t) {
-                    if (!!t) {
-                        return transaction_model_1.Transaction.update({
-                            code: t.code
-                        }, data, function (error) { return error ? reject(error) : resolve(); });
-                    }
-                    t = new transaction_model_1.Transaction(data);
-                    t.save(function (error) { return error ? reject(error) : resolve(); });
-                }).catch(function (error) { return reject(error); });
+                self.saveTransaction(body, resolve, reject);
             });
         });
     };
@@ -101,6 +66,28 @@ var TransactionService = (function () {
             errors = errors.concat(data.errors.map(function (e) { return ("  - " + e.code + " -> " + e.message + ";"); }));
         }
         return errors.join("\n");
+    };
+    TransactionService.prototype.saveTransaction = function (body, resolve, reject) {
+        var self = this;
+        var data = xml2json.toJson(body, { object: true });
+        var errors = this.getErrors(data);
+        if (!!errors) {
+            return reject(errors);
+        }
+        data = data.transaction;
+        data.items = data.items.item;
+        self.findByCode(data.code)
+            .then(function (t) {
+            if (!!t) {
+                return transaction_model_1.Transaction.update({
+                    code: t.code
+                }, {
+                    $set: data
+                }, function (error) { return error ? reject(error) : resolve(); });
+            }
+            t = new transaction_model_1.Transaction(data);
+            t.save(function (error) { return error ? reject(error) : resolve(); });
+        }).catch(function (error) { return reject(error); });
     };
     return TransactionService;
 })();

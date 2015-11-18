@@ -1,6 +1,7 @@
 "use strict";
 
 import express = require("express");
+import bodyParser = require("body-parser");
 import mongoose = require("mongoose");
 import cookieParser = require("cookie-parser");
 import {Router as UserRouter} from "./routes/user_route";
@@ -20,7 +21,7 @@ mongoose.connect(`mongodb://localhost/n4-payment`, (error: any) => {
 });
 
 application.use(cookieParser());
-
+application.use(bodyParser.json({}));
 application.use("/api/login", LoginRouter(application));
 application.use("/api/users", UserRouter(application));
 // Login controlado por método, pois existe um acesso da API do PagSeguro.

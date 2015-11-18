@@ -11,18 +11,20 @@ class CheckoutController {
         private filter: ng.IFilterFilter,
         private senderResource:SenderResource,
         private pagseguroResource:PagSeguroResource,
-        private itemResource:ItemResource) {
+        private itemResource:ItemResource,
+        private notificationsService: n4Notifications.N4NotificationsService) {
             var self = this;
+            this.checkout = new CheckoutModel();
             senderResource.findAll()
-                .then(senders => self.senders = senders);
+                .then(senders => self.senders = senders)
+                .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
             itemResource.findAll()
-                .then(items => self.items = items);
+                .then(items => self.items = items)
+                .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
             if (parameters["id"]) {
                 resource.findById(parameters["id"])
                     .then(checkout => self.checkout = checkout)
-                    .catch(error => console.log(error));
-            } else {
-                this.checkout = new CheckoutModel();
+                    .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
             }
     }
 
@@ -52,16 +54,17 @@ class CheckoutController {
         var self = this;
         this.resource.save(this.checkout)
             .then((checkout: CheckoutModel) => {
+                self.notificationsService.notifySuccess("Cadastro realizado.", "Ok");
                 self.location.path("/checkouts");
             })
-            .catch((error: any) => console.log(error));
+            .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
     }
 
     delete() {
         var self = this;
         this.resource.delete(this.checkout._id)
             .then(() => self.location.path("/checkouts"))
-            .catch((error: any) => console.log(error));
+            .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
 
     }
 }
@@ -76,5 +79,6 @@ angular.module("n4_payment")
     "SenderResource",
     "PagSeguroResource",
     "ItemResource",
+    "n4NotificationsService",
     CheckoutController
 ]);

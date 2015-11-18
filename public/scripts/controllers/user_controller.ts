@@ -4,14 +4,14 @@ class UserController {
     private user: UserModel;
     constructor(private resource: UserResource,
         private parameters: ng.route.IRouteParamsService,
-        private location: ng.ILocationService) {
+        private location: ng.ILocationService,
+        private notificationsService: n4Notifications.N4NotificationsService) {
         var self = this;
+        this.user = new UserModel();
         if (parameters["id"]) {
             resource.findById(parameters["id"])
                 .then(user => self.user = user)
-                .catch(error => console.log(error));
-        } else {
-            this.user = new UserModel();
+                .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
         }
     }
 
@@ -19,16 +19,17 @@ class UserController {
         var self = this;
         this.resource.save(this.user)
             .then((user: UserModel) => {
+                self.notificationsService.notifySuccess("Cadastro realizado.", "Ok");
                 self.location.path("/users");
             })
-            .catch((error: any) => console.log(error));
+            .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
     }
 
     delete() {
         var self = this;
         this.resource.delete(this.user._id)
             .then(() => self.location.path("/users"))
-            .catch((error: any) => console.log(error));
+            .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
 
     }
 }
@@ -38,5 +39,6 @@ angular.module("n4_payment")
     "UserResource",
     "$routeParams",
     "$location",
+    "n4NotificationsService",
     UserController
 ]);

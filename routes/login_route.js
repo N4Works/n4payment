@@ -1,12 +1,11 @@
 "use strict";
 var express = require("express");
-var bodyParser = require("body-parser");
 var login_service_1 = require("../services/login_service");
 exports.Router = function (server) {
     var router = express.Router(server);
     router
         .route("/")
-        .post(bodyParser.json({}), function (request, response, next) {
+        .post(function (request, response, next) {
         var loginData = request.body;
         var loginService = new login_service_1.LoginService();
         loginService.login(loginData)

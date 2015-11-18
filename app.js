@@ -1,5 +1,6 @@
 "use strict";
 var express = require("express");
+var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var cookieParser = require("cookie-parser");
 var user_route_1 = require("./routes/user_route");
@@ -16,6 +17,7 @@ mongoose.connect("mongodb://localhost/n4-payment", function (error) {
     }
 });
 application.use(cookieParser());
+application.use(bodyParser.json({}));
 application.use("/api/login", login_route_1.Router(application));
 application.use("/api/users", user_route_1.Router(application));
 application.use("/api/pagseguro", pagseguro_route_1.Router(application));

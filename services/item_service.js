@@ -31,9 +31,9 @@ var ItemService = (function () {
     ItemService.prototype.update = function (id, itemData) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            itemData = new item_model_1.Item(itemData);
-            itemData._id = id;
-            item_model_1.Item.findByIdAndUpdate(id, itemData, function (error, item) { return !!error ? reject(error) : resolve(item); });
+            item_model_1.Item.findByIdAndUpdate(id, {
+                $set: itemData
+            }, function (error, item) { return !!error ? reject(error) : resolve(item); });
         });
     };
     ItemService.prototype.delete = function (id) {

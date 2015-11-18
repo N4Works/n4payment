@@ -1,6 +1,6 @@
 "use strict";
 var CheckoutController = (function () {
-    function CheckoutController(resource, parameters, location, $window, filter, senderResource, pagseguroResource, itemResource) {
+    function CheckoutController(resource, parameters, location, $window, filter, senderResource, pagseguroResource, itemResource, notificationsService) {
         this.resource = resource;
         this.parameters = parameters;
         this.location = location;
@@ -9,16 +9,19 @@ var CheckoutController = (function () {
         this.senderResource = senderResource;
         this.pagseguroResource = pagseguroResource;
         this.itemResource = itemResource;
+        this.notificationsService = notificationsService;
         var self = this;
         this.checkout = new CheckoutModel();
         senderResource.findAll()
-            .then(function (senders) { return self.senders = senders; });
+            .then(function (senders) { return self.senders = senders; })
+            .catch(function (error) { return self.notificationsService.notifyAlert(error, "Ok"); });
         itemResource.findAll()
-            .then(function (items) { return self.items = items; });
+            .then(function (items) { return self.items = items; })
+            .catch(function (error) { return self.notificationsService.notifyAlert(error, "Ok"); });
         if (parameters["id"]) {
             resource.findById(parameters["id"])
                 .then(function (checkout) { return self.checkout = checkout; })
-                .catch(function (error) { return console.log(error); });
+                .catch(function (error) { return self.notificationsService.notifyAlert(error, "Ok"); });
         }
     }
     CheckoutController.prototype.selectSender = function (sender) {
@@ -44,15 +47,16 @@ var CheckoutController = (function () {
         var self = this;
         this.resource.save(this.checkout)
             .then(function (checkout) {
+            self.notificationsService.notifySuccess("Cadastro realizado.", "Ok");
             self.location.path("/checkouts");
         })
-            .catch(function (error) { return console.log(error); });
+            .catch(function (error) { return self.notificationsService.notifyAlert(error, "Ok"); });
     };
     CheckoutController.prototype.delete = function () {
         var self = this;
         this.resource.delete(this.checkout._id)
             .then(function () { return self.location.path("/checkouts"); })
-            .catch(function (error) { return console.log(error); });
+            .catch(function (error) { return self.notificationsService.notifyAlert(error, "Ok"); });
     };
     return CheckoutController;
 })();
@@ -66,5 +70,6 @@ angular.module("n4_payment")
     "SenderResource",
     "PagSeguroResource",
     "ItemResource",
+    "n4NotificationsService",
     CheckoutController
 ]);

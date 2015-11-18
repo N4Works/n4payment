@@ -107,23 +107,7 @@ export class TransactionService implements ITransactionService {
                 if (!!error) {
                     return reject(error);
                 }
-                var data: any = xml2json.toJson(body, { object: true });
-                var errors: string = this.getErrors(data);
-                if (!!errors) {
-                    return reject(errors);
-                }
-                data = data.transaction;
-                data.items = data.items.item;
-                self.findByCode(data.code)
-                    .then((t: ITransaction) => {
-                    if (!!t) {
-                        return Transaction.update({
-                            code: t.code
-                        }, data, (error) => error ? reject(error) : resolve());
-                    }
-                    new Transaction(data).save((error) => error ? reject(error) : resolve());
-                })
-                    .catch(error => reject(error));
+                self.saveTransaction(body, resolve, reject);
             });
         });
     }
@@ -154,24 +138,7 @@ export class TransactionService implements ITransactionService {
                 if (!!error) {
                     return reject(error);
                 }
-                var data: any = xml2json.toJson(body, { object: true });
-                var errors: string = this.getErrors(data);
-                if (!!errors) {
-                    return reject(errors);
-                }
-                data = data.transaction;
-                data.items = data.items.item;
-                console.log(data);
-                self.findByCode(data.code)
-                    .then(t => {
-                        if (!!t) {
-                            return Transaction.update({
-                                code: t.code
-                            }, data, (error) => error ? reject(error) : resolve());
-                        }
-                        t = new Transaction(data);
-                        t.save((error) => error ? reject(error) : resolve());
-                    }).catch(error => reject(error));
+                self.saveTransaction(body, resolve, reject);
             });
         });
     }
@@ -191,5 +158,36 @@ export class TransactionService implements ITransactionService {
             errors = errors.concat(data.errors.map(e => `  - ${e.code} -> ${e.message};`));
         }
         return errors.join("\n");
+    }
+
+    /**
+     * @method
+     * @param {any} body Dados retornados pelo PagSeguro.
+     * @param {Function} resolve Callback para resolver a promessa.
+     * @param {Function} reject Callback para notificar erro na promessa.
+     * @description Método responsável por ler o retorno do PagSeguro e persistir os dados.
+     */
+    private saveTransaction(body: any, resolve: Function, reject: Function) {
+        var self = this;
+        var data: any = xml2json.toJson(body, { object: true });
+        var errors: string = this.getErrors(data);
+        if (!!errors) {
+            return reject(errors);
+        }
+        data = data.transaction;
+        data.items = data.items.item;
+
+        self.findByCode(data.code)
+            .then(t => {
+                if (!!t) {
+                    return Transaction.update({
+                        code: t.code
+                    }, {
+                        $set: data
+                    }, (error) => error ? reject(error) : resolve());
+                }
+                t = new Transaction(data);
+                t.save((error) => error ? reject(error) : resolve());
+            }).catch(error => reject(error));
     }
 }

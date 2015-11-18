@@ -18,8 +18,7 @@ export var Router = (server: express.Router) => {
                 .then((checkouts: Array<ICheckout>) => response.status(200).json(checkouts))
                 .catch((error: any) => next(error));
         })
-        .post(bodyParser.json({}),
-        (request: express.Request, response: express.Response, next: Function) => {
+        .post((request: express.Request, response: express.Response, next: Function) => {
             var checkoutData: any = request.body;
             var checkoutService: ICheckoutService = new CheckoutService(request.user);
             checkoutService.insert(checkoutData)
@@ -29,15 +28,13 @@ export var Router = (server: express.Router) => {
 
     router
         .route("/:id")
-        .get(bodyParser.json({}),
-        (request: express.Request, response: express.Response, next: Function) => {
+        .get((request: express.Request, response: express.Response, next: Function) => {
             var checkoutService: ICheckoutService = new CheckoutService(request.user);
             checkoutService.findById(request.params.id)
                 .then((checkout: ICheckout) => response.status(200).json(checkout))
                 .catch((error: any) => next(error));
         })
-        .put(bodyParser.json({}),
-        (request: express.Request, response: express.Response, next: Function) => {
+        .put((request: express.Request, response: express.Response, next: Function) => {
             var checkoutData: any = request.body;
             var checkoutService: ICheckoutService = new CheckoutService(request.user);
             checkoutService.update(request.params.id, checkoutData)

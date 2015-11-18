@@ -18,8 +18,7 @@ export var Router = (server: express.Router) => {
                 .then((users:Array<IUser>) => response.status(200).json(users))
                 .catch((error:any) => next(error));
         })
-        .post(bodyParser.json({}),
-        (request: express.Request, response: express.Response, next: Function) => {
+        .post((request: express.Request, response: express.Response, next: Function) => {
             var userData:any = request.body;
             userService.insert(userData)
                 .then((user:IUser) => response.status(201).json(user))
@@ -28,14 +27,12 @@ export var Router = (server: express.Router) => {
 
     router
         .route("/:id")
-        .get(bodyParser.json({}),
-        (request: express.Request, response: express.Response, next: Function) => {
+        .get((request: express.Request, response: express.Response, next: Function) => {
             userService.findById(request.params.id)
                 .then((user:IUser) => response.status(200).json(user))
                 .catch((error:any) => next(error));
         })
-        .put(bodyParser.json({}),
-        (request: express.Request, response: express.Response, next: Function) => {
+        .put((request: express.Request, response: express.Response, next: Function) => {
             var userData:any = request.body;
             userService.update(request.params.id, userData)
                 .then((user:IUser) => response.status(200).json(user))

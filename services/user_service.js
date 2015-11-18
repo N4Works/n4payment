@@ -29,9 +29,9 @@ var UserService = (function () {
     UserService.prototype.update = function (id, userData) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            userData = new user_model_1.User(userData);
-            userData._id = id;
-            user_model_1.User.findByIdAndUpdate(id, userData, function (error, user) { return !!error ? reject(error) : resolve(user); });
+            user_model_1.User.findByIdAndUpdate(id, {
+                $set: userData
+            }, function (error, user) { return !!error ? reject(error) : resolve(user); });
         });
     };
     UserService.prototype.delete = function (id) {

@@ -4,14 +4,14 @@ class SenderController {
     private sender: SenderModel;
     constructor(private resource: SenderResource,
         private parameters: ng.route.IRouteParamsService,
-        private location: ng.ILocationService) {
+        private location: ng.ILocationService,
+        private notificationsService: n4Notifications.N4NotificationsService) {
         var self = this;
+        this.sender = new SenderModel();
         if (parameters["id"]) {
             resource.findById(parameters["id"])
                 .then(sender => self.sender = sender)
-                .catch(error => console.log(error));
-        } else {
-            this.sender = new SenderModel();
+                .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
         }
     }
 
@@ -19,16 +19,17 @@ class SenderController {
         var self = this;
         this.resource.save(this.sender)
             .then((sender: SenderModel) => {
+                self.notificationsService.notifySuccess("Cadastro realizado.", "Ok");
                 self.location.path("/senders");
             })
-            .catch((error: any) => console.log(error));
+            .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
     }
 
     delete() {
         var self = this;
         this.resource.delete(this.sender._id)
             .then(() => self.location.path("/senders"))
-            .catch((error: any) => console.log(error));
+            .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
 
     }
 }
@@ -38,5 +39,6 @@ angular.module("n4_payment")
     "SenderResource",
     "$routeParams",
     "$location",
+    "n4NotificationsService",
     SenderController
 ]);

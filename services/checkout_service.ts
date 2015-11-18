@@ -137,9 +137,9 @@ export class CheckoutService implements ICheckoutService {
     update(id: string, checkoutData: any): Promise<ICheckout> {
         var self = this;
         return new Promise<ICheckout>((resolve: Function, reject: Function) => {
-            var checkoutData = new Checkout(checkoutData);
-            checkoutData._id = id;
-            Checkout.findByIdAndUpdate(id, checkoutData, (error: any, checkout: ICheckout) => !!error ? reject(error) : resolve(checkout));
+            Checkout.findByIdAndUpdate(id, {
+                $set: checkoutData
+            }, (error: any, checkout: ICheckout) => !!error ? reject(error) : resolve(checkout));
         });
     }
 

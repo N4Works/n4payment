@@ -19,8 +19,7 @@ export var Router = (server: express.Router) => {
                 .then((items: Array<IItem>) => response.status(200).json(items))
                 .catch((error: any) => next(error));
         })
-        .post(bodyParser.json({}),
-        (request: express.Request, response: express.Response, next: Function) => {
+        .post((request: express.Request, response: express.Response, next: Function) => {
             var itemData: any = request.body;
             var itemService: IItemService = new ItemService(request.user);
             itemService.insert(itemData)
@@ -30,15 +29,13 @@ export var Router = (server: express.Router) => {
 
     router
         .route("/:_id")
-        .get(bodyParser.json({}),
-        (request: express.Request, response: express.Response, next: Function) => {
+        .get((request: express.Request, response: express.Response, next: Function) => {
             var itemService: IItemService = new ItemService(request.user);
             itemService.findById(request.params._id)
                 .then((item: IItem) => response.status(200).json(item))
                 .catch((error: any) => next(error));
         })
-        .put(bodyParser.json({}),
-        (request: express.Request, response: express.Response, next: Function) => {
+        .put((request: express.Request, response: express.Response, next: Function) => {
             var itemData: any = request.body;
             var itemService: IItemService = new ItemService(request.user);
             itemService.update(request.params._id, itemData)

@@ -13,7 +13,7 @@ exports.Router = function (server) {
             .then(function (users) { return response.status(200).json(users); })
             .catch(function (error) { return next(error); });
     })
-        .post(bodyParser.json({}), function (request, response, next) {
+        .post(function (request, response, next) {
         var userData = request.body;
         userService.insert(userData)
             .then(function (user) { return response.status(201).json(user); })
@@ -21,12 +21,12 @@ exports.Router = function (server) {
     });
     router
         .route("/:id")
-        .get(bodyParser.json({}), function (request, response, next) {
+        .get(function (request, response, next) {
         userService.findById(request.params.id)
             .then(function (user) { return response.status(200).json(user); })
             .catch(function (error) { return next(error); });
     })
-        .put(bodyParser.json({}), function (request, response, next) {
+        .put(function (request, response, next) {
         var userData = request.body;
         userService.update(request.params.id, userData)
             .then(function (user) { return response.status(200).json(user); })

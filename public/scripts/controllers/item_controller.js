@@ -5,13 +5,11 @@ var ItemController = (function () {
         this.parameters = parameters;
         this.location = location;
         var self = this;
+        this.item = new ItemModel();
         if (parameters["id"]) {
             resource.findById(parameters["id"])
                 .then(function (item) { return self.item = item; })
                 .catch(function (error) { return console.log(error); });
-        }
-        else {
-            this.item = new ItemModel();
         }
     }
     ItemController.prototype.save = function () {

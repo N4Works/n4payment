@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="/" />
 
+    <link rel="stylesheet" href="bower_components/n4Notifications/dist/n4notifications.css">
+
     <link rel="stylesheet" href="styles/main.css">
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="bower_components/Materialize/bin/materialize.css" media="screen,projection" />
@@ -21,6 +23,7 @@
         </nav>
     </header>
     <br>
+    <n4-notifications></n4-notifications>
     <section>
         <div class="fixed-action-btn vertical" style="bottom: 45px; right: 24px;">
             <a ng-href="/users/new" class="btn-floating btn-large red">
@@ -45,6 +48,9 @@
     <script type="text/javascript" src="bower_components/angular-resource/angular-resource.js"></script>
     <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
     <script type="text/javascript" src="bower_components/Materialize/bin/materialize.js"></script>
+    <script type="text/javascript" src="bower_components/angular-animate/angular-animate.js"></script>
+    <script type="text/javascript" src="bower_components/n4Notifications/dist/n4notifications.js"></script>
+    <script type="text/javascript" src="bower_components/n4exceptioninterceptor/dist/n4exceptioninterceptor.js"></script>
     <!-- endbuild -->
     <!-- build:js_n4_payment ./scripts/n4_payment.js -->
     <script type="text/javascript" src="scripts/app.js"></script>

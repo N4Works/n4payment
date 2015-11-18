@@ -46,9 +46,9 @@ var CheckoutService = (function () {
     CheckoutService.prototype.update = function (id, checkoutData) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            var checkoutData = new checkout_model_1.Checkout(checkoutData);
-            checkoutData._id = id;
-            checkout_model_1.Checkout.findByIdAndUpdate(id, checkoutData, function (error, checkout) { return !!error ? reject(error) : resolve(checkout); });
+            checkout_model_1.Checkout.findByIdAndUpdate(id, {
+                $set: checkoutData
+            }, function (error, checkout) { return !!error ? reject(error) : resolve(checkout); });
         });
     };
     CheckoutService.prototype.delete = function (id) {

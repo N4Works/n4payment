@@ -1,7 +1,6 @@
 "use strict";
 
 import express = require("express");
-import bodyParser = require("body-parser");
 import {ILogin} from "../models/login_model";
 import {IUser} from "../models/user_model";
 import {ILoginService, LoginService} from "../services/login_service";
@@ -11,8 +10,7 @@ export var Router = (server: express.Router) => {
 
     router
         .route("/")
-        .post(bodyParser.json({}),
-        (request: express.Request, response: express.Response, next: Function) => {
+        .post((request: express.Request, response: express.Response, next: Function) => {
             var loginData: ILogin = request.body;
             var loginService: ILoginService = new LoginService();
             loginService.login(loginData)

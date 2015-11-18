@@ -17,3 +17,4 @@
 /// <reference path="nodemailer-smtp-transport/nodemailer-smtp-transport.d.ts" />
 /// <reference path="nodemailer/nodemailer-types.d.ts" />
 /// <reference path="nodemailer/nodemailer.d.ts" />
+/// <reference path="../public/bower_components/n4Notifications/typing/n4notificationsservice.d.ts" />

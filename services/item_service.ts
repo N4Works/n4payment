@@ -108,9 +108,9 @@ export class ItemService implements IItemService {
     update(id: string, itemData: any): Promise<IItem> {
         var self = this;
         return new Promise<IItem>((resolve: Function, reject: Function) => {
-            itemData = new Item(itemData);
-            itemData._id = id;
-            Item.findByIdAndUpdate(id, itemData, (error: any, item: IItem) => !!error ? reject(error) : resolve(item));
+            Item.findByIdAndUpdate(id, {
+                $set: itemData
+            }, (error: any, item: IItem) => !!error ? reject(error) : resolve(item));
         });
     }
 

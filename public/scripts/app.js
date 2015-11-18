@@ -1,7 +1,9 @@
 "use strict";
 angular.module("n4_payment", [
     "ngResource",
-    "ngRoute"
+    "ngRoute",
+    "n4Notifications",
+    "n4ExceptionInterceptor"
 ])
     .config([
     "$locationProvider",

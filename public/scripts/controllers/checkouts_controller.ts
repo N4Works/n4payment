@@ -5,17 +5,19 @@ class CheckoutsController {
     constructor(private $window: ng.IWindowService,
         private filter: ng.IFilterFilter,
         private resource:CheckoutResource,
-        private pagseguroResource:PagSeguroResource) {
+        private pagseguroResource:PagSeguroResource,
+        private notificationsService: n4Notifications.N4NotificationsService) {
         var self = this;
         resource.findAll()
-            .then(checkouts => self.checkouts = checkouts);
+            .then(checkouts => self.checkouts = checkouts)
+            .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
     }
 
     delete(checkout: CheckoutModel) {
         var self = this;
         this.resource.delete(checkout._id)
             .then(() => self.checkouts.splice(self.checkouts.indexOf(checkout), 1))
-            .catch((error: any) => console.log(error));
+            .catch((error: any) => self.notificationsService.notifyAlert(error, "Ok"));
 
     }
 
@@ -23,7 +25,7 @@ class CheckoutsController {
         var self = this;
         this.pagseguroResource.send(checkout)
             .then((redirectURL: string) => self.$window.location.href = redirectURL)
-            .catch(e => console.log(e));
+            .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
     }
 }
 
@@ -33,5 +35,6 @@ angular.module("n4_payment")
         "filterFilter",
         "CheckoutResource",
         "PagSeguroResource",
+        "n4NotificationsService",
         CheckoutsController
     ]);
