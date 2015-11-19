@@ -1,10 +1,12 @@
 "use strict";
 var UsersController = (function () {
-    function UsersController(resource, notificationsService) {
+    function UsersController(resource, notificationsService, menuService) {
         this.resource = resource;
         this.notificationsService = notificationsService;
+        this.menuService = menuService;
         this.user = new UserModel();
         this.users = new Array();
+        menuService.setPrincipal(new MenuModel("Novo vendedor", "blue", "add", "/users/new"));
         var self = this;
         resource.findAll()
             .then(function (users) { return self.users = users; })
@@ -22,5 +24,6 @@ angular.module("n4_payment")
     .controller("UsersController", [
     "UserResource",
     "n4NotificationsService",
+    "MenuService",
     UsersController
 ]);

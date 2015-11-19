@@ -3,7 +3,10 @@
 class SendersController {
     senders: Array<SenderModel> = new Array<SenderModel>();
     constructor(private resource: SenderResource,
-        private notificationsService: n4Notifications.N4NotificationsService) {
+        private notificationsService: n4Notifications.N4NotificationsService,
+        private menuService: MenuService) {
+        menuService.setPrincipal(new MenuModel("Novo comprador", "yellow darken-2", "add", "/senders/new"));
+
         var self = this;
         resource.findAll()
             .then((senders: Array<SenderModel>) => self.senders = senders)
@@ -23,5 +26,6 @@ angular.module("n4_payment")
     .controller("SendersController", [
     "SenderResource",
     "n4NotificationsService",
+    "MenuService",
     SendersController
 ]);

@@ -1,8 +1,9 @@
 "use strict";
 var LoginController = (function () {
-    function LoginController(loginResource, notificationsService) {
+    function LoginController(loginResource, notificationsService, menuService) {
         this.loginResource = loginResource;
         this.notificationsService = notificationsService;
+        this.menuService = menuService;
         this.logado = false;
         this.loginData = new LoginModel();
         var self = this;
@@ -32,5 +33,6 @@ angular.module("n4_payment")
     .controller("LoginController", [
     "LoginResource",
     "n4NotificationsService",
+    "MenuService",
     LoginController
 ]);

@@ -1,10 +1,12 @@
 "use strict";
 var TransactionsController = (function () {
-    function TransactionsController(resource, notificationsService) {
+    function TransactionsController(resource, notificationsService, menuService) {
         this.resource = resource;
         this.notificationsService = notificationsService;
+        this.menuService = menuService;
         this.transaction = new TransactionModel();
         this.transactions = new Array();
+        menuService.setPrincipal(new MenuModel("Comprar", "red", "add", "/checkouts/new"));
         var self = this;
         resource.findAll()
             .then(function (transactions) { return self.transactions = transactions; })
@@ -16,5 +18,6 @@ angular.module("n4_payment")
     .controller("TransactionsController", [
     "TransactionResource",
     "n4NotificationsService",
+    "MenuService",
     TransactionsController
 ]);

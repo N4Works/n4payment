@@ -1,10 +1,12 @@
 "use strict";
 var SenderController = (function () {
-    function SenderController(resource, parameters, location, notificationsService) {
+    function SenderController(resource, parameters, location, notificationsService, menuService) {
         this.resource = resource;
         this.parameters = parameters;
         this.location = location;
         this.notificationsService = notificationsService;
+        this.menuService = menuService;
+        menuService.setPrincipal(new MenuModel("Novo comprador", "yellow darken-2", "add", "/senders/new"));
         var self = this;
         this.sender = new SenderModel();
         if (parameters["id"]) {
@@ -36,5 +38,6 @@ angular.module("n4_payment")
     "$routeParams",
     "$location",
     "n4NotificationsService",
+    "MenuService",
     SenderController
 ]);

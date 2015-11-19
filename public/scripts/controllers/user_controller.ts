@@ -5,7 +5,10 @@ class UserController {
     constructor(private resource: UserResource,
         private parameters: ng.route.IRouteParamsService,
         private location: ng.ILocationService,
-        private notificationsService: n4Notifications.N4NotificationsService) {
+        private notificationsService: n4Notifications.N4NotificationsService,
+        private menuService: MenuService) {
+        menuService.setPrincipal(new MenuModel("Novo usuário", "blue", "add", "/users/new"));
+
         var self = this;
         this.user = new UserModel();
         if (parameters["id"]) {
@@ -19,9 +22,9 @@ class UserController {
         var self = this;
         this.resource.save(this.user)
             .then((user: UserModel) => {
-                self.notificationsService.notifySuccess("Cadastro realizado.", "Ok");
-                self.location.path("/users");
-            })
+            self.notificationsService.notifySuccess("Cadastro realizado.", "Ok");
+            self.location.path("/users");
+        })
             .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
     }
 
@@ -40,5 +43,6 @@ angular.module("n4_payment")
     "$routeParams",
     "$location",
     "n4NotificationsService",
+    "MenuService",
     UserController
 ]);

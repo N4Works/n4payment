@@ -6,11 +6,14 @@ class CheckoutsController {
         private filter: ng.IFilterFilter,
         private resource:CheckoutResource,
         private pagseguroResource:PagSeguroResource,
-        private notificationsService: n4Notifications.N4NotificationsService) {
-        var self = this;
-        resource.findAll()
-            .then(checkouts => self.checkouts = checkouts)
-            .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
+        private notificationsService: n4Notifications.N4NotificationsService,
+        private menuService: MenuService) {
+            menuService.setPrincipal(new MenuModel("Comprar", "red", "add", "/checkouts/new"));
+
+            var self = this;
+            resource.findAll()
+                .then(checkouts => self.checkouts = checkouts)
+                .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
     }
 
     delete(checkout: CheckoutModel) {
@@ -36,5 +39,6 @@ angular.module("n4_payment")
         "CheckoutResource",
         "PagSeguroResource",
         "n4NotificationsService",
+        "MenuService",
         CheckoutsController
     ]);

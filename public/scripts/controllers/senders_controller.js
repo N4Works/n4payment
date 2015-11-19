@@ -1,9 +1,11 @@
 "use strict";
 var SendersController = (function () {
-    function SendersController(resource, notificationsService) {
+    function SendersController(resource, notificationsService, menuService) {
         this.resource = resource;
         this.notificationsService = notificationsService;
+        this.menuService = menuService;
         this.senders = new Array();
+        menuService.setPrincipal(new MenuModel("Novo comprador", "yellow darken-2", "add", "/senders/new"));
         var self = this;
         resource.findAll()
             .then(function (senders) { return self.senders = senders; })
@@ -21,5 +23,6 @@ angular.module("n4_payment")
     .controller("SendersController", [
     "SenderResource",
     "n4NotificationsService",
+    "MenuService",
     SendersController
 ]);

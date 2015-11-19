@@ -72,19 +72,19 @@ angular.module("n4_payment", [
                 controller: "CheckoutController",
                 controllerAs: "controller"
             })
-            .when("/items", {
+            .when("/products", {
                 name: "items",
                 templateUrl: "views/items.html",
                 controller: "ItemsController",
                 controllerAs: "controller"
             })
-            .when("/items/new", {
+            .when("/products/new", {
                 name: "items",
                 templateUrl: "views/item.html",
                 controller: "ItemController",
                 controllerAs: "controller"
             })
-            .when("/items/:id", {
+            .when("/products/:id", {
                 name: "items",
                 templateUrl: "views/item.html",
                 controller: "ItemController",

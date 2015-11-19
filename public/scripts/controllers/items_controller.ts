@@ -1,12 +1,15 @@
 "use strict";
 
 class ItemsController {
-    items:Array<ItemModel>;
-    constructor(private resource:ItemResource,
-        private notificationsService: n4Notifications.N4NotificationsService) {
+    items: Array<ItemModel>;
+    constructor(private resource: ItemResource,
+        private notificationsService: n4Notifications.N4NotificationsService,
+        private menuService: MenuService) {
+        menuService.setPrincipal(new MenuModel("Novo produto", "orange", "add", "/products/new"));
+
         var self = this;
         resource.findAll()
-            .then((items:Array<ItemModel>) => self.items = items)
+            .then((items: Array<ItemModel>) => self.items = items)
             .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
     }
 
@@ -20,7 +23,8 @@ class ItemsController {
 
 angular.module("n4_payment")
     .controller("ItemsController", [
-        "ItemResource",
-        "n4NotificationsService",
-        ItemsController
-    ]);
+    "ItemResource",
+    "n4NotificationsService",
+    "MenuService",
+    ItemsController
+]);

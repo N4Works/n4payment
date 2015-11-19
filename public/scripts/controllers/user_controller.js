@@ -1,10 +1,12 @@
 "use strict";
 var UserController = (function () {
-    function UserController(resource, parameters, location, notificationsService) {
+    function UserController(resource, parameters, location, notificationsService, menuService) {
         this.resource = resource;
         this.parameters = parameters;
         this.location = location;
         this.notificationsService = notificationsService;
+        this.menuService = menuService;
+        menuService.setPrincipal(new MenuModel("Novo usuário", "blue", "add", "/users/new"));
         var self = this;
         this.user = new UserModel();
         if (parameters["id"]) {
@@ -36,5 +38,6 @@ angular.module("n4_payment")
     "$routeParams",
     "$location",
     "n4NotificationsService",
+    "MenuService",
     UserController
 ]);

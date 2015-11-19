@@ -4,7 +4,8 @@ class LoginController {
     loginData: LoginModel;
     logado: boolean;
     constructor(private loginResource: LoginResource,
-        private notificationsService: n4Notifications.N4NotificationsService) {
+        private notificationsService: n4Notifications.N4NotificationsService,
+        private menuService: MenuService) {
         this.logado = false;
         this.loginData = new LoginModel();
         var self = this;
@@ -35,5 +36,6 @@ angular.module("n4_payment")
     .controller("LoginController", [
         "LoginResource",
         "n4NotificationsService",
+        "MenuService",
         LoginController
 ]);

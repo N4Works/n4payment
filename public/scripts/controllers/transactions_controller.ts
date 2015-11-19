@@ -4,7 +4,10 @@ class TransactionsController {
     transaction: TransactionModel = new TransactionModel();
     transactions: Array<TransactionModel> = new Array<TransactionModel>();
     constructor(private resource: TransactionResource,
-        private notificationsService: n4Notifications.N4NotificationsService) {
+        private notificationsService: n4Notifications.N4NotificationsService,
+        private menuService: MenuService) {
+        menuService.setPrincipal(new MenuModel("Comprar", "red", "add", "/checkouts/new"));
+
         var self = this;
         resource.findAll()
             .then((transactions: Array<TransactionModel>) => self.transactions = transactions)
@@ -16,5 +19,6 @@ angular.module("n4_payment")
     .controller("TransactionsController", [
     "TransactionResource",
     "n4NotificationsService",
+    "MenuService",
     TransactionsController
 ]);

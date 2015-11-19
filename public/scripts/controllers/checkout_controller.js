@@ -1,6 +1,6 @@
 "use strict";
 var CheckoutController = (function () {
-    function CheckoutController(resource, parameters, location, $window, filter, senderResource, pagseguroResource, itemResource, notificationsService) {
+    function CheckoutController(resource, parameters, location, $window, filter, senderResource, pagseguroResource, itemResource, notificationsService, menuService) {
         this.resource = resource;
         this.parameters = parameters;
         this.location = location;
@@ -10,6 +10,8 @@ var CheckoutController = (function () {
         this.pagseguroResource = pagseguroResource;
         this.itemResource = itemResource;
         this.notificationsService = notificationsService;
+        this.menuService = menuService;
+        menuService.setPrincipal(new MenuModel("Comprar", "red", "add", "/checkouts/new"));
         var self = this;
         this.checkout = new CheckoutModel();
         senderResource.findAll()
@@ -71,5 +73,6 @@ angular.module("n4_payment")
     "PagSeguroResource",
     "ItemResource",
     "n4NotificationsService",
+    "MenuService",
     CheckoutController
 ]);

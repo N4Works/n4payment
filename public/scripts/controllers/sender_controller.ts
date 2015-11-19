@@ -5,7 +5,10 @@ class SenderController {
     constructor(private resource: SenderResource,
         private parameters: ng.route.IRouteParamsService,
         private location: ng.ILocationService,
-        private notificationsService: n4Notifications.N4NotificationsService) {
+        private notificationsService: n4Notifications.N4NotificationsService,
+        private menuService: MenuService) {
+        menuService.setPrincipal(new MenuModel("Novo comprador", "yellow darken-2", "add", "/senders/new"));
+
         var self = this;
         this.sender = new SenderModel();
         if (parameters["id"]) {
@@ -19,9 +22,9 @@ class SenderController {
         var self = this;
         this.resource.save(this.sender)
             .then((sender: SenderModel) => {
-                self.notificationsService.notifySuccess("Cadastro realizado.", "Ok");
-                self.location.path("/senders");
-            })
+            self.notificationsService.notifySuccess("Cadastro realizado.", "Ok");
+            self.location.path("/senders");
+        })
             .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
     }
 
@@ -40,5 +43,6 @@ angular.module("n4_payment")
     "$routeParams",
     "$location",
     "n4NotificationsService",
+    "MenuService",
     SenderController
 ]);
