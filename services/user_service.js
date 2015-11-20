@@ -6,7 +6,7 @@ var UserService = (function () {
     UserService.prototype.find = function (filtro) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            return user_model_1.User.find(filtro, function (error, users) {
+            return user_model_1.User.find(filtro).select("-password").exec(function (error, users) {
                 return (!!error) ? reject(error) : resolve(users);
             });
         });
@@ -14,7 +14,7 @@ var UserService = (function () {
     UserService.prototype.findById = function (id) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            return user_model_1.User.findById(id, function (error, user) {
+            return user_model_1.User.findById(id).select("-password").exec(function (error, user) {
                 return (!!error) ? reject(error) : resolve(user);
             });
         });

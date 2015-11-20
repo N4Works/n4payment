@@ -11,7 +11,7 @@ var CheckoutController = (function () {
         this.itemResource = itemResource;
         this.notificationsService = notificationsService;
         this.menuService = menuService;
-        menuService.setPrincipal(new MenuModel("Comprar", "red", "add", "/checkouts/new"));
+        menuService.setPrincipal(new MenuModel("Novo pagamento", "red", "add", "/checkouts/new"));
         var self = this;
         this.checkout = new CheckoutModel();
         senderResource.findAll()

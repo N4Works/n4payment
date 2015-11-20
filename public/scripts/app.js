@@ -5,7 +5,8 @@ angular.module("n4_payment", [
     "n4Notifications",
     "n4ExceptionInterceptor",
     "n4DateInput",
-    "n4NumberInput"
+    "n4NumberInput",
+    "n4CurrencyInput"
 ])
     .config([
     "$locationProvider",

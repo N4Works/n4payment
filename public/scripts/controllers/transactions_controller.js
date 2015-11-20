@@ -6,7 +6,7 @@ var TransactionsController = (function () {
         this.menuService = menuService;
         this.transaction = new TransactionModel();
         this.transactions = new Array();
-        menuService.setPrincipal(new MenuModel("Comprar", "red", "add", "/checkouts/new"));
+        menuService.setPrincipal(new MenuModel("Novo pagamento", "red", "add", "/checkouts/new"));
         var self = this;
         resource.findAll()
             .then(function (transactions) { return self.transactions = transactions; })

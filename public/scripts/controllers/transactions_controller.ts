@@ -6,7 +6,7 @@ class TransactionsController {
     constructor(private resource: TransactionResource,
         private notificationsService: n4Notifications.N4NotificationsService,
         private menuService: MenuService) {
-        menuService.setPrincipal(new MenuModel("Comprar", "red", "add", "/checkouts/new"));
+        menuService.setPrincipal(new MenuModel("Novo pagamento", "red", "add", "/checkouts/new"));
 
         var self = this;
         resource.findAll()

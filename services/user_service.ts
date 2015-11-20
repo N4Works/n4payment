@@ -59,7 +59,7 @@ export class UserService implements IUserService {
     find(filtro: any): Promise<Array<IUser>> {
         var self = this;
         return new Promise<Array<IUser>>((resolve: Function, reject: Function) =>
-            User.find(filtro, (error: any, users: Array<IUser>) =>
+            User.find(filtro).select("-password").exec((error: any, users: Array<IUser>) =>
                 (!!error) ? reject(error) : resolve(users)));
     }
 
@@ -72,7 +72,7 @@ export class UserService implements IUserService {
     findById(id: string): Promise<IUser> {
         var self = this;
         return new Promise<IUser>((resolve: Function, reject: Function) =>
-            User.findById(id, (error: any, user:IUser) =>
+            User.findById(id).select("-password").exec((error: any, user:IUser) =>
                 (!!error) ? reject(error) : resolve(user)));
     }
 
