@@ -10,7 +10,7 @@
     <div class="col s12 m6 l6" ng-repeat="item in controller.items">
         <div class="card grey-text">
             <div class="card-content center">
-                <a ng-href="/items/{{item._id}}">
+                <a ng-href="/products/{{item._id}}">
                     <span class="card-title grey-text text-darken-4" ng-bind="item.description">Card Title</span>
                 </a>
                 <p>código: <span ng-bind="item.id"></span></p>
@@ -18,7 +18,7 @@
             </div>
             <div class="panel-form-actions card-action">
                 <div class="center">
-                    <a ng-href="/items/{{item._id}}">Editar</a>
+                    <a ng-href="/products/{{item._id}}">Editar</a>
                     <a href="" name="delete" ng-click="controller.delete(item)">Deletar</button>
                 </div>
             </div>

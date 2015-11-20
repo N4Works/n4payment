@@ -1,19 +1,19 @@
 "use strict";
 
 class CheckoutsController {
-    checkouts:Array<CheckoutModel>;
+    checkouts: Array<CheckoutModel>;
     constructor(private $window: ng.IWindowService,
         private filter: ng.IFilterFilter,
-        private resource:CheckoutResource,
-        private pagseguroResource:PagSeguroResource,
+        private resource: CheckoutResource,
+        private pagseguroResource: PagSeguroResource,
         private notificationsService: n4Notifications.N4NotificationsService,
         private menuService: MenuService) {
-            menuService.setPrincipal(new MenuModel("Comprar", "red", "add", "/checkouts/new"));
+        menuService.setPrincipal(new MenuModel("Comprar", "red", "add", "/checkouts/new"));
 
-            var self = this;
-            resource.findAll()
-                .then(checkouts => self.checkouts = checkouts)
-                .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
+        var self = this;
+        resource.findAll()
+            .then(checkouts => self.checkouts = checkouts)
+            .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
     }
 
     delete(checkout: CheckoutModel) {
@@ -34,11 +34,11 @@ class CheckoutsController {
 
 angular.module("n4_payment")
     .controller("CheckoutsController", [
-        "$window",
-        "filterFilter",
-        "CheckoutResource",
-        "PagSeguroResource",
-        "n4NotificationsService",
-        "MenuService",
-        CheckoutsController
-    ]);
+    "$window",
+    "filterFilter",
+    "CheckoutResource",
+    "PagSeguroResource",
+    "n4NotificationsService",
+    "MenuService",
+    CheckoutsController
+]);

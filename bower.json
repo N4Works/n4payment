@@ -29,6 +29,8 @@
     "Materialize": "materialize#~0.97.3",
     "n4Fileupload": "n4-fileUpload-directive#~1.1.3",
     "n4Notifications": "n4-notifications-directive#>1.0.0",
-    "n4exceptioninterceptor": "n4-exception-interceptor#~1.0.0"
+    "n4exceptioninterceptor": "n4-exception-interceptor#~1.0.0",
+    "n4-dateinput-directive": "~1.0.3",
+    "n4-numberinput-directive": "n4-numberInput-directive#~1.0.0"
   }
 }

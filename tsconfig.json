@@ -43,21 +43,29 @@
         "models/transaction_model.ts",
         "models/urlpagseguro_enum.ts",
         "models/user_model.ts",
+        "public/bower_components/n4Notifications/typing/n4notificationsservice.d.ts",
         "public/scripts/app.ts",
+        "public/scripts/controllers/checkout_controller.ts",
         "public/scripts/controllers/checkouts_controller.ts",
+        "public/scripts/controllers/item_controller.ts",
         "public/scripts/controllers/items_controller.ts",
         "public/scripts/controllers/login_controller.ts",
         "public/scripts/controllers/main_controller.ts",
         "public/scripts/controllers/root_controller.ts",
+        "public/scripts/controllers/sender_controller.ts",
         "public/scripts/controllers/senders_controller.ts",
         "public/scripts/controllers/transactions_controller.ts",
+        "public/scripts/controllers/user_controller.ts",
         "public/scripts/controllers/users_controller.ts",
+        "public/scripts/directives/datepicker_directive.ts",
         "public/scripts/models/address_model.ts",
         "public/scripts/models/checkout_model.ts",
         "public/scripts/models/creditorfees_model.ts",
+        "public/scripts/models/datepicker_options_model.ts",
         "public/scripts/models/document_model.ts",
         "public/scripts/models/item_model.ts",
         "public/scripts/models/login_model.ts",
+        "public/scripts/models/menu_model.ts",
         "public/scripts/models/paymentmethod_model.ts",
         "public/scripts/models/phone_model.ts",
         "public/scripts/models/sender_model.ts",
@@ -71,6 +79,7 @@
         "public/scripts/resources/sender_resource.ts",
         "public/scripts/resources/transaction_resource.ts",
         "public/scripts/resources/user_resource.ts",
+        "public/scripts/services/menu_service.ts",
         "routes/checkout_route.ts",
         "routes/item_route.ts",
         "routes/login_route.ts",
@@ -105,5 +114,8 @@
         "typings/serve-static/serve-static.d.ts",
         "typings/tsd.d.ts"
     ],
-    "exclude": []
+    "exclude": [],
+    "atom": {
+        "rewriteTsconfig": true
+    }
 }

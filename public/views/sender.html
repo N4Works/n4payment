@@ -21,16 +21,17 @@
                 <label ng-class="{'active':controller.sender.email}" for="email">E-mail</label>
             </div>
             <div class="input-field">
-                <input id="areaCode" type="text" name="areaCode" maxLength="2" ng-model="controller.sender.phone.areaCode">
+                <n4-number-input id="areaCode" type="text" name="areaCode" maxLength="2" ng-model="controller.sender.phone.areaCode"></n4-number-input>
                 <label ng-class="{'active':controller.sender.phone.areaCode}" for="areaCode">DDD</label>
             </div>
             <div class="input-field">
-                <input id="phoneNumber" type="text" name="phoneNumber" maxLength="20" ng-model="controller.sender.phone.number">
+                <n4-number-input id="phoneNumber" type="text" name="phoneNumber" maxLength="20" ng-model="controller.sender.phone.number"></n4-number-input>
                 <label ng-class="{'active':controller.sender.phone.number}" for="phoneNumber">Telefone</label>
             </div>
             <div class="input-field">
-                <input id="bornDate" type="Date" name="bornDate" ng-model="controller.sender.bornDate">
-                <label ng-class="{'active':controller.sender.bornDate}" for="bornDate">Data de nascimento</label>
+                <n4-date-input ng-focus="dateFocus = true" ng-blur="dateFocus = false" id="bornDate" name="bornDate" ng-model="controller.sender.bornDate" placeholder="."></n4-date-input>
+                <!--<input class="datepicker" options="{max:true}" id="bornDate" type="date" name="bornDate" ng-model="controller.sender.bornDate">-->
+                <label ng-class="{'active':controller.sender.bornDate||dateFocus}" for="bornDate">Data de nascimento</label>
             </div>
             <div class="input-field">
                 <input id="cpf" type="text" name="cpf" value="" maxlength="11" ng-model="controller.sender.documents[0].value">

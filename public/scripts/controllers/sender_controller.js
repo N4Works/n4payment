@@ -11,7 +11,9 @@ var SenderController = (function () {
         this.sender = new SenderModel();
         if (parameters["id"]) {
             resource.findById(parameters["id"])
-                .then(function (sender) { return self.sender = sender; })
+                .then(function (sender) {
+                self.sender = sender;
+            })
                 .catch(function (error) { return self.notificationsService.notifyAlert(error, "Ok"); });
         }
     }

@@ -13,7 +13,9 @@ class SenderController {
         this.sender = new SenderModel();
         if (parameters["id"]) {
             resource.findById(parameters["id"])
-                .then(sender => self.sender = sender)
+                .then(sender => {
+                    self.sender = sender;
+                })
                 .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
         }
     }

@@ -4,7 +4,9 @@ angular.module("n4_payment", [
     "ngResource",
     "ngRoute",
     "n4Notifications",
-    "n4ExceptionInterceptor"
+    "n4ExceptionInterceptor",
+    "n4DateInput",
+    "n4NumberInput"
 ])
     .config([
     "$locationProvider",
