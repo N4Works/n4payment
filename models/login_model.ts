@@ -7,4 +7,5 @@ export interface ILogin {
     password:string;
     user:IUser;
     token:string;
+    expiration: Date;
 };

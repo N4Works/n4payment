@@ -5,14 +5,19 @@ angular.module("n4_payment", [
     "ngRoute",
     "n4Notifications",
     "n4ExceptionInterceptor",
+    "n4AuthenticationInterceptor",
     "n4DateInput",
     "n4NumberInput",
-    "n4CurrencyInput"
+    "n4CurrencyInput",
+    "angular-md5"
 ])
     .config([
     "$locationProvider",
     "$routeProvider",
-    ($locationProvider: ng.ILocationProvider, $routeProvider: ng.route.IRouteProvider) => {
+    "n4AuthenticationInterceptorProvider",
+    ($locationProvider: ng.ILocationProvider, $routeProvider: ng.route.IRouteProvider, authProvider: any) => {
+        authProvider.redirectURL = "http://localhost:3000/login.html";
+
         $locationProvider.html5Mode(true);
         $routeProvider
             .when("/", {

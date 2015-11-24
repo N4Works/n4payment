@@ -32,6 +32,8 @@
     "n4exceptioninterceptor": "n4-exception-interceptor#~1.0.0",
     "n4-dateinput-directive": "~1.0.3",
     "n4-numberinput-directive": "n4-numberInput-directive#~1.0.0",
-    "n4CurrencyInput": "n4-currencyinput-directive#~0.0.1"
+    "n4CurrencyInput": "n4-currencyinput-directive#~0.0.1",
+    "angular-md5": "~0.1.10",
+    "n4authenticationinterceptor": "n4-authentication-interceptor#~1.0.0"
   }
 }

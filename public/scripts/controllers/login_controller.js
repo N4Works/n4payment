@@ -1,38 +1,41 @@
 "use strict";
 var LoginController = (function () {
-    function LoginController(loginResource, notificationsService, menuService) {
+    function LoginController($window, loginResource, notificationsService, md5) {
+        this.$window = $window;
         this.loginResource = loginResource;
         this.notificationsService = notificationsService;
-        this.menuService = menuService;
+        this.md5 = md5;
         this.logado = false;
         this.loginData = new LoginModel();
         var self = this;
         loginResource.getUser()
-            .then(function (user) { return self.loginData.user = user; })
-            .catch(function (error) { return self.notificationsService.notifyAlert(error, "Ok"); });
+            .then(function (user) { return $window.location.href = "http://localhost:3000"; })
+            .catch(function (e) { return self.notificationsService.notifyAlert(e.message, "Ok"); });
     }
     LoginController.prototype.login = function () {
         var self = this;
-        this.loginResource.login(this.loginData)
-            .then(function (user) {
-            self.notificationsService.notifySuccess("Login realizado.", "Ok");
-            self.loginData.user = user;
+        var login = angular.copy(this.loginData);
+        login.password = this.md5.createHash(login.password);
+        this.loginResource.login(login)
+            .then(function (message) {
+            self.notificationsService.notifySuccess(message, "Ok");
         })
-            .catch(function (error) { return self.notificationsService.notifyAlert(error, "Ok"); });
+            .catch(function (e) { return self.notificationsService.notifyAlert(e.message, "Ok"); });
     };
     LoginController.prototype.logout = function () {
         var _this = this;
         var self = this;
         this.loginResource.logout()
             .then(function () { return _this.loginData.clear(); })
-            .catch(function (error) { return self.notificationsService.notifyAlert(error, "Ok"); });
+            .catch(function (e) { return self.notificationsService.notifyAlert(e.message, "Ok"); });
     };
     return LoginController;
 })();
 angular.module("n4_payment")
     .controller("LoginController", [
+    "$window",
     "LoginResource",
     "n4NotificationsService",
-    "MenuService",
+    "md5",
     LoginController
 ]);

@@ -1,7 +1,8 @@
 "use strict";
 var urlpagseguro_enum_1 = require("../models/urlpagseguro_enum");
-var checkout_service_1 = require("../services/checkout_service");
-var nodemailer = require("nodemailer");
+var checkout_service_1 = require("./checkout_service");
+var email_service_1 = require("./email_service");
+var email_model_1 = require("../models/email_model");
 var request = require("request");
 var xml2json = require("xml2json");
 var PagSeguroService = (function () {
@@ -37,23 +38,9 @@ var PagSeguroService = (function () {
                     var checkoutResponse = data.checkout;
                     var urlPayment = process.env.NODE_ENV === "production" ? urlpagseguro_enum_1.EnumURLPagSeguro.payment_production : urlpagseguro_enum_1.EnumURLPagSeguro.payment_development;
                     var redirectURL = urlPayment + "?code=" + checkoutResponse.code;
-                    var transporter = nodemailer.createTransport({
-                        service: "gmail",
-                        auth: {
-                            user: "n4payment",
-                            pass: "omtx txtk rbgh cjnu"
-                        }
-                    });
-                    transporter.sendMail({
-                        to: checkout.sender.email,
-                        subject: "Pagamento para " + (checkout.receiver.name || "n4payment"),
-                        text: redirectURL
-                    }, function (error, response) {
-                        if (error) {
-                            return reject("Ocorreu o seguinte problema ao enviar e-mail ao cliente " + checkout.sender.name + ": " + error + ".");
-                        }
-                        return resolve(redirectURL);
-                    });
+                    var emailService = new email_service_1.EmailService();
+                    return emailService.send(new email_model_1.Email(checkout.sender.email, "Pagamento para " + (checkout.receiver.name || "n4payment"), redirectURL))
+                        .then(function () { return redirectURL; });
                 });
             })
                 .catch(function (e) { return reject(e); });

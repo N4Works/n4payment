@@ -16,7 +16,7 @@ export var loginAdmin = (request: express.Request, response: express.Response, n
             }
             next();
         })
-        .catch(e => response.status(500).json(`Ocorreu o seguinte erro no servidor: ${e}`));
+        .catch(e => response.status(401).json(`Ocorreu o seguinte erro no servidor: ${e}`));
 };
 
 export default loginAdmin;

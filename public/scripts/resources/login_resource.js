@@ -12,7 +12,7 @@ var LoginResource = (function () {
     LoginResource.prototype.login = function (login) {
         return this.provider.save(login)
             .$promise
-            .then(function (userData) { return new UserModel(userData); });
+            .then(function (data) { return data.message; });
     };
     LoginResource.prototype.logout = function () {
         return this.provider.delete()

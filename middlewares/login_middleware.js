@@ -12,7 +12,7 @@ exports.loginAdmin = function (request, response, next) {
         }
         next();
     })
-        .catch(function (e) { return response.status(500).json("Ocorreu o seguinte erro no servidor: " + e); });
+        .catch(function (e) { return response.status(401).json("Ocorreu o seguinte erro no servidor: " + e); });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = exports.loginAdmin;

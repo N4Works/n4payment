@@ -1,37 +1,7 @@
 <div>
-    <div class="card panel-login" ng-controller="LoginController as loginCtrl">
-        <div class="">
-            <div class="card-content form-login">
-                <span class="card-title">Autenticação</span>
-                <div class="" ng-if="!loginCtrl.loginData.user">
-                    <div class="input-field">
-                        <i class="material-icons prefix">account_circle</i>
-                        <input id="email" name="email" type="email" ng-model="loginCtrl.loginData.email">
-                        <label for="email">E-mail</label>
-                    </div>
-                    <div class="input-field">
-                        <i class="material-icons prefix">vpn_key</i>
-                        <input id="password" name="password" type="password" ng-model="loginCtrl.loginData.password">
-                        <label for="password">Senha</label>
-                    </div>
-                </div>
-                <p class="center info-login" ng-if="loginCtrl.loginData.user">
-                    Bem-vindo <span ng-bind="loginCtrl.loginData.user.name"></span>.<br/>
-                    Utilize o menu ao lado para acessar os cadastros.
-                </p>
-            </div>
-            <div class="card-action">
-                <div class="center">
-                    <button  ng-if="!loginCtrl.loginData.user" class="btn waves-effect waves-light" ng-click="loginCtrl.login()">Entrar</button>
-                    <button  ng-if="loginCtrl.loginData.user" class="btn waves-effect waves-light" ng-click="loginCtrl.logout()">Sair</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="card" ng-controller="TransactionsController as transactionsCtrl">
         <div class="card-content">
-            <span class="card-title">Transações</span>
+            <span class="card-title">Últimas transações</span>
             <table class="table-transaction responsive-table">
                 <thead>
                     <tr>

@@ -3,7 +3,9 @@
 import {IUser} from "../models/user_model";
 import {ICheckout, ICheckoutResponse} from "../models/checkout_model";
 import {EnumURLPagSeguro} from "../models/urlpagseguro_enum";
-import {ICheckoutService, CheckoutService} from "../services/checkout_service";
+import {ICheckoutService, CheckoutService} from "./checkout_service";
+import {IEmailService, EmailService} from "./email_service";
+import {IEmail, Email} from "../models/email_model";
 import nodemailer = require("nodemailer");
 import request = require("request");
 var xml2json = require("xml2json");
@@ -47,24 +49,10 @@ export class PagSeguroService {
                         var urlPayment = process.env.NODE_ENV === "production" ? EnumURLPagSeguro.payment_production : EnumURLPagSeguro.payment_development;
                         var redirectURL = `${urlPayment}?code=${checkoutResponse.code}`;
 
-                        var transporter = nodemailer.createTransport({
-                            service: "gmail",
-                            auth: {
-                                user: "n4payment",
-                                pass: "omtx txtk rbgh cjnu"
-                            }
-                        });
+                        var emailService:IEmailService = new EmailService();
 
-                        transporter.sendMail({
-                            to: checkout.sender.email,
-                            subject: `Pagamento para ${checkout.receiver.name || "n4payment"}`,
-                            text: redirectURL
-                        }, (error: any, response: any) => {
-                            if (error) {
-                                return reject(`Ocorreu o seguinte problema ao enviar e-mail ao cliente ${checkout.sender.name}: ${error}.`);
-                            }
-                            return resolve(redirectURL);
-                        });
+                        return emailService.send(new Email(checkout.sender.email, `Pagamento para ${checkout.receiver.name || "n4payment"}`, redirectURL))
+                            .then(() => redirectURL);
                     });
                 })
                 .catch(e => reject(e));

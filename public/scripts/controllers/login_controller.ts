@@ -3,39 +3,43 @@
 class LoginController {
     loginData: LoginModel;
     logado: boolean;
-    constructor(private loginResource: LoginResource,
+    constructor(
+        private $window: ng.IWindowService,
+        private loginResource: LoginResource,
         private notificationsService: n4Notifications.N4NotificationsService,
-        private menuService: MenuService) {
+        private md5: any) {
         this.logado = false;
         this.loginData = new LoginModel();
         var self = this;
         loginResource.getUser()
-            .then(user => self.loginData.user = user)
-            .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
+            .then(user => $window.location.href = "http://localhost:3000")
+            .catch(e => self.notificationsService.notifyAlert(e.message, "Ok"));
     }
 
     login() {
         var self = this;
-        this.loginResource.login(this.loginData)
-            .then((user: UserModel) => {
-                self.notificationsService.notifySuccess("Login realizado.", "Ok");
-                self.loginData.user = user;
+        var login = angular.copy(this.loginData);
+        login.password = this.md5.createHash(login.password);
+        this.loginResource.login(login)
+            .then((message: string) => {
+                self.notificationsService.notifySuccess(message, "Ok");
             })
-            .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
+            .catch(e => self.notificationsService.notifyAlert(e.message, "Ok"));
     }
 
     logout() {
         var self = this;
         this.loginResource.logout()
             .then(() => this.loginData.clear())
-            .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
+            .catch(e => self.notificationsService.notifyAlert(e.message, "Ok"));
     }
 }
 
 angular.module("n4_payment")
     .controller("LoginController", [
+        "$window",
         "LoginResource",
         "n4NotificationsService",
-        "MenuService",
+        "md5",
         LoginController
 ]);
