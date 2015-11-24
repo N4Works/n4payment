@@ -39,9 +39,9 @@
                         </td>
                         <td ng-bind="transaction.reference">
                         </td>
-                        <td ng-bind="transaction.type">
+                        <td ng-bind="transaction.type | TransactionType">
                         </td>
-                        <td ng-bind="transaction.status">
+                        <td ng-bind="transaction.status | TransactionStatus">
                         </td>
                         <td ng-bind="transaction.grossAmount | currency:'R$'">
                         </td>

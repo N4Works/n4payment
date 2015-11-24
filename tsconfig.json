@@ -61,6 +61,8 @@
         "public/scripts/controllers/user_controller.ts",
         "public/scripts/controllers/users_controller.ts",
         "public/scripts/directives/datepicker_directive.ts",
+        "public/scripts/filters/transaction_status_filter.ts",
+        "public/scripts/filters/transaction_type_filter.ts",
         "public/scripts/models/address_model.ts",
         "public/scripts/models/checkout_model.ts",
         "public/scripts/models/creditorfees_model.ts",
