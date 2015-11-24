@@ -2,6 +2,7 @@
 
 import express = require("express");
 import cors = require("cors");
+import bodyParser = require("body-parser");
 var xmlparser = require("express-xml-bodyparser");
 import {IUserService, UserService} from "../services/user_service";
 import {INotification} from "../models/notification_model";
@@ -20,6 +21,7 @@ export var Router = (server: express.Router) => {
     router
         .route("/notifications/:userId")
         .post(cors({ origin: "pagseguro.uol.com.br" }),
+        bodyParser.urlencoded({ extended: true }),
         xmlparser(),
         (request: express.Request, response: express.Response, next: Function) => {
             var notification: INotification = request.body;

@@ -1,6 +1,7 @@
 "use strict";
 var express = require("express");
 var cors = require("cors");
+var bodyParser = require("body-parser");
 var xmlparser = require("express-xml-bodyparser");
 var user_service_1 = require("../services/user_service");
 var transaction_service_1 = require("../services/transaction_service");
@@ -11,7 +12,7 @@ exports.Router = function (server) {
     var router = express.Router(server);
     router
         .route("/notifications/:userId")
-        .post(cors({ origin: "pagseguro.uol.com.br" }), xmlparser(), function (request, response, next) {
+        .post(cors({ origin: "pagseguro.uol.com.br" }), bodyParser.urlencoded({ extended: true }), xmlparser(), function (request, response, next) {
         var notification = request.body;
         var service = new user_service_1.UserService();
         service.findById(request.params.userId)
