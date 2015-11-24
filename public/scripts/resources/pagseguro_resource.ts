@@ -13,7 +13,7 @@ class PagSeguroResource {
     send(checkout: CheckoutModel) {
         return this.provider.save({service: "payments", id: checkout._id})
             .$promise
-            .then((data:{redirectURL:string}) => data.redirectURL);
+            .then((data:{message:string}) => data.message);
     }
 }
 

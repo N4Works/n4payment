@@ -40,7 +40,8 @@ var PagSeguroService = (function () {
                     var redirectURL = urlPayment + "?code=" + checkoutResponse.code;
                     var emailService = new email_service_1.EmailService();
                     return emailService.send(new email_model_1.Email(checkout.sender.email, "Pagamento para " + (checkout.receiver.name || "n4payment"), redirectURL))
-                        .then(function () { return redirectURL; });
+                        .then(function () { return resolve("E-mail enviado com a URL de pagamento."); })
+                        .catch(function (error) { return reject(error); });
                 });
             })
                 .catch(function (e) { return reject(e); });

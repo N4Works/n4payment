@@ -7,7 +7,7 @@ var CheckoutsController = (function () {
         this.pagseguroResource = pagseguroResource;
         this.notificationsService = notificationsService;
         this.menuService = menuService;
-        menuService.setPrincipal(new MenuModel("Comprar", "red", "add", "/checkouts/new"));
+        menuService.setPrincipal(new MenuModel("Novo pagamento", "red", "add", "/checkouts/new"));
         var self = this;
         resource.findAll()
             .then(function (checkouts) { return self.checkouts = checkouts; })
@@ -22,7 +22,7 @@ var CheckoutsController = (function () {
     CheckoutsController.prototype.send = function (checkout) {
         var self = this;
         this.pagseguroResource.send(checkout)
-            .then(function (redirectURL) { return self.$window.location.href = redirectURL; })
+            .then(function (message) { return self.notificationsService.notifySuccess(message, "Ok"); })
             .catch(function (error) { return self.notificationsService.notifyAlert(error, "Ok"); });
     };
     return CheckoutsController;

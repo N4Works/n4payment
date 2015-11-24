@@ -52,7 +52,8 @@ export class PagSeguroService {
                         var emailService:IEmailService = new EmailService();
 
                         return emailService.send(new Email(checkout.sender.email, `Pagamento para ${checkout.receiver.name || "n4payment"}`, redirectURL))
-                            .then(() => redirectURL);
+                            .then(() => resolve("E-mail enviado com a URL de pagamento."))
+                            .catch(error => reject(error));
                     });
                 })
                 .catch(e => reject(e));

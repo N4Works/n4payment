@@ -18,7 +18,7 @@ class LoginResource {
     login(login: LoginModel) {
         return this.provider.save(login)
             .$promise
-            .then((data:any) => data.message);
+            .then((data:{message:string}) => data.message);
     }
 
     logout() {

@@ -7,7 +7,7 @@ var PagSeguroResource = (function () {
     PagSeguroResource.prototype.send = function (checkout) {
         return this.provider.save({ service: "payments", id: checkout._id })
             .$promise
-            .then(function (data) { return data.redirectURL; });
+            .then(function (data) { return data.message; });
     };
     return PagSeguroResource;
 })();

@@ -55,7 +55,7 @@ exports.Router = function (server) {
             .then(function (checkout) {
             return pagseguroService.sendPayment(checkout);
         })
-            .then(function (redirectURL) { return response.status(201).json({ redirectURL: redirectURL }); })
+            .then(function (message) { return response.status(201).json({ message: message }); })
             .catch(function (error) { return next(error); });
     });
     return router;

@@ -70,7 +70,7 @@ export var Router = (server: express.Router) => {
                 .then((checkout: ICheckout) => {
                 return pagseguroService.sendPayment(checkout);
             })
-                .then((redirectURL: string) => response.status(201).json({ redirectURL: redirectURL }))
+                .then((message: string) => response.status(201).json({ message: message }))
                 .catch(error => next(error));
         });
 

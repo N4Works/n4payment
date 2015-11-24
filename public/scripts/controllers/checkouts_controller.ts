@@ -27,7 +27,7 @@ class CheckoutsController {
     send(checkout: CheckoutModel) {
         var self = this;
         this.pagseguroResource.send(checkout)
-            .then((redirectURL: string) => self.$window.location.href = redirectURL)
+            .then((message: string) => self.notificationsService.notifySuccess(message, "Ok"))
             .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
     }
 }
