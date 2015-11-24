@@ -1,6 +1,7 @@
 "use strict";
 var ItemModel = (function () {
     function ItemModel(itemData) {
+        this.quantity = 1.0;
         angular.extend(this, itemData);
     }
     return ItemModel;

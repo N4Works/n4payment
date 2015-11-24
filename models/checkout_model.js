@@ -16,8 +16,7 @@ exports.CheckoutSchema = new mongoose.Schema({
     items: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "Item",
-            required: true,
-            validate: [function (items) { return !!items.length; }, "É necessário informar ao menos um item."]
+            required: true
         }],
     reference: { type: "string", maxLength: 200 },
     sender: { type: mongoose.Schema.Types.ObjectId, ref: "Sender" },

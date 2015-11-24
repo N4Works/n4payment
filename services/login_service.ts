@@ -33,7 +33,7 @@ export class LoginService implements ILoginService {
                 if (readExpiration && +(new Date()) > +login.expiration) {
                     return reject("Token inválido.");
                 }
-                resolve(new User(login.user));
+                return resolve(new User(login.user));
             });
         });
     }
@@ -55,7 +55,7 @@ export class LoginService implements ILoginService {
                 var emailService:IEmailService = new EmailService();
                 return emailService.send(new Email(login.email, "Acesso ao sistema", `${consts.BASE_URL}/api/login/${login.token}`))
                     .then(() => {
-                        fs.writeFile(`${os.tmpdir()}/${login.token}`, JSON.stringify(login.user), function(error) {
+                        fs.writeFile(`${os.tmpdir()}/${login.token}`, JSON.stringify(login), function(error) {
                             if (!!error) {
                                 return reject(error);
                             }

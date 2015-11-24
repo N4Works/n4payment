@@ -24,7 +24,7 @@ var LoginService = (function () {
                 if (readExpiration && +(new Date()) > +login.expiration) {
                     return reject("Token inválido.");
                 }
-                resolve(new user_model_1.User(login.user));
+                return resolve(new user_model_1.User(login.user));
             });
         });
     };
@@ -44,7 +44,7 @@ var LoginService = (function () {
                 var emailService = new email_service_1.EmailService();
                 return emailService.send(new email_model_1.Email(login.email, "Acesso ao sistema", consts.BASE_URL + "/api/login/" + login.token))
                     .then(function () {
-                    fs.writeFile(os.tmpdir() + "/" + login.token, JSON.stringify(login.user), function (error) {
+                    fs.writeFile(os.tmpdir() + "/" + login.token, JSON.stringify(login), function (error) {
                         if (!!error) {
                             return reject(error);
                         }
