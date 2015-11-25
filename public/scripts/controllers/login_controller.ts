@@ -12,8 +12,7 @@ class LoginController {
         this.loginData = new LoginModel();
         var self = this;
         loginResource.getUser()
-            .then(user => $window.location.href = "http://localhost:3000")
-            .catch(e => self.notificationsService.notifyAlert(e.message, "Ok"));
+            .then(user => $window.location.href = "http://localhost:3000");
     }
 
     login() {
@@ -24,13 +23,6 @@ class LoginController {
             .then((message: string) => {
                 self.notificationsService.notifySuccess(message, "Ok");
             })
-            .catch(e => self.notificationsService.notifyAlert(e.message, "Ok"));
-    }
-
-    logout() {
-        var self = this;
-        this.loginResource.logout()
-            .then(() => this.loginData.clear())
             .catch(e => self.notificationsService.notifyAlert(e.message, "Ok"));
     }
 }

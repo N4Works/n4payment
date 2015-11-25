@@ -19,7 +19,11 @@
         <nav>
             <div ng-class="{'main':  'black', 'users': 'blue', 'senders': 'yellow darken-2', 'items': 'orange', 'checkouts': 'red', 'transactions': 'green'}[rootCtrl.route.current.name]" class="nav-wrapper">
                 <a class="brand-logo center" ng-href="/">N4Pay</a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="" ng-click="rootCtrl.logout()"><i class="material-icons right">exit_to_app</i>Sair</a></li>
+                </ul>
             </div>
+
         </nav>
     </header>
     <br>

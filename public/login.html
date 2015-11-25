@@ -17,7 +17,7 @@
 <body ng-app="n4_payment" ng-controller="LoginController as controller">
     <header class="menu-header">
         <nav>
-            <div class="nav-wrapper black">
+            <div class="nav-wrapper">
                 <a class="brand-logo center" ng-href="/">N4Pay</a>
             </div>
         </nav>
@@ -40,10 +40,6 @@
                             <label for="password">Senha</label>
                         </div>
                     </div>
-                    <p class="center info-login" ng-if="controller.loginData.user">
-                        Bem-vindo <span ng-bind="controller.loginData.user.name"></span>.<br/>
-                        Utilize o menu ao lado para acessar os cadastros.
-                    </p>
                 </div>
                 <div class="card-action">
                     <div class="center">

@@ -9,8 +9,7 @@ var LoginController = (function () {
         this.loginData = new LoginModel();
         var self = this;
         loginResource.getUser()
-            .then(function (user) { return $window.location.href = "http://localhost:3000"; })
-            .catch(function (e) { return self.notificationsService.notifyAlert(e.message, "Ok"); });
+            .then(function (user) { return $window.location.href = "http://localhost:3000"; });
     }
     LoginController.prototype.login = function () {
         var self = this;
@@ -20,13 +19,6 @@ var LoginController = (function () {
             .then(function (message) {
             self.notificationsService.notifySuccess(message, "Ok");
         })
-            .catch(function (e) { return self.notificationsService.notifyAlert(e.message, "Ok"); });
-    };
-    LoginController.prototype.logout = function () {
-        var _this = this;
-        var self = this;
-        this.loginResource.logout()
-            .then(function () { return _this.loginData.clear(); })
             .catch(function (e) { return self.notificationsService.notifyAlert(e.message, "Ok"); });
     };
     return LoginController;
