@@ -8,6 +8,7 @@ class CheckoutController {
         private parameters: ng.route.IRouteParamsService,
         private location: ng.ILocationService,
         private $window: ng.IWindowService,
+        private $q: ng.IQService,
         private filter: ng.IFilterFilter,
         private senderResource: SenderResource,
         private pagseguroResource: PagSeguroResource,
@@ -21,13 +22,22 @@ class CheckoutController {
         senderResource.findAll()
             .then(senders => self.senders = senders)
             .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
-        itemResource.findAll()
+        var itemPromise = itemResource.findAll()
             .then(items => self.items = items)
             .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
         if (parameters["id"]) {
-            resource.findById(parameters["id"])
-                .then(checkout => self.checkout = checkout)
-                .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
+            $q.all([itemPromise,
+                    resource.findById(parameters["id"])
+                        .then(checkout => self.checkout = checkout)
+                        .catch(error => self.notificationsService.notifyAlert(error, "Ok"))])
+                .then((results:Array<any>) => {
+                    angular.forEach(results[1].items, i => {
+                        var item = <ItemModel>filter(results[0], {_id:i._id})[0];
+                        item.quantity = i.quantity;
+                    });
+                });
+
+
         }
     }
 
@@ -40,26 +50,17 @@ class CheckoutController {
     }
 
     itemIsSelected(item: ItemModel) {
-        var filtered = this.filter(this.checkout.items, { _id: item._id });
-        return filtered.length;
-    }
-
-    selectItem(item: ItemModel) {
-        var filtered = this.filter(this.checkout.items, { _id: item._id });
-        if (filtered.length) {
-            this.checkout.items.splice(this.checkout.items.indexOf(filtered[0]), 1);
-        } else {
-            this.checkout.items.push(item);
-        }
+        return !!item.quantity;
     }
 
     save() {
         var self = this;
+        this.checkout.items = this.filter(this.items, (item) => item.quantity > 0);
         this.resource.save(this.checkout)
             .then((checkout: CheckoutModel) => {
-            self.notificationsService.notifySuccess("Cadastro realizado.", "Ok");
-            self.location.path("/checkouts");
-        })
+                self.notificationsService.notifySuccess("Cadastro realizado.", "Ok");
+                self.location.path("/checkouts");
+            })
             .catch(error => self.notificationsService.notifyAlert(error, "Ok"));
     }
 
@@ -78,6 +79,7 @@ angular.module("n4_payment")
     "$routeParams",
     "$location",
     "$window",
+    "$q",
     "filterFilter",
     "SenderResource",
     "PagSeguroResource",

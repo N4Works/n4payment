@@ -70,10 +70,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-class="{'selected': controller.itemIsSelected(item)}" ng-click="controller.selectItem(item)" ng-repeat="item in controller.items">
+                    <tr ng-repeat="item in controller.items">
                         <td ng-bind="item.id"></td>
                         <td ng-bind="item.description"></td>
                         <td ng-bind="item.amount"></td>
+                        <td>
+                            <div class="input-field">
+                                <input id="quantity" type="number" required="" min="0" max="999" ng-model="item.quantity" name="quantity">
+                                <label ng-class="{'active': item.quantity > 0}" for="quantity">Quantidade</label>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>

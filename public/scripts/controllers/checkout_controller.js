@@ -1,10 +1,11 @@
 "use strict";
 var CheckoutController = (function () {
-    function CheckoutController(resource, parameters, location, $window, filter, senderResource, pagseguroResource, itemResource, notificationsService, menuService) {
+    function CheckoutController(resource, parameters, location, $window, $q, filter, senderResource, pagseguroResource, itemResource, notificationsService, menuService) {
         this.resource = resource;
         this.parameters = parameters;
         this.location = location;
         this.$window = $window;
+        this.$q = $q;
         this.filter = filter;
         this.senderResource = senderResource;
         this.pagseguroResource = pagseguroResource;
@@ -17,13 +18,20 @@ var CheckoutController = (function () {
         senderResource.findAll()
             .then(function (senders) { return self.senders = senders; })
             .catch(function (error) { return self.notificationsService.notifyAlert(error, "Ok"); });
-        itemResource.findAll()
+        var itemPromise = itemResource.findAll()
             .then(function (items) { return self.items = items; })
             .catch(function (error) { return self.notificationsService.notifyAlert(error, "Ok"); });
         if (parameters["id"]) {
-            resource.findById(parameters["id"])
-                .then(function (checkout) { return self.checkout = checkout; })
-                .catch(function (error) { return self.notificationsService.notifyAlert(error, "Ok"); });
+            $q.all([itemPromise,
+                resource.findById(parameters["id"])
+                    .then(function (checkout) { return self.checkout = checkout; })
+                    .catch(function (error) { return self.notificationsService.notifyAlert(error, "Ok"); })])
+                .then(function (results) {
+                angular.forEach(results[1].items, function (i) {
+                    var item = filter(results[0], { _id: i._id })[0];
+                    item.quantity = i.quantity;
+                });
+            });
         }
     }
     CheckoutController.prototype.selectSender = function (sender) {
@@ -33,20 +41,11 @@ var CheckoutController = (function () {
         return this.checkout.sender._id === sender._id;
     };
     CheckoutController.prototype.itemIsSelected = function (item) {
-        var filtered = this.filter(this.checkout.items, { _id: item._id });
-        return filtered.length;
-    };
-    CheckoutController.prototype.selectItem = function (item) {
-        var filtered = this.filter(this.checkout.items, { _id: item._id });
-        if (filtered.length) {
-            this.checkout.items.splice(this.checkout.items.indexOf(filtered[0]), 1);
-        }
-        else {
-            this.checkout.items.push(item);
-        }
+        return !!item.quantity;
     };
     CheckoutController.prototype.save = function () {
         var self = this;
+        this.checkout.items = this.filter(this.items, function (item) { return item.quantity > 0; });
         this.resource.save(this.checkout)
             .then(function (checkout) {
             self.notificationsService.notifySuccess("Cadastro realizado.", "Ok");
@@ -68,6 +67,7 @@ angular.module("n4_payment")
     "$routeParams",
     "$location",
     "$window",
+    "$q",
     "filterFilter",
     "SenderResource",
     "PagSeguroResource",

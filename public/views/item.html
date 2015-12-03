@@ -21,7 +21,11 @@
             </div>
             <div class="input-field">
                 <input class="n4-currency-input" id="amount" required="" min="0" max="9999999" ng-model="controller.item.amount" name="amount">
-                <label ng-class="{'active':controller.item.amount}" for="amount">Valor</label>
+                <label class="active" for="amount">Valor</label>
+            </div>
+            <div class="input-field">
+                <input id="quantity" type="number" required="" min="0" max="999" ng-model="controller.item.quantity" name="quantity">
+                <label ng-class="{'active': controller.item.quantity > 0}" for="quantity">Quantidade padrão</label>
             </div>
         </div>
         <div class="panel-form-actions card-action">
