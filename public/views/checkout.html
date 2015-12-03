@@ -73,7 +73,7 @@
                     <tr ng-repeat="item in controller.items">
                         <td ng-bind="item.id"></td>
                         <td ng-bind="item.description"></td>
-                        <td ng-bind="item.amount"></td>
+                        <td ng-bind="item.amount | currency:'R$'"></td>
                         <td>
                             <div class="input-field">
                                 <input id="quantity" type="number" required="" min="0" max="999" ng-model="item.quantity" name="quantity">

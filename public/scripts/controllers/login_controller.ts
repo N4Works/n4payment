@@ -4,6 +4,7 @@ class LoginController {
     loginData: LoginModel;
     logado: boolean;
     constructor(
+        private BASE_URL: string,
         private $window: ng.IWindowService,
         private loginResource: LoginResource,
         private notificationsService: n4Notifications.N4NotificationsService,
@@ -12,7 +13,7 @@ class LoginController {
         this.loginData = new LoginModel();
         var self = this;
         loginResource.getUser()
-            .then(user => $window.location.href = "http://localhost:3000");
+            .then(user => $window.location.href = BASE_URL);
     }
 
     login() {
@@ -29,6 +30,7 @@ class LoginController {
 
 angular.module("n4_payment")
     .controller("LoginController", [
+        "BASE_URL",
         "$window",
         "LoginResource",
         "n4NotificationsService",

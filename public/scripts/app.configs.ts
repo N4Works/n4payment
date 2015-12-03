@@ -1,16 +1,6 @@
 "use strict";
 
-angular.module("n4_payment", [
-    "ngResource",
-    "ngRoute",
-    "n4Notifications",
-    "n4ExceptionInterceptor",
-    "n4AuthenticationInterceptor",
-    "n4DateInput",
-    "n4NumberInput",
-    "n4CurrencyInput",
-    "angular-md5"
-])
+angular.module("n4_payment")
     .config([
     "BASE_URL",
     "$locationProvider",

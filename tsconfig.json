@@ -46,6 +46,8 @@
         "models/urlpagseguro_enum.ts",
         "models/user_model.ts",
         "public/bower_components/n4Notifications/typing/n4notificationsservice.d.ts",
+        "public/scripts/app.constants.ts",
+        "public/scripts/app.login.configs.ts",
         "public/scripts/app.login.ts",
         "public/scripts/app.ts",
         "public/scripts/controllers/checkout_controller.ts",
