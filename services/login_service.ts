@@ -3,7 +3,7 @@
 import fs = require("fs");
 import os = require("os");
 import crypto = require("crypto");
-import randtoken = require("rand-token");
+var randtoken = require("rand-token");
 import consts = require("../constants");
 import {IUser, User} from "../models/user_model";
 import {ILogin} from "../models/login_model";
